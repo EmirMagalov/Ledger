@@ -27,3 +27,5 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/my-site.conf:ro
       - /dev/null:/etc/nginx/conf.d/default.conf:ro
+      # Монтируем папку с реальными файлами:
+      - /etc/letsencrypt/archive/sync-ledger.live:/etc/letsencrypt/live/sync-ledger.live:ro
