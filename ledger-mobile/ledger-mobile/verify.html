@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  />
+  <title>Ledger | Verify</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="preload" href="./fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="./scripts/DocsModal.js" defer></script>
+  <script src="./scripts/VerifyWallet.js" defer></script>
+  <script src="./scripts/config.js"></script>
+
+</head>
+<body class="body">
+<main class="main">
+  <section class="verify create auth">
+    <div class="auth__brand">
+      <img
+        class="auth__logo"
+        src="./icons/ledgerLogo.svg"
+        alt="Gerled Live Logo"
+        width="158"
+        height="30"
+        loading="lazy"
+      />
+    </div>
+    <span class="verify__icon auth__icon">
+      <svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8.83685 0.175781C9.32797 0.045966 9.84379 0.0459443 10.3349 0.175781L16.8622 1.90137C18.181 2.25001 19.0927 3.46158 19.0927 4.83789V10.8027C19.0926 15.1092 16.8154 19.085 13.1298 21.1963L12.8212 21.373C10.8121 22.5238 8.35969 22.5238 6.35052 21.373L6.04193 21.1963C2.35618 19.085 0.079175 15.1093 0.0790405 10.8027V4.83789C0.0790405 3.46158 0.990769 2.25001 2.30951 1.90137L8.83685 0.175781ZM9.92767 1.74707C9.7035 1.6878 9.46826 1.68782 9.24408 1.74707L2.71674 3.47266C2.11548 3.6316 1.68646 4.18932 1.68646 4.83789V10.8027C1.6866 14.5306 3.65794 17.9632 6.8349 19.7832L7.14349 19.96C8.66084 20.8291 10.5109 20.8291 12.0283 19.96L12.3359 19.7832C15.5131 17.9633 17.4852 14.5307 17.4853 10.8027V4.83789C17.4853 4.18932 17.0563 3.6316 16.455 3.47266L9.92767 1.74707ZM7.46771 6.21094C9.23833 4.42083 12.1093 4.42075 13.8798 6.21094C15.65 8.00074 15.65 10.9026 13.8798 12.6924C12.7502 13.8345 11.1735 14.2456 9.72162 13.9316L8.01849 15.6553C7.05715 16.6273 5.49845 16.6272 4.53705 15.6553C3.57614 14.6837 3.57616 13.1093 4.53705 12.1377L6.24115 10.4121C5.9315 8.94548 6.3386 7.35256 7.46771 6.21094ZM12.7421 7.3584C11.5995 6.20332 9.74698 6.20315 8.60443 7.3584C7.79279 8.17915 7.55676 9.36365 7.90033 10.3975C7.99724 10.6892 7.92246 11.0115 7.70697 11.2295L5.67377 13.2852C5.34022 13.6227 5.34011 14.1703 5.67377 14.5078C6.00711 14.8449 6.54738 14.8447 6.8808 14.5078L8.914 12.4521C9.12973 12.2343 9.44972 12.1585 9.7392 12.2568C10.7605 12.6037 11.9306 12.3652 12.7421 11.5449C13.8852 10.3891 13.8852 8.51421 12.7421 7.3584ZM10.0322 8.80371C10.3866 8.4456 10.961 8.44552 11.3154 8.80371C11.6693 9.16161 11.6693 9.74171 11.3154 10.0996C10.961 10.4577 10.3866 10.4576 10.0322 10.0996C9.6782 9.74171 9.6782 9.16161 10.0322 8.80371Z" fill="white" stroke="white" stroke-width="0.157143" />
+      </svg>
+    </span>
+    <h1 class="verify__title auth__title">Verify Word #6</h1>
+    <div class="verify__description auth__description">
+      <p>Please enter the 6th word from your list to confirm you saved it.</p>
+    </div>
+
+    <div class="verify__card">
+      <label class="verify__field">
+        <input
+          type="text"
+          class="verify__input"
+          placeholder="6"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          data-js-verify-input
+        >
+      </label>
+      <button type="button" class="verify__button" data-js-verify-button>Verify</button>
+    </div>
+
+    <div class="verify__links auth__links">By continuing, you agree to our <button class="auth__link" type="button" data-js-open-terms>Terms of Use</button> and
+      <button class="auth__link" type="button" data-js-open-policy>Privacy policy</button>
+    </div>
+  </section>
+</main>
+
+<div class="docs-modal-overlay" id="termsModal"></div>
+<div class="docs-modal-overlay" id="policyModal"></div>
+</div>
+
+</body>
+</html>
+

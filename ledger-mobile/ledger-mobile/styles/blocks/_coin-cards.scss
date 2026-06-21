@@ -1,0 +1,105 @@
+/* ===== Coin cards (Price Stats / Market Cap / Supply) ===== */
+
+/* Корневой контейнер: две колонки */
+.coin__cards {
+  padding-top: 65px;
+  display: flex;
+  column-gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Левая колонка — одна высокая карточка */
+.coin__card--price-stats {
+  flex: 1 1 50%;
+  width: 490px;
+  min-height: 430px;
+}
+
+.coin__cards-column {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+.coin__card {
+  border-radius: 20px;
+  width: 490px;
+  height: 251px;
+  background: #1a1a1a;
+  border: 1px solid transparent;
+}
+
+.coin__card-title {
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 40px 0 28px 40px;
+}
+
+.coin__card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 22px;
+}
+
+.coin__card-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  column-gap: 16px;
+  padding-inline: 40px;
+
+  &--alt {
+    padding-top: 16px;
+  }
+}
+
+.coin__card-label {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: #c3c3c3;
+}
+
+.coin__card-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.coin__card-value-main {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  text-align: right;
+  color: #fff;
+}
+
+.coin__card-value-sub {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 7px;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Красный процент (модификатор) */
+.coin__card-value-sub--outcome,
+.coin__card-value--outcome {
+  color: #ea2e49;
+}
+
+.coin__card-value--outcome {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 7px;
+  flex-direction: row;
+}

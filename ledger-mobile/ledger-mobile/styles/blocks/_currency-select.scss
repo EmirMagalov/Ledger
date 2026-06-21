@@ -1,0 +1,115 @@
+/* ===== Currency select ===== */
+
+.currency-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 14px;
+}
+
+.currency-select__label {
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: #c3c3c3;
+}
+
+/* Триггер */
+.currency-select__trigger {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 10px;
+  background: transparent;
+  border: none;
+  padding: 6px 4px;
+  cursor: pointer;
+  font: inherit;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.currency-select__value {
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.currency-select__trigger:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.currency-select__value {
+  color: #fff;
+}
+
+.currency-select__chevron {
+  color: #949494;
+  transition: transform 0.2s ease, color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.currency-select.is-open .currency-select__chevron {
+  transform: rotate(180deg);
+  color: #fff;
+}
+
+/* Выпадающий список */
+.currency-select__list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 179px;
+  max-height: 260px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 11px;
+  list-style: none;
+  background: #1f1f22;
+  border: 1px solid #333436;
+  border-radius: 7px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-sizing: border-box;
+}
+
+.currency-select__list[hidden] {
+  display: none;
+}
+
+.currency-select.is-open .currency-select__list {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Опция */
+.currency-select__option {
+  padding: 14px 20px;
+  font-weight: 500;
+  font-size: 15px;
+  color: #fff;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  user-select: none;
+}
+
+.currency-select__option:hover {
+  background: #232426;
+  color: #fff;
+}
+
+.currency-select__option.is-selected {
+  background: #232426;
+  color: #fff;
+  font-weight: 600;
+}

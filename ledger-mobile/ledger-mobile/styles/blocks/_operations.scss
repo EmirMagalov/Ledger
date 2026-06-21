@@ -1,0 +1,179 @@
+.operations {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background: #151515;
+  margin-top: 40px;
+
+  &--alt {
+    margin-top: 30px;
+    background: #1a1a1a;
+  }
+}
+
+.operations__title {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: #f2f2f2;
+  padding: 24px 0 23px 30px;
+  margin: 0;
+}
+
+/* Table — flex, без grid */
+.operations__table {
+  display: flex;
+  flex-direction: column;
+}
+
+.operations__row {
+  display: flex;
+  align-items: center;
+  padding: 11px 0;
+}
+
+/* Строка-дата как подобие head в asset */
+.operations__row--date {
+  border-block: 1px solid rgba(255, 255, 255, 0.05);
+  height: 45px;
+  padding: 0 0 0 30px;
+  background: #1a1a1a;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #949494;
+
+  &-alt {
+    border-bottom: 1.00px solid rgba(255, 255, 255, 0.05);
+    border-top: 1.00px solid rgba(255, 255, 255, 0.05);
+    background: #1f1f1f;
+  }
+}
+
+/* Cells — ширина через width на flex-элементах */
+.operations__cell {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.operations__cell--type {
+  width: 232px;
+  padding-left: 30px;
+  column-gap: 15px;
+}
+
+.operations__cell--coin {
+  width: 209px;
+  column-gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.operations__cell--address {
+  width: 320px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #c3c3c3;
+
+  &-alt {
+    color: #949494;
+  }
+}
+
+.operations__cell--amount {
+  width: 207px;
+  flex-direction: column;
+  align-items: flex-end;
+  row-gap: 5px;
+  padding-right: 30px;
+  margin-left: auto;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 155%;
+  letter-spacing: -0.02em;
+  color: #949494;
+}
+
+/* Иконка типа операции (кружок) */
+.operations__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #2a2a2a;
+  flex-shrink: 0;
+}
+
+/* Текст "Sent / Received" + время */
+.operations__type {
+  display: flex;
+  flex-direction: column;
+}
+
+.operations__action {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.operations__time {
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: #949494;
+}
+
+/* Монета */
+.operations__coin-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.operations__coin-name {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+/* Сумма */
+.operations__amount-crypto {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 155%;
+  letter-spacing: -0.02em;
+
+  &--income {
+    color: #599f4c;
+  }
+}
+
+.operations__amount-fiat {
+  font-size: 14px;
+  line-height: 155%;
+  letter-spacing: -0.02em;
+  text-align: right;
+  font-weight: 400;
+  color: #949494;
+}
+
+.operations__icon {
+  &--received {
+    background: #2b3d2a;
+  }
+
+  &--sent {
+    background: #343536;
+  }
+}

@@ -1,0 +1,187 @@
+.coin-info {
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 7px;
+
+  &__main {
+    display: flex;
+    column-gap: 30px;
+  }
+
+  &__asset {
+    display: flex;
+    column-gap: 20px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1000px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding-top: 60px;
+
+    &-title {
+      font-weight: 500;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: #c3c3c3;
+    }
+
+    &-price {
+      font-family: var(--font-family-alt);
+      font-weight: 500;
+      font-size: 32px;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    &-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__image {
+    max-width: 65px;
+    max-height: 65px;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  &__value {
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    color: #717070;
+  }
+
+  &__star {
+    border: none;
+    outline:  none;
+    background-color: transparent;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    padding-top: 15px;
+  }
+
+  &__button {
+    border-radius: 100px;
+    background: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: #131214;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition-duration:  0.2s;
+    width: 134px;
+    height: 37px;
+
+    &--alt {
+
+    }
+  }
+
+  &__block {
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    width: 1000px;
+    justify-content: space-between;
+  }
+
+  &__percent {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 5px;
+
+    &--outcome {
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #ea2e49;
+    }
+  }
+
+  &__buttons{
+    border: 1px solid #3c3c3c;
+    border-radius: 100px;
+    padding: 4px;
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #c3c3c3;
+    transition-duration:  0.2s;
+    max-width: 84px;
+    column-gap: 10px;
+
+    &--alt {
+      max-width: 131px;
+      height: 45px;
+    }
+
+    &.is-active {
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #131214;
+      background-color: #fff;
+    }
+  }
+
+  &__chart {
+    width: 100%;
+    min-height: 300px;
+  }
+}
+
+
+.apexcharts-tooltip.apexcharts-theme-dark {
+  background: #1f1f22 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+}
+
+.apexcharts-tooltip-title {
+  background: #1f1f22 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  font-weight: 500 !important;
+  color: #949494 !important;
+}

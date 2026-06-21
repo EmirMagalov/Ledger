@@ -1,0 +1,114 @@
+.explore {
+  padding-top: 50px;
+
+  &__title {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    color: #fff;
+    padding-bottom: 25px;
+  }
+
+  &__mood-gauge {
+    width: 54px;
+    height: 27px;
+    position: relative;
+    padding-bottom: 40px;
+  }
+
+  &__mood-dot {
+    position: absolute;
+    // позиционируем по центру кружка: смещаем на половину размера (5px)
+    top: 0;
+    left: 0;
+    transform: translate(-5px, -5px); // стартовая позиция, JS перезапишет
+    pointer-events: none;
+  }
+
+  &__mood-value {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    top: 17px;
+  }
+
+  &__mood-label {
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    color: #9c9c9c;
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  &__list {
+    display: flex;
+    column-gap: 27px;
+    padding-bottom: 50px;
+  }
+
+  &__item {
+    background: #151515;
+    border-radius: 25px;
+    width: 120px;
+    height: 140px;
+    padding-block: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &--alt {
+      padding-top: 30px;
+    }
+
+    & a {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      width: 120px;
+      text-decoration: none;
+    }
+  }
+
+  &__image {
+    width: 45px;
+    height: 45px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: #fff;
+    padding-top: 3px;
+  }
+
+  &__percent {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    text-align: center;
+
+    &--income {
+      color: #599f4c;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  # Бэкенд API
+  backend:
+    build: .
+    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+    env_file: .env
+
+  # Бот (запускается отдельно)
+  bot:
+    build: .
+    command: python -m bot_app.main
+    env_file: .env
+
+  # Веб-сервер (раздает статику и проксирует запросы)
+  nginx:
+    image: nginx:alpine
+    user: "0:0"
+    ports:
+      - "80:80"  # Снаружи будет 8080, внутри контейнера —
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # Монтируем содержимое папки ledger-mobile в корень Nginx
+      - ./ledger-mobile:/usr/share/nginx/html

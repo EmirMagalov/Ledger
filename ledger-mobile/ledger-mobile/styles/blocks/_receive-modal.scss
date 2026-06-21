@@ -1,0 +1,308 @@
+.receive-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.receive-modal.is-open {
+  display: flex;
+}
+
+.receive-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  animation: receive-modal-overlay-in 0.15s ease-out;
+}
+
+@keyframes receive-modal-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Панель (контейнер модалки) */
+.receive-modal__panel {
+  position: relative;
+  width: 500px;
+  height: 393px;
+  background: #1a1a1a;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  box-sizing: border-box;
+  animation: receive-modal-panel-in 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &--qr {
+    width: 500px;
+    height: 479px;
+  }
+}
+
+.receive-modal__panel[hidden] {
+  display: none;
+}
+
+@keyframes receive-modal-panel-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Header */
+.receive-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
+  padding-top: 52px;
+}
+
+.receive-modal__title {
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: #fff;
+  padding-left: 44px;
+}
+
+.receive-modal__close {
+  position: absolute;
+  left: 148px;
+  bottom: 14px;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  transition: background 0.15s ease;
+}
+
+.receive-modal__close:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Meta: Address for BTC | Show QR Code */
+.receive-modal__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding-inline: 40px;
+  width: 500px;
+}
+
+.receive-modal__label {
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #949494;
+}
+
+.receive-modal__show-qr {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 10px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #baaefe;
+}
+
+.receive-modal__show-qr:hover {
+  color: #c4b5fd;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+}
+
+/* Строка с адресом */
+.receive-modal__address {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #fff;
+  padding: 12px 14px;
+  width: 420px;
+  height: 55px;
+  background: #161618;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  box-sizing: border-box;
+}
+
+/* Когда строка адреса — кнопка (на QR-экране) */
+.receive-modal__address--button {
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: border-color 0.15s ease;
+}
+
+.receive-modal__address--button:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.receive-modal__address-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: -0.02em;
+  color: #c3c3c3;
+}
+
+.receive-modal__copy {
+  position: relative;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #949494;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.receive-modal__copy:hover {
+  opacity: 0.8;
+}
+
+/* Иконки copy / check в одном месте — переключаются через is-copied */
+.receive-modal__copy-icon {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, transform 0.2s ease;
+}
+
+.receive-modal__copy-icon--success {
+  opacity: 0;
+  transform: scale(0.6);
+  color: #4ade80; /* зелёный */
+}
+
+.receive-modal__copy.is-copied .receive-modal__copy-icon--default {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.receive-modal__copy.is-copied .receive-modal__copy-icon--success {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Тултип "Copied!" */
+.receive-modal__copy-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  padding: 4px 10px;
+  background: #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: -0.01em;
+  color: #fff;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.receive-modal__copy-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #2a2a2a;
+}
+
+.receive-modal__copy.is-copied .receive-modal__copy-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Инфо-блок на address-view */
+.receive-modal__info {
+  width: 420px;
+  height: 105px;
+  display: flex;
+  align-items: flex-start;
+  column-gap: 17px;
+  margin-top: 16px;
+  padding: 20px;
+  background: rgba(186, 174, 254, 0.1);
+  border: 1px solid #baaefe;
+  border-radius: 15px;
+}
+
+.receive-modal__info-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  margin-top: 1px;
+}
+
+.receive-modal__info-text {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+/* QR view */
+.receive-modal__qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  width: 250px;
+  height: 250px;
+}
+
+.receive-modal__qr-image {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+}
+
+/* Блокировка скролла общая — использует тот же класс, что и news-modal,
+   чтобы не плодить сущности */
+body.is-news-modal-open,
+body.is-receive-modal-open {
+  overflow: hidden;
+}

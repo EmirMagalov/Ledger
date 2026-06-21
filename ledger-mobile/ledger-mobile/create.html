@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  />
+  <title>Ledger | Create Wallet</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="preload" href="./fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="./scripts/DocsModal.js" defer></script>
+  <script src="./scripts/config.js"></script>
+  <script src="./scripts/CreateWallet.js" defer></script>
+</head>
+<body class="body">
+<main class="main">
+  <section class="create auth">
+    <div class="auth__brand">
+      <img
+        class="auth__logo"
+        src="./icons/ledgerLogo.svg"
+        alt="Gerled Live Logo"
+        width="158"
+        height="30"
+        loading="lazy"
+      />
+    </div>
+    <h1 class="create__title auth__title">Generate<br>Recovery Phrase</h1>
+    <div class="create__description auth__description">
+      <p>Your recovery phrase is the master key to your funds. Write them down on paper and keep them safe.</p>
+    </div>
+    <div class="create__switcher" role="tablist">
+      <button
+        type="button"
+        class="create__switcher-btn is-active"
+        data-words="12"
+        role="tab"
+        aria-selected="true"
+      >12 words</button>
+      <button
+        type="button"
+        class="create__switcher-btn"
+        data-words="24"
+        role="tab"
+        aria-selected="false"
+      >24 words</button>
+    </div>
+
+    <!-- РљР°СЂС‚РѕС‡РєР° СЃ С„СЂР°Р·РѕР№ -->
+    <div class="create__card">
+      <ul class="create__grid" data-js-phrase-grid></ul>
+      <div class="create__actions create__card-actions">
+        <button class="create__actions-hide-button">
+          <svg width="17" height="13" viewBox="0 0 17 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.08734 0C12.1991 0 15.2772 2.58217 16.1012 5.63193C16.2501 6.19051 16.2668 6.78076 16.1389 7.34815C15.3673 10.7887 11.8028 13 8.08734 13C4.46201 13 1.32104 10.915 0.216039 7.73395C-0.0607357 6.94053 -0.0712011 6.07498 0.182509 5.27527C1.17428 2.16052 4.11814 0 8.08734 0ZM8.08734 1.25806C4.6025 1.25806 2.18912 3.1221 1.38186 5.65689C1.20992 6.19807 1.21828 6.78495 1.40279 7.32068C2.31489 9.9406 4.93798 11.7419 8.08734 11.7419C11.3919 11.7419 14.3043 9.78208 14.9102 7.07284C14.9941 6.70758 14.9836 6.32408 14.8851 5.95945C14.2204 3.49092 11.6644 1.25806 8.08734 1.25806ZM8.08734 2.72581C10.096 2.72581 11.6519 4.45711 11.6519 6.5C11.6519 8.54289 10.096 10.2742 8.08734 10.2742C6.07863 10.2742 4.52282 8.54289 4.52282 6.5C4.52282 4.45711 6.07863 2.72581 8.08734 2.72581ZM8.08734 3.98387C6.85443 3.98387 5.78089 5.06874 5.78089 6.5C5.78089 7.93126 6.85443 9.01613 8.08734 9.01613C9.32234 9.01613 10.3938 7.93126 10.3938 6.5C10.3938 5.06874 9.32234 3.98387 8.08734 3.98387Z" fill="#858585"/>
+          </svg>
+          Hide phrase
+        </button>
+
+        <button class="create__actions-copy-button">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.875 11.0833H3.20833C2.35771 11.0824 1.5422 10.7441 0.940722 10.1426C0.339244 9.54113 0.000926432 8.72562 0 7.875L0 3.20833C0.000926432 2.35771 0.339244 1.5422 0.940722 0.940722C1.5422 0.339244 2.35771 0.000926432 3.20833 0L7.875 0C8.72562 0.000926432 9.54113 0.339244 10.1426 0.940722C10.7441 1.5422 11.0824 2.35771 11.0833 3.20833V7.875C11.0824 8.72562 10.7441 9.54113 10.1426 10.1426C9.54113 10.7441 8.72562 11.0824 7.875 11.0833ZM3.20833 1.75C2.82156 1.75 2.45063 1.90365 2.17714 2.17714C1.90365 2.45063 1.75 2.82156 1.75 3.20833V7.875C1.75 8.26177 1.90365 8.63271 2.17714 8.9062C2.45063 9.17969 2.82156 9.33333 3.20833 9.33333H7.875C8.26177 9.33333 8.63271 9.17969 8.9062 8.9062C9.17969 8.63271 9.33333 8.26177 9.33333 7.875V3.20833C9.33333 2.82156 9.17969 2.45063 8.9062 2.17714C8.63271 1.90365 8.26177 1.75 7.875 1.75H3.20833ZM14 10.7917V4.08333C14 3.85127 13.9078 3.62871 13.7437 3.46461C13.5796 3.30052 13.3571 3.20833 13.125 3.20833C12.8929 3.20833 12.6704 3.30052 12.5063 3.46461C12.3422 3.62871 12.25 3.85127 12.25 4.08333V10.7917C12.25 11.1784 12.0964 11.5494 11.8229 11.8229C11.5494 12.0964 11.1784 12.25 10.7917 12.25H4.08333C3.85127 12.25 3.62871 12.3422 3.46461 12.5063C3.30052 12.6704 3.20833 12.8929 3.20833 13.125C3.20833 13.3571 3.30052 13.5796 3.46461 13.7437C3.62871 13.9078 3.85127 14 4.08333 14H10.7917C11.6423 13.9991 12.4578 13.6608 13.0593 13.0593C13.6608 12.4578 13.9991 11.6423 14 10.7917Z" fill="#858585" />
+          </svg>
+          Copy phrase
+        </button>
+      </div>
+      <div class="create__generate-wrapper">
+        <button type="button" class="create__generate" data-js-generate>
+          Generate Phrase
+        </button>
+      </div>
+    </div>
+    <div class="create__links auth__links">By continuing, you agree to our <button class="auth__link" type="button" data-js-open-terms>Terms of Use</button> and
+      <button class="auth__link" type="button" data-js-open-policy>Privacy policy</button>
+    </div>
+  </section>
+</main>
+
+<div class="docs-modal-overlay" id="termsModal"></div>
+<div class="docs-modal-overlay" id="policyModal"></div>
+</div>
+
+</body>
+</html>

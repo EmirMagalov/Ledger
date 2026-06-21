@@ -1,0 +1,115 @@
+.coin {
+  padding: 40px 40px 18px 40px;
+  border-radius: 20px;
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  margin-top: 26px;
+
+  &__subtitle {
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  &__value {
+    display: flex;
+    column-gap: 10px;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    padding-top: 3px;
+
+    &--tag {
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: #949494;
+      padding-right: 20px;
+    }
+
+    &--dollar {
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: #fff;
+      padding-left: 10px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+
+    &-percent {
+      display: inline-flex;
+      column-gap: 20px;
+      align-items: center;
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+
+      &--income {
+        color: #599f4c;
+      }
+    }
+  }
+
+  &__button {
+    border-radius: 100px;
+    column-gap: 10px;
+    height: 41px;
+    padding-inline: 20px;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: transparent;
+    color: #c3c3c3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition-duration:  0.2s;
+    max-width: 60px;
+
+    &.is-active {
+      color: #000;
+      background: #fff;
+    }
+
+    &--alt {
+      border-radius: 100px;
+      background: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: #000;
+      text-transform: none;
+      width: 100%;
+      max-width: 131px;
+      height: 45px;
+    }
+  }
+
+  &__badge {
+    color: #717070;
+    border-color: #717070;
+  }
+
+  &__all {
+    padding-top: 25px;
+    font-weight: 400;
+    font-size: 15px;
+    color: #a1a1a1;
+    display: flex;
+    justify-content: center;
+  }
+}

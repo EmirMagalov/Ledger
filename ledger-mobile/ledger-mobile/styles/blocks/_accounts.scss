@@ -1,0 +1,265 @@
+.accounts {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  &__buttons {
+    display: flex;
+    column-gap: 10px;
+  }
+
+  &__button {
+    height: 40px;
+    border: 1px solid transparent;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+
+    &--add {
+      column-gap: 10px;
+      color: #131214;
+      width: 142px;
+      background-color: #fff;
+      border-radius: 20px;
+    }
+
+    &--options {
+      position: relative;
+      width: 40px;
+      border-radius: 50%;
+      border-color: #949494;
+      background: transparent;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+    }
+  }
+
+  // ---- Options: tooltip + popup со свитчем ----
+  &__options {
+    position: relative;
+    display: inline-block;
+  }
+
+  &__options-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    padding: 5px 10px;
+    background: #fff;
+    color: #151515;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    border-radius: 7px;
+    width: 73px;
+    height: 29px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    z-index: 10;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid #fff;
+    }
+  }
+
+  // Показываем тултип на ховере кнопки
+  &__button--options:hover .accounts__options-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  // Скрываем тултип, когда попап открыт
+  &__options.is-open .accounts__options-tooltip {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__options-popup {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 280px;
+    height: 155px;
+    padding: 10px;
+    background: #1f1f22;
+    border: 1px solid #333436;
+    border-radius: 7px;
+    z-index: 20;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  &__options.is-open .accounts__options-popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &__options-item {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    width: 260px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    color: #c3c3c3;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    transition: background 0.12s ease, color 0.12s ease;
+    box-sizing: border-box;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+    }
+
+    &:first-child {
+      padding-bottom: 21px;
+      border-bottom: 1px solid #333436;
+      padding-top: 14px;
+      border-radius: 0;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    &--switch {
+      background: #232426;
+      padding: 11px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 12px;
+      display: flex;
+      column-gap: 20px;
+      align-items: start;
+
+      &:hover {
+        background: #2e2e30;
+      }
+    }
+  }
+
+  &__options-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__options-item-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-weight: 500;
+    font-size: 14px;
+    color: #999;
+  }
+
+  &__switch {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  &__switch-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+
+    &:checked ~ .accounts__switch-track {
+      background: #a78bfa;
+    }
+
+    &:checked ~ .accounts__switch-track .accounts__switch-thumb {
+      transform: translateX(18px);
+    }
+  }
+
+  &__switch-track {
+    display: inline-flex;
+    align-items: center;
+    width: 45px;
+    height: 27px;
+    padding: 2px;
+    background: #3a3a3d;
+    border-radius: 345px;
+    transition: background 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  &__switch-thumb {
+    display: block;
+    border-radius: 345px;
+    width: 23px;
+    height: 23px;
+    background: #232426;
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+  }
+
+  &-select {
+    &__label {
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: #999;
+    }
+
+    &__value {
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: #baaefe;
+    }
+  }
+}

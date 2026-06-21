@@ -1,0 +1,135 @@
+.asset {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1000px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background: #151515;
+
+  &__empty {
+    width: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-block: 50px;
+    border-top: 1px solid rgb(255, 255, 255, 0.05);
+
+    &-title {
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: #fff;
+      padding-block: 15px 7px;
+    }
+
+    &-description {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 155%;
+      letter-spacing: -0.02em;
+      text-align: center;
+      color: #949494;
+    }
+  }
+}
+
+
+
+.asset__title {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: #f2f2f2;
+  padding: 24px 0 23px 30px;
+}
+
+/* Table — flex, без grid */
+.asset__table {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset__row {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #1e2227;
+}
+
+.asset__row--head {
+  border-block: 1px solid rgba(255, 255, 255, 0.05);
+  height: 45px;
+  background: #1a1a1a;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #949494;
+}
+
+/* Cells — ширина через width на flex-элементах */
+.asset__cell {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.asset__cell--asset {
+  width: 232px;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  column-gap: 15px
+}
+.asset__cell--price {
+  width: 209px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #adadad;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.asset__cell--allocation {
+  width: 200px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #c3c3c3;
+}
+.asset__cell--amount {
+  justify-content: end;
+  width: 147px;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  text-align: right;
+  color: #c3c3c3;
+}
+.asset__cell--value {
+  width: 180px;
+  justify-content: end;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  text-align: right;
+  color: #c3c3c3;
+}
+
+.asset__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.asset__name {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.asset__cell--strong {
+  font-weight: 600;
+  color: #fff;
+}

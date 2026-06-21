@@ -1,0 +1,137 @@
+.home {
+  padding-top: 40px;
+  padding-bottom: 38px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  &--alt {
+    border-color: transparent;
+    padding-top: 0;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 1000px;
+    padding-top: 40px;
+
+    &--alt {
+      justify-content: end;
+    }
+
+    &-path {
+      display: flex;
+      align-items: center;
+      column-gap: 20px;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      color: #949494;
+
+      & a {
+        text-decoration: none;
+      }
+    }
+
+    &-slash {
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      color: #3c3c3c;
+    }
+
+    &-buttons {
+      display: flex;
+      column-gap: 10px;
+      justify-content: end;
+    }
+
+    &-button {
+      width: 47px;
+      height: 47px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: #1f1f1f;
+      cursor: pointer;
+      transition-duration: 0.2s;
+      border: none;
+      outline:  none;
+    }
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    color: #fff;
+    padding-bottom: 22px;
+    padding-top: 35px;
+  }
+
+  &__info {
+    display: flex;
+    column-gap: 15px;
+    align-items: end;
+    padding-bottom: 13px;
+  }
+
+  &__balance {
+    font-weight: 500;
+    font-size: 48px;
+    letter-spacing: -0.02em;
+    color: #fff;
+
+    &--small {
+      font-size: 36px;
+    }
+  }
+
+  &__change {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    padding-bottom: 13px;
+
+    &-percent {
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+
+      &--outcome {
+        color: #fca6a7;
+      }
+    }
+
+    &-date {
+      display: inline-flex;
+      align-items: center;
+      column-gap: 8px;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+  }
+
+  &__button {
+    background: #fff;
+    border-radius: 100px;
+    padding: 10px;
+    width: 131px;
+    height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 12px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: #000;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    border: none;
+    outline:  none;
+  }
+}

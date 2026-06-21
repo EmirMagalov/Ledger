@@ -1,0 +1,208 @@
+.settings {
+  border-radius: 20px;
+  width: 1003px;
+  height: 490px;
+  background: #1a1a1a;
+  padding: 38px;
+  border: 1px solid transparent;
+  margin-top: 18px;
+}
+
+.settings__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-block: 34px;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+    border: none;
+  }
+}
+
+.settings__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+}
+
+.settings__title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.settings__description {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  color: #929294;
+}
+
+/* ---------- Custom Select ---------- */
+.settings-select {
+  position: relative;
+  min-width: 220px;
+  user-select: none;
+}
+
+.settings-select__trigger {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 7px;
+  padding: 8px 15px;
+  width: 299px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+  text-align: left;
+}
+
+.settings-select__trigger:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.settings-select.is-open .settings-select__trigger {
+  border-color: rgba(186, 174, 254, 0.4);
+  background: #20202a;
+}
+
+.settings-select__value {
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  color: #fff;
+  text-overflow: ellipsis;
+}
+
+.settings-select__chevron {
+  flex-shrink: 0;
+  color: #fff;
+  transition: transform 0.25s ease;
+}
+
+.settings-select.is-open .settings-select__chevron {
+  transform: rotate(180deg);
+}
+
+.settings-select__list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  list-style: none;
+  background: #1c1c24;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px;
+  margin: 0;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.settings-select.is-open .settings-select__list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.settings-select__option {
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #ffffff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.settings-select__option:hover {
+  background: rgba(186, 174, 254, 0.08);
+}
+
+.settings-select__option.is-selected {
+  color: #baaefe;
+  background: rgba(186, 174, 254, 0.08);
+}
+
+.settings-select__list::-webkit-scrollbar {
+  width: 6px;
+}
+.settings-select__list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+/* ---------- Toggle Switch ---------- */
+.settings-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+  flex-shrink: 0;
+  transition-duration: 0.25s;
+}
+
+.settings-toggle__input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.settings-toggle__slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #2d2e30;
+  transition-duration: 0.25s;
+  border-radius: 15px;
+}
+
+.settings-toggle__slider::before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #ffffff;
+  transition-duration: 0.25s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.settings-toggle__input:checked + .settings-toggle__slider {
+  background: linear-gradient(180deg, #baaefe 0%, #aea1f6 100%);
+}
+
+.settings-toggle__input:checked + .settings-toggle__slider::before {
+  transform: translateX(20px);
+}

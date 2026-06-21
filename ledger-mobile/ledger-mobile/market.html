@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  />
+  <title>Ledger | Market</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="preload" href="./fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./images/bg-auth-mob.jpg" as="image" type="image/jpeg">
+  <link rel="preload" href="./icons/logo.svg" as="image" type="image/svg+xml">
+  <script src="./scripts/MarketSearch.js" defer></script>
+</head>
+<body class="body market-page">
+<main class="market-shell">
+  <header class="market-shell__header">
+    <img
+      class="market-shell__logo"
+      src="./icons/logo.svg"
+      alt="Ledger Wallet"
+      width="187"
+      height="30"
+      loading="eager"
+    />
+    <h1 class="market-shell__title">Market</h1>
+
+    <div class="market__toolbar">
+      <label class="market__search">
+        <svg class="market__search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="8" cy="8" r="5.75" stroke="#949494" stroke-width="2"/>
+          <path d="M12.5 12.5L15.5 15.5" stroke="#949494" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input class="market__search-input" type="text" placeholder="Search..." data-js-market-search>
+      </label>
+      <div class="market__range" aria-label="Range selector" data-js-market-select>
+        <span>Range</span>
+        <button
+          class="market__range-button"
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          data-js-market-select-trigger
+        ><span data-js-market-select-value>1W</span>
+          <svg width="9" height="5" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L4.5 4L8 1" stroke="#8B80DB" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <ul class="market__range-list" role="listbox" data-js-market-select-list hidden>
+          <li class="market-select__option is-selected" role="option" aria-selected="true" data-label="1W">1W</li>
+          <li class="market-select__option" role="option" aria-selected="false" data-label="1D">1D</li>
+          <li class="market-select__option" role="option" aria-selected="false" data-label="1M">1M</li>
+          <li class="market-select__option" role="option" aria-selected="false" data-label="1Y">1Y</li>
+          <li class="market-select__option" role="option" aria-selected="false" data-label="ALL">ALL</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section class="market">
+    <div class="market__head">
+      <div class="market__head-cell market__head-cell--crypto">Crypto</div>
+      <div class="market__head-cell market__head-cell--price">Price</div>
+      <div class="market__head-cell market__head-cell--change">Change</div>
+    </div>
+
+    <ul class="market__list" data-js-market-list>
+      <li class="market__row" data-name="Bitcoin" data-ticker="BTC">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/bitcoin.png" alt="Bitcoin" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Bitcoin</p><p class="market__coin-ticker">BTC</p></div>
+        </div>
+        <div class="market__price">$63,346.06</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>1.99 %</span></div>
+      </li>
+      <li class="market__row" data-name="Ethereum" data-ticker="ETH">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/ethereum.png" alt="Ethereum" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Ethereum</p><p class="market__coin-ticker">ETH</p></div>
+        </div>
+        <div class="market__price">$1,726.86</div>
+        <div class="market__change market__change--down"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10.6001 2.5426C10.6 2.0379 10.1907 1.62877 9.68604 1.62854C9.18118 1.62854 8.77114 2.03776 8.771 2.5426L8.771 7.47815L1.76025 0.467407C1.40319 0.110775 0.824186 0.110508 0.467285 0.467407C0.110386 0.824307 0.110652 1.40331 0.467285 1.76038L7.47803 8.77112L2.54248 8.77112C2.03764 8.77126 1.62842 9.18131 1.62842 9.68616C1.62864 10.1908 2.03778 10.6001 2.54248 10.6002L9.68604 10.6002C10.1906 10.6 10.5999 10.1908 10.6001 9.68616L10.6001 2.5426Z" fill="#EA2E49" stroke="#EA2E49" stroke-width="0.4" />
+</svg></span><span>1.72 %</span></div>
+      </li>
+      <li class="market__row" data-name="Solana" data-ticker="SOL">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/solana.png" alt="Solana" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Solana</p><p class="market__coin-ticker">SOL</p></div>
+        </div>
+        <div class="market__price">$70.12</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>7.67 %</span></div>
+      </li>
+      <li class="market__row" data-name="Tron" data-ticker="TRX">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/tron.png" alt="Tron" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Tron</p><p class="market__coin-ticker">TRX</p></div>
+        </div>
+        <div class="market__price">$0.3187</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>0.54 %</span></div>
+      </li>
+      <li class="market__row" data-name="XRP" data-ticker="XRP">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/xrp.png" alt="XRP" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">XRP</p><p class="market__coin-ticker">XRP</p></div>
+        </div>
+        <div class="market__price">$1.14</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>3.47 %</span></div>
+      </li>
+      <li class="market__row" data-name="Cardano" data-ticker="ADA">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/cardano.png" alt="Cardano" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Cardano</p><p class="market__coin-ticker">ADA</p></div>
+        </div>
+        <div class="market__price">$0.1632</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>0.22 %</span></div>
+      </li>
+      <li class="market__row" data-name="Monero" data-ticker="XMR">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/monero.png" alt="Monero" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Monero</p><p class="market__coin-ticker">XMR</p></div>
+        </div>
+        <div class="market__price">$326.90</div>
+        <div class="market__change market__change--down"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10.6001 2.5426C10.6 2.0379 10.1907 1.62877 9.68604 1.62854C9.18118 1.62854 8.77114 2.03776 8.771 2.5426L8.771 7.47815L1.76025 0.467407C1.40319 0.110775 0.824186 0.110508 0.467285 0.467407C0.110386 0.824307 0.110652 1.40331 0.467285 1.76038L7.47803 8.77112L2.54248 8.77112C2.03764 8.77126 1.62842 9.18131 1.62842 9.68616C1.62864 10.1908 2.03778 10.6001 2.54248 10.6002L9.68604 10.6002C10.1906 10.6 10.5999 10.1908 10.6001 9.68616L10.6001 2.5426Z" fill="#EA2E49" stroke="#EA2E49" stroke-width="0.4" />
+</svg></span><span>7.12 %</span></div>
+      </li>
+      <li class="market__row" data-name="Chainlink" data-ticker="LINK">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/chainlink.png" alt="Chainlink" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Chainlink</p><p class="market__coin-ticker">LINK</p></div>
+        </div>
+        <div class="market__price">$7.44</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>2.47 %</span></div>
+      </li>
+      <li class="market__row" data-name="Chainlink" data-ticker="LINK">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/chainlink.png" alt="Chainlink" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Chainlink</p><p class="market__coin-ticker">LINK</p></div>
+        </div>
+        <div class="market__price">$7.44</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>2.47 %</span></div>
+      </li>
+      <li class="market__row" data-name="Chainlink" data-ticker="LINK">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/chainlink.png" alt="Chainlink" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Chainlink</p><p class="market__coin-ticker">LINK</p></div>
+        </div>
+        <div class="market__price">$7.44</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>2.47 %</span></div>
+      </li>
+      <li class="market__row" data-name="Chainlink" data-ticker="LINK">
+        <div class="market__coin">
+          <img class="market__coin-icon" src="./icons/home/chainlink.png" alt="Chainlink" width="37" height="37">
+          <div class="market__coin-info"><p class="market__coin-name">Chainlink</p><p class="market__coin-ticker">LINK</p></div>
+        </div>
+        <div class="market__price">$7.44</div>
+        <div class="market__change market__change--up"><span class="market__arrow"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.54248 0.199708C2.03778 0.199848 1.62864 0.609109 1.62842 1.11377C1.62842 1.61862 2.03764 2.02867 2.54248 2.02881L7.47803 2.02881L0.467286 9.03955C0.110654 9.39662 0.110387 9.97562 0.467286 10.3325C0.824186 10.6894 1.40319 10.6892 1.76025 10.3325L8.771 3.32178L8.771 8.25732C8.77114 8.76216 9.18118 9.17139 9.68604 9.17139C10.1907 9.17116 10.6 8.76202 10.6001 8.25732L10.6001 1.11377C10.5999 0.609159 10.1906 0.199945 9.68604 0.199707L2.54248 0.199708Z" fill="#66BE54" stroke="#66BE54" stroke-width="0.4" />
+</svg></span><span>2.47 %</span></div>
+      </li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>
+

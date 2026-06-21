@@ -1,0 +1,23 @@
+@use "helpers/index" as *;
+
+:root {
+  --color-light: #ffffff;
+
+  --color-dark: #111111;
+  --color-dark-alt: #222222;
+
+  --color-gray: #A3A3A3;
+
+  --color-purple: #AD9EF9;
+
+  --color-green: #08B208;
+  --color-red: #EA2E49;
+
+  --font-family-base: "Inter", sans-serif;
+  --font-family-alt: "IBM Plex Sans Devanagari", sans-serif;
+
+  --container-width: #{rem(1200)};
+  --container-padding-x: #{rem(0)};
+
+  --transition-duration: 0.2s;
+}

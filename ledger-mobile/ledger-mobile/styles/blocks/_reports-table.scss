@@ -1,0 +1,191 @@
+.reports-table {
+  background: #1a1a1a;
+  border-radius: 20px;
+  width: 1000px;
+  box-sizing: border-box;
+
+  & + & {
+    margin-top: 24px;
+  }
+
+  // ---- Шапка карточки (заголовок + действие) ----
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0 18px 30px;
+
+    &--alt {
+      padding: 28px 30px 18px 30px;
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 19px;
+    color: #fff;
+  }
+
+  // ---- Таблица (на grid) ----
+  &__grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    padding: 13px 30px;
+    transition: background 0.15s ease;
+
+    &:not(.reports-table__row--head):hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    &:not(.reports-table__row--head):last-child:hover {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 0 0 20px 20px;;
+    }
+
+
+    &:not(:last-child) {
+      border-bottom: 1px solid  #2e2e30;
+    }
+
+    // Шапка таблицы (серая подложка)
+    &--head {
+      border-bottom: 1px solid #373839;
+      border-top: 1px solid #373839;
+      width: 1000px;
+      height: 47px;
+      background: #202123;
+      font-weight: 500;
+      font-size: 14px;
+      color: #909091;
+    }
+
+    &--alt {
+      padding: 18.4px 30px;
+    }
+  }
+
+  &__cell {
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &--head {
+      font-weight: 500;
+      font-size: 14px;
+      color: #909091;
+    }
+
+    &--right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-left: auto;
+    }
+    &--gain { color: #4ade80; font-weight: 600; }
+    &--loss { color: #ef4444; font-weight: 600; }
+  }
+
+  // ====== Generated Reports — 5 колонок ======
+  &__grid--generated {
+    .reports-table__cell:nth-child(1) { width: 137px;  flex-shrink: 0; }                   // Tax year
+    .reports-table__cell:nth-child(2) { width: 183px; flex-shrink: 0; }                   // Data created
+    .reports-table__cell:nth-child(3) { width: 124px; flex-shrink: 0;
+      display: flex; justify-content: end;}                   // Method
+    .reports-table__cell:nth-child(4) { padding-left: 150px; min-width: 402px; }               // Format
+    .reports-table__cell:nth-child(5) { width: 124px; flex-shrink: 0; margin-left: auto; } // Action
+  }
+
+  // ====== Recent Taxable Events — 6 колонок ======
+  &__grid--events {
+    .reports-table__cell:nth-child(1) { width: 169px; flex-shrink: 0; }                   // Data
+    .reports-table__cell:nth-child(2) { width: 109px;  flex-shrink: 0; }                   // Type
+    .reports-table__cell:nth-child(3) { width: 159px; flex-shrink: 0; }                   // Asset
+    .reports-table__cell:nth-child(4) { width: 158px; flex-shrink: 0; }                   // Proceeds
+    .reports-table__cell:nth-child(5) { flex: 1 1 auto; min-width: 120px; }               // Cost Basis
+    .reports-table__cell:nth-child(6) { width: 110px; flex-shrink: 0; margin-left: auto; } // Gain/Loss
+  }
+
+  // ---- Format: бейдж + размер ----
+  &__format {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 10px;
+  }
+
+  &__format-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    background: rgba(186, 174, 254, 0.3);
+    border-radius: 5px;
+    width: 42px;
+    height: 31px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  &__format-size {
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  // ---- Ссылка-действие (Download / Export CSV) ----
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #baaefe;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    svg { flex-shrink: 0; }
+
+    &:hover { color: #c4b5fd; }
+
+    &--alt {
+      color: rgba(186, 174, 254, 0.3);
+
+      &:hover { color: rgba(186, 174, 254, 0.3); }
+    }
+  }
+
+  // ---- Кнопка "View all" ----
+  &__more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    background: transparent;
+    border: 1px dashed #393939;
+    border-radius: 20px;
+    width: 1000px;
+    height: 71px;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    color: #a0a0a2;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+    }
+  }
+}

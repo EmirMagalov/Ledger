@@ -1,0 +1,321 @@
+.reports {
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__description {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 135%;
+    letter-spacing: -0.01em;
+    color: #949494;
+  }
+
+  &__cards {
+    display: flex;
+    column-gap: 22px;
+    padding-block: 27px 29px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__card {
+    border-radius: 20px;
+    width: 320px;
+    height: 180px;
+    background: #1a1a1a;
+    padding: 30px 0 30px 35px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__name {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    color: #949494;
+  }
+
+  &__price {
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: #fff;
+    padding-top: 30px;
+
+    &--alt {
+      color: rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  &__tag {
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: -0.02em;
+    color: rgba(255, 255, 255, 0.35);
+    padding-top: 9px;
+
+    &--alt {
+      color: #baaefe;
+    }
+  }
+
+  &__charts {
+    display: flex;
+    column-gap: 21px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 30px;
+  }
+
+  // ---- Карточки ----
+  &__card-alt {
+    background: #1a1a1a;
+    padding: 40px 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 20px;
+
+    &--chart {
+      width: 662px;
+      height: 460px;
+      background: #1a1a1a;
+    }
+
+    &--donut {
+      width: 320px;
+      height: 460px;
+      background: #1a1a1a;
+    }
+  }
+
+  // ---- Шапка карточки ----
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  // ---- Легенда ----
+  &__legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+  }
+
+  &__legend-item {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 15px;
+    column-gap: 9px;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  &__legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+
+    &--gain { background: #baaefe; }
+    &--loss { background: #ea2e49; }
+  }
+
+  // ---- Bar chart ----
+  &__chart {
+    flex: 1 1 auto;
+    position: relative;
+    min-height: 280px;
+    margin-top: 12px;
+  }
+
+  // ---- Donut ----
+  &__donut {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 220px;
+    margin: 12px auto 20px;
+  }
+
+  &__donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    row-gap: 4px;
+  }
+
+  &__donut-label {
+    margin: 0;
+    font-weight: 600;
+    font-size: 19px;
+    color: #fff;
+  }
+
+  &__donut-value {
+    margin: 0;
+    font-weight: 500;
+    font-size: 15px;
+    text-align: center;
+    color: #c3c3c3;
+  }
+
+  // ---- Income sources list ----
+  &__sources {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 11px;
+    padding-top: 6px;
+    margin-top: auto;
+  }
+
+  &__source {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  &__source-name  { color: #c3c3c3; }
+  &__source-value { color: #fff; }
+
+  &__divider {
+    margin-block: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 1000px;
+    height: 1px;
+  }
+
+  &__export {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px;
+    background: url("../images/bg-banner.jpg") center/contain no-repeat;
+    border-radius: 30px;
+    margin-top: 30px;
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      row-gap: 12px;
+    }
+
+    &-name {
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    &-value {
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 135%;
+      letter-spacing: -0.01em;
+      color: #949494;
+    }
+
+    &-button {
+      background: #fff;
+      border-radius: 100px;
+      width: 164px;
+      height: 45px;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.02em;
+      color: #000;
+      cursor:  pointer;
+      border: none;
+      outline: none;
+      transition-duration: 0.2s;
+    }
+  }
+}
+
+// ===== Кастомный тултип для bar chart =====
+.reports-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: #fff;
+  color: #111;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transform: translate(-50%, -100%);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+
+  &.is-visible {
+    opacity: 1;
+  }
+
+  // хвостик
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: #fff;
+  }
+}
+
+.reports__empty { display: none; }
+
+/* когда нет данных — добавь класс .is-empty на article */
+.reports__card-alt--chart.is-empty canvas { display: none; }
+.reports__card-alt--chart.is-empty .reports__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+.reports__empty-title {
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #fff;
+  padding-bottom: 7px;
+}
+.reports__empty-sub {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 135%;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #949494;
+}

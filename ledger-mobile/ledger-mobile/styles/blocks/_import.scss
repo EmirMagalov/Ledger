@@ -1,0 +1,136 @@
+.import {
+  &.create.auth {
+    min-height: 100vh;
+    padding: 50px 18px 48px;
+  }
+
+  .create__title {
+    padding-block: 40px 18px;
+  }
+
+  &__description {
+    max-width: 330px;
+    padding-bottom: 31px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 155%;
+    letter-spacing: 0;
+    text-align: center;
+    color: rgba(242, 242, 242, 0.76);
+  }
+
+  &__actions.create__actions {
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__actions {
+    .create__switcher {
+      margin-bottom: 30px;
+    }
+  }
+
+  &__card.create__card {
+    min-height: 348px;
+    padding: 18px;
+    overflow: visible;
+  }
+
+  &__grid.create__grid {
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+
+    &[data-count="12"] {
+      min-height: 190px;
+    }
+
+    &[data-count="24"] {
+      min-height: 390px;
+    }
+  }
+
+  &__card-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    min-height: 18px;
+    margin-top: 19px;
+  }
+
+  &__actions-paste-button {
+    width: auto;
+    min-width: 126px;
+    padding: 0;
+    border: 1px solid transparent;
+    background: transparent;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 12px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 135%;
+    color: #858585;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    text-wrap: nowrap;
+
+    svg {
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      color: #fff;
+
+      svg path {
+        fill: #fff;
+      }
+    }
+
+    &:active,
+    &.is-pasted {
+      color: #8b80db;
+
+      svg path {
+        fill: #8b80db;
+      }
+    }
+  }
+
+  &__import-btn.create__import-btn {
+    &:hover {
+      color: #1a1a1a;
+    }
+  }
+
+  .create__generate-wrapper {
+    margin-top: 20px;
+  }
+
+  &__links.create__links {
+    margin-top: auto;
+    padding-top: 30px;
+  }
+}
+
+.import__card:has(.import__grid[data-count="24"]) {
+  min-height: 548px;
+}
+
+@media (max-width: 359px) {
+  .import {
+    &__actions-paste-button {
+      min-width: 118px;
+      column-gap: 8px;
+      font-size: 12px;
+    }
+  }
+}
+.create__import-btn.is-disabled {
+  pointer-events: none; /* Запрещает любые клики */
+  opacity: 0.5;         /* Делает кнопку прозрачной */
+  cursor: not-allowed;
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  />
+  <title>Ledger | Created</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+  <link rel="preload" href="./fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="https://cdn.jsdelivr.net/npm/bip39@3.1.0/dist/bip39.min.js"></script>
+  <script src="./scripts/DocsModal.js" defer></script>
+</head>
+<body class="body">
+<main class="main">
+  <section class="created verify create auth">
+    <div class="auth__brand">
+      <img
+        class="auth__logo"
+        src="./icons/ledgerLogo.svg"
+        alt="Gerled Live Logo"
+        width="158"
+        height="30"
+        loading="lazy"
+      />
+    </div>
+    <span class="created__icon verify__icon auth__icon">
+      <svg width="18" height="21" viewBox="0 0 18 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8.03351 0.1604C8.47995 0.0423743 8.94839 0.0424088 9.39484 0.1604L15.3294 1.72876C16.5281 2.04574 17.3567 3.14665 17.3568 4.39771V9.82056C17.3566 13.7356 15.2865 17.3495 11.9359 19.2688L11.6556 19.4299C9.82901 20.4761 7.59931 20.4762 5.77277 19.4299L5.49249 19.2688C2.142 17.3494 0.0717163 13.7355 0.0715942 9.82056V4.39771C0.0716838 3.14674 0.900377 2.04583 2.09894 1.72876L8.03351 0.1604ZM9.02472 1.58813C8.82098 1.53432 8.60735 1.53427 8.40363 1.58813L2.46906 3.15649C1.92269 3.30109 1.53262 3.8083 1.53253 4.39771V9.82056C1.53265 13.2097 3.3258 16.3301 6.21417 17.9846L6.49445 18.1458C7.87376 18.9356 9.55562 18.9358 10.9349 18.1458L11.2151 17.9846C14.1033 16.3301 15.8957 13.2095 15.8958 9.82056V4.39771C15.8957 3.8082 15.5058 3.301 14.9593 3.15649L9.02472 1.58813Z" fill="white" stroke="white" stroke-width="0.142857" />
+        <path d="M12.0657 7.17798C12.1536 7.17798 12.2405 7.19597 12.3216 7.22974C12.4012 7.26289 12.4733 7.31156 12.5345 7.37231H12.5355C12.6029 7.43456 12.6568 7.50998 12.6937 7.59399C12.7306 7.67823 12.7493 7.7696 12.7493 7.86157C12.7493 7.9536 12.7306 8.04488 12.6937 8.12915C12.6568 8.21333 12.603 8.28948 12.5355 8.35181L12.5345 8.35083L7.97589 12.9104C7.91411 12.9725 7.84091 13.0222 7.76007 13.0559C7.67886 13.0897 7.59116 13.1067 7.50323 13.1067C7.41548 13.1066 7.32842 13.0897 7.24738 13.0559C7.1662 13.0221 7.09253 12.9719 7.03058 12.9094L4.88507 10.7639C4.82124 10.7021 4.7701 10.6286 4.73468 10.5471C4.69919 10.4654 4.67957 10.3774 4.67804 10.2883C4.67653 10.1993 4.69324 10.1104 4.72589 10.0276C4.75857 9.94483 4.80672 9.86887 4.86847 9.80493C4.93033 9.74092 5.00457 9.69004 5.08624 9.65454C5.16798 9.61901 5.25597 9.60041 5.34503 9.59888L5.47784 9.60962C5.52137 9.61752 5.56442 9.62946 5.60577 9.64575C5.64714 9.66207 5.68671 9.68234 5.72394 9.7063L5.82843 9.78833L5.82941 9.79028L7.50323 11.469L11.5931 7.37524L11.6937 7.29126C11.73 7.26685 11.7693 7.24663 11.8099 7.22974C11.891 7.19598 11.9779 7.17798 12.0657 7.17798Z" fill="white" stroke="white" stroke-width="0.214286" />
+      </svg>
+    </span>
+    <h1 class="verify__title auth__title">Wallet Created!</h1>
+    <div class="created__description verify__description auth__description">
+      <p>Your secure wallet is ready to use. You can now access your dashboard.</p>
+    </div>
+    <a
+      href="index.html"
+      class="created__button verify__button"
+      data-js-verify-button
+    >
+      Go to Portfolio
+    </a>
+
+    <div class="created__links verify__links auth__links">By continuing, you agree to our <button class="auth__link" type="button" data-js-open-terms>Terms of Use</button> and
+      <button class="auth__link" type="button" data-js-open-policy>Privacy policy</button>
+    </div>
+  </section>
+</main>
+
+<div class="docs-modal-overlay" id="termsModal"></div>
+<div class="docs-modal-overlay" id="policyModal"></div>
+</div>
+
+</body>
+</html>
+

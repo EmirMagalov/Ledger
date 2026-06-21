@@ -1,0 +1,61 @@
+@use "normalize";
+@use "fonts";
+@use "variables";
+@use "utils";
+@use "globals";
+
+@use "blocks/auth";
+@use 'blocks/docs-modal';
+@use 'blocks/create';
+@use 'blocks/verify';
+@use 'blocks/created';
+@use 'blocks/import';
+@use 'blocks/sidebar';
+@use 'blocks/home';
+@use 'blocks/explore';
+@use 'blocks/asset';
+@use 'blocks/operations';
+@use 'blocks/news-modal';
+@use 'blocks/receive-modal';
+@use 'blocks/coin-info';
+@use 'blocks/currency-select';
+@use 'blocks/coin-cards';
+@use 'blocks/accounts';
+@use 'blocks/accounts-list';
+@use 'blocks/coin';
+@use 'blocks/asset-modal';
+@use 'blocks/operation-modal';
+@use 'blocks/market';
+@use 'blocks/reports';
+@use 'blocks/reports-table';
+@use 'blocks/settings';
+@use 'blocks/discover';
+
+
+/* Анимация точек */
+@keyframes dots-animation {
+  0% { content: "."; }
+  33% { content: ".."; }
+  66% { content: "..."; }
+}
+
+/* Этот класс мы будем добавлять через JS */
+.is-loading::after {
+  content: ".";
+  animation: dots-animation 1.5s steps(1, end) infinite;
+  display: inline-block;
+  width: 20px; /* Даем место для точек */
+  text-align: left;
+  color: black;
+  margin-left: 5px;
+}
+
+/* Чтобы точки не улетали за пределы кнопки */
+.create__import-btn {
+  overflow: visible;
+  position: relative;
+}
+
+.is-loading::after {
+  content: "." !important;
+}

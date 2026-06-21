@@ -1,0 +1,209 @@
+@use "helpers/index" as *;
+
+.fade-in-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+
+  // Р В Р’ВР РЋР С“Р В РЎвЂ”Р В РЎвЂўР В Р’В»Р РЋР Р‰Р В Р’В·Р РЋРЎвЂњР В Р’ВµР В РЎВ Р В РЎвЂ”Р В Р’ВµР РЋР вЂљР В Р’ВµР В РЎВР В Р’ВµР В Р вЂ¦Р В Р вЂ¦Р РЋРЎвЂњР РЋР вЂ№, Р В Р’ВµР РЋР С“Р В Р’В»Р В РЎвЂ Р В РЎвЂўР В Р вЂ¦Р В Р’В° Р В Р’В·Р В Р’В°Р В РўвЂР В Р’В°Р В Р вЂ¦Р В Р’В°, Р В РЎвЂР В Р вЂ¦Р В Р’В°Р РЋРІР‚РЋР В Р’Вµ 0s
+  animation-delay: var(--delay, 0s);
+}
+
+.fade-in-sidebar {
+  opacity: 0;
+  transform: translateX(-00px);
+  animation: fadeInUp 0.4s ease-out forwards;
+
+  // Р В Р’ВР РЋР С“Р В РЎвЂ”Р В РЎвЂўР В Р’В»Р РЋР Р‰Р В Р’В·Р РЋРЎвЂњР В Р’ВµР В РЎВ Р В РЎвЂ”Р В Р’ВµР РЋР вЂљР В Р’ВµР В РЎВР В Р’ВµР В Р вЂ¦Р В Р вЂ¦Р РЋРЎвЂњР РЋР вЂ№, Р В Р’ВµР РЋР С“Р В Р’В»Р В РЎвЂ Р В РЎвЂўР В Р вЂ¦Р В Р’В° Р В Р’В·Р В Р’В°Р В РўвЂР В Р’В°Р В Р вЂ¦Р В Р’В°, Р В РЎвЂР В Р вЂ¦Р В Р’В°Р РЋРІР‚РЋР В Р’Вµ 0s
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Р РЋРІР‚С›Р В РЎвЂўР В Р вЂ¦ Р РЋРІР‚С™Р РЋР вЂљР В Р’ВµР В РЎвЂќР В Р’В° */
+}
+
+::-webkit-scrollbar-thumb {
+  backdrop-filter: blur(50px);
+  background: rgba(217, 217, 217, 0.1);
+  border-radius: 123px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  backdrop-filter: blur(50px);
+  background: rgba(141, 141, 141, 0.1);
+}
+
+
+/* ===== Firefox ===== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(141, 141, 141, 0.1) transparent;
+}
+
+html {
+  min-height: 100%;
+  background-color: #000;
+  background-image: url("../images/bg-auth-mob.jpg");
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  &.is-lock {
+    overflow: hidden;
+  }
+
+  @include mobile-above {
+    overflow-x: hidden;
+  }
+}
+
+.body {
+  @include fluid-text(18, 14);
+  font-family: var(--font-family-base);
+  letter-spacing: 0;
+  color: var(--color-light);
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden !important;
+  overflow-y: auto;
+  z-index: 1000;
+  background-color: #000;
+  background-image: url("../images/bg-auth-mob.jpg");
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  &--alt {
+    background: #000 url("../images/bg-auth-mob.jpg") top center / cover no-repeat fixed;
+  }
+}
+
+.main {
+  &__bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -10;
+  }
+}
+
+.outcome {
+  color: #c22b2b;
+}
+
+.income {
+  color: #2bc25d;
+}
+
+.content {
+  width: 1000px;
+  position: relative;
+  left: 165px;
+  padding-bottom: 35px;
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  color: var(--color-light);
+}
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3 {
+  font-family: var(--font-family-accent);
+  font-weight: 500;
+}
+
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-weight: 600;
+}
+
+h1,
+.h1 {
+  letter-spacing: 0.7px;
+  line-height: 1.2;
+}
+
+h2,
+.h2 {
+  @include fluid-text(58, 28);
+
+  line-height: 1.3;
+}
+
+h3,
+.h3 {
+  @include fluid-text(40, 24);
+}
+
+h4,
+.h4 {
+  @include fluid-text(26, 18);
+}
+
+h5,
+.h5 {
+  @include fluid-text(24, 18);
+}
+
+h6,
+.h6 {
+  @include fluid-text(20, 16);
+}
+
+a,
+button,
+label,
+input,
+textarea,
+select,
+svg * {
+  transition-duration: var(--transition-duration);
+}
+
+a {
+  color: inherit;
+
+  @include hover {
+    color: var(--color-accent);
+  }
+
+  &[class] {
+    text-decoration: none;
+  }
+}
+
+
+
+
+
