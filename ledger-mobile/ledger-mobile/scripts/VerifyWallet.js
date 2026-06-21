@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Проверка
         if (userWord !== correctWord) {
-            alert('Неверное слово. Пожалуйста, попробуйте еще раз.');
+            alert('Incorrect word. Please try again.');
             return;
         }
 
