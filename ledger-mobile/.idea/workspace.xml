@@ -57,7 +57,6 @@
       <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_verify.scss" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ledger-mobile/token.html" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ledger-mobile/verify.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/routers/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/routers/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/storage.sqlite-wal" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/storage.sqlite-wal" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
@@ -125,7 +124,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1782045613203</updated>
-      <workItem from="1782045614792" duration="15879000" />
+      <workItem from="1782045614792" duration="16369000" />
     </task>
     <servers />
   </component>
