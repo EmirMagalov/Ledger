@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="dff7541f-6bfa-4e04-b389-2b07296b7bd3" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/coin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/create.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/created.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/discover.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/import.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/market.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/reports.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/AccountOptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/AccountsList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/AssetModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/CoinChart.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/CreateWallet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/CurrencySelect.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/Discover.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/DocsModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/HideBalance.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/HomeMood.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/ImportWallet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/MarketSearch.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/OperationModal.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/ReportsCharts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/ReportsDownload.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/scripts/Settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/settings.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_accounts-list.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_accounts.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_asset-modal.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_asset.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_auth.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_coin-cards.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_coin-info.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_coin.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_create.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_created.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_currency-select.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_discover.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_docs-modal.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_explore.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_home.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_market.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_news-modal.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_operation-modal.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_operations.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_receive-modal.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_reports-table.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_reports.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_settings.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_sidebar.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/styles/blocks/_verify.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/token.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ledger-mobile/verify.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/ledger-mobile" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3FRl9jt4axKcUk7l5bOruKVU0uy" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "javascript.preferred.runtime.type.id": "node",
+    "last_opened_file_path": "D:/PythonD/Ledger/ledger-mobile/ledger-mobile/icons",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PythonD\Ledger\ledger-mobile\ledger-mobile\icons" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-WS-261.24374.125" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="dff7541f-6bfa-4e04-b389-2b07296b7bd3" name="Changes" comment="" />
+      <created>1782045613203</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1782045613203</updated>
+      <workItem from="1782045614792" duration="12732000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
