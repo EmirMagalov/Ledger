@@ -1146,6 +1146,8 @@ a[class] {
 .import.create.auth {
   min-height: 100vh;
   padding: 50px 18px 48px;
+  background-attachment: fixed; /* Фон "приклеится" к экрану, а не к контенту */
+  background-size: cover;
 }
 .import .create__title {
   padding-block: 40px 18px;
@@ -1172,6 +1174,7 @@ a[class] {
   min-height: 348px;
   padding: 18px;
   overflow: visible;
+  transition: min-height 0.3s ease-in-out;
 }
 .import__grid.create__grid {
   gap: 10px;

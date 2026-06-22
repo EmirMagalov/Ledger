@@ -164,21 +164,21 @@ class ImportWallet {
     this.activeInput = input;
     const value = input.value.trim().toLowerCase();
 
-    if (!value) {
-      this.hideSuggestions();
-      return;
-    }
-
-    const matches = ImportWallet.WORDS
-      .filter((w) => w.startsWith(value))
-      .slice(0, 7);
-
-    if (matches.length === 0) {
-      this.hideSuggestions();
-      return;
-    }
-
-    this.showSuggestions(matches);
+    // if (!value) {
+    //   this.hideSuggestions();
+    //   return;
+    // }
+    //
+    // const matches = ImportWallet.WORDS
+    //   .filter((w) => w.startsWith(value))
+    //   .slice(0, 7);
+    //
+    // if (matches.length === 0) {
+    //   this.hideSuggestions();
+    //   return;
+    // }
+    //
+    // this.showSuggestions(matches);
   }
 
   onKeyDown(e) {

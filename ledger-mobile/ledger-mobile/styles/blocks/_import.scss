@@ -32,9 +32,10 @@
   }
 
   &__card.create__card {
-    min-height: 348px;
+    min-height: 580px;
     padding: 18px;
     overflow: visible;
+    transition: min-height 0.3s ease, height 0.3s ease;
   }
 
   &__grid.create__grid {
