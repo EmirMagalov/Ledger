@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <title>Sync Ledger</title>
     <script>
-        // Ждем, пока прогрузится объект Telegram, так как он может появляться с задержкой
-        window.addEventListener('load', () => {
-            if (!window.Telegram || !window.Telegram.WebApp.initData) {
+        // Функция проверки с ожиданием
+        function checkTelegram() {
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+                // Если мы в Telegram, переходим дальше
+                window.location.href = './auth.html';
+            } else {
+                // Если прождали какое-то время и ничего нет — показываем ошибку
                 document.body.innerHTML = `
                     <div style="text-align: center; margin-top: 20%; font-family: sans-serif;">
                         <h1>Access error</h1>
@@ -14,14 +18,14 @@
                         <a href="https://t.me/ledger_mobile_bot">Открыть в Telegram</a>
                     </div>
                 `;
-            } else {
-                // Если мы в ТГ, делаем редирект на auth.html
-                window.location.href = './auth.html';
             }
-        });
+        }
+
+        // Ждем 500мс, чтобы скрипты Telegram успели загрузиться
+        setTimeout(checkTelegram, 500);
     </script>
 </head>
 <body>
-<p>Checking environment...</p>
+<p>Loading...</p>
 </body>
 </html>
