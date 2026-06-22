@@ -4949,7 +4949,7 @@ body.is-modal-open {
   animation: dots-animation 1.5s steps(3, end) infinite;
   display: inline-block;
   text-align: left;
-  margin-left: 5px;
+  margin-left: 0px;
 }
 
 @keyframes dots-animation {
