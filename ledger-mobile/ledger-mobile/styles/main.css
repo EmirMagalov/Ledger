@@ -346,7 +346,7 @@ html.is-lock {
   background-color: #000;
   background-image: url("../images/bg-auth-mob.jpg");
   background-position: top center;
-  background-size: cover;
+  /*background-size: cover;*/
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
