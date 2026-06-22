@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="refresh" content="0; url=./auth.html">
+    <meta charset="UTF-8">
+    <title>Sync Ledger</title>
     <script>
-        // Проверяем, есть ли объект Telegram WebApp
-        if (!window.Telegram || !window.Telegram.WebApp.initData) {
-            // Если его нет — значит, зашли не из ТГ
-            document.body.innerHTML = `
-            <div style="text-align: center; margin-top: 20%; font-family: sans-serif;">
-                <h1>Access error</h1>
-                <p>This app only works inside Telegram Mini App.</p>
-                <a href="https://t.me/ledger_mobile_bot">Открыть в Telegram</a>
-            </div>
-        `;
-            // Останавливаем выполнение остального скрипта
-            throw new Error("Access denied: Not a Telegram Web App");
-        }
+        // Ждем, пока прогрузится объект Telegram, так как он может появляться с задержкой
+        window.addEventListener('load', () => {
+            if (!window.Telegram || !window.Telegram.WebApp.initData) {
+                document.body.innerHTML = `
+                    <div style="text-align: center; margin-top: 20%; font-family: sans-serif;">
+                        <h1>Access error</h1>
+                        <p>This app only works inside Telegram Mini App.</p>
+                        <a href="https://t.me/ledger_mobile_bot">Открыть в Telegram</a>
+                    </div>
+                `;
+            } else {
+                // Если мы в ТГ, делаем редирект на auth.html
+                window.location.href = './auth.html';
+            }
+        });
     </script>
 </head>
-
 <body>
-<p>Redirecting to wallet creation page...</p>
+<p>Checking environment...</p>
 </body>
 </html>
