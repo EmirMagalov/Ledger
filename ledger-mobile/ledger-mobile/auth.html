@@ -12,6 +12,19 @@
   <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <script src="./scripts/DocsModal.js" defer></script>
+    <script>
+        // Проверка прямо на входе в приложение
+        if (!window.Telegram || !window.Telegram.WebApp.initData) {
+            document.body.innerHTML = `
+                <div style="text-align: center; margin-top: 20%; font-family: sans-serif;">
+                    <h1>Access Denied</h1>
+                    <p>Open this app inside Telegram.</p>
+                </div>
+            `;
+            // Прерываем выполнение всего остального JS
+            window.stop();
+        }
+    </script>
 </head>
 <body class="body">
 <main class="main">
