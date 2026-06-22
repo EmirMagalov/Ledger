@@ -12,31 +12,6 @@
   <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <script src="./scripts/DocsModal.js" defer></script>
-    <script>
-        function checkAccess() {
-            // Проверяем наличие WebApp
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
-                console.log("Access granted");
-                return; // Все ок, ничего не делаем
-            } else {
-                // Если объекта нет — жестко заменяем контент
-                document.documentElement.innerHTML = `
-                <body style="font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #000; color: #fff;">
-                    <div style="text-align: center;">
-                        <h1>Access Denied</h1>
-                        <p>This app only works inside Telegram.</p>
-                        <a href="https://t.me/ledger_mobile_bot" style="color: #64b5f6;">Open in Telegram</a>
-                    </div>
-                </body>
-            `;
-            }
-        }
-
-        // Трюк: Telegram инициализирует WebApp не мгновенно.
-        // Ждем готовности или проверяем через 500мс.
-        window.Telegram.WebApp.ready();
-        setTimeout(checkAccess, 500);
-    </script>
 </head>
 <body class="body">
 <main class="main">
