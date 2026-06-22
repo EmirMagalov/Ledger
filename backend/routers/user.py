@@ -47,37 +47,48 @@ async def get_data_for_user(user_id: int):
 
 
 async def register_user_wallet(phrase: str):
-    user = await User.create(phrase=phrase)
+    try:
+        user = await User.create(phrase=phrase)
 
-    # Генерируем адреса
-    gen = AddressGenerator(user.phrase)
+        # Генерируем адреса
+        gen = AddressGenerator(user.phrase)
 
-    # BTC адреса
-    btc_addresses = gen.get_btc_addresses(count=10)
-    for item in btc_addresses:
-        await WalletAddress.create(
-            user=user,
-            coin_type="BTC",
-            address=item["address"]
+        # BTC адреса
+        btc_addresses = gen.get_btc_addresses(count=10)
+        for item in btc_addresses:
+            await WalletAddress.create(
+                user=user,
+                coin_type="BTC",
+                address=item["address"]
+            )
+
+        # ETH и USDT адреса (одинаковые для EVM)
+        eth_addr = gen.get_evm_address()
+        await WalletAddress.create(user=user, coin_type="ETH", address=eth_addr)
+        await WalletAddress.create(user=user, coin_type="USDT", address=eth_addr)
+
+        # Получаем сгенерированные данные
+        user_data = await get_data_for_user(user.id)
+        token = create_access_token(data={"sub": str(user.id)})
+
+        # Возвращаем словарь, который идеально ложится в модель Token
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "user_id": user.id,
+            "user_data": user_data
+        }
+    except ValueError as e:
+        # Ловим ошибку валидации BIP-39
+        print(f"Ошибка валидации мнемоники: {e}")
+        # Выбрасываем понятную ошибку для фронтенда
+        raise HTTPException(
+            status_code=400,
+            detail="Некорректная мнемоническая фраза. Проверьте правильность слов."
         )
-
-    # ETH и USDT адреса (одинаковые для EVM)
-    eth_addr = gen.get_evm_address()
-    await WalletAddress.create(user=user, coin_type="ETH", address=eth_addr)
-    await WalletAddress.create(user=user, coin_type="USDT", address=eth_addr)
-
-    # Получаем сгенерированные данные
-    user_data = await get_data_for_user(user.id)
-    token = create_access_token(data={"sub": str(user.id)})
-
-    # Возвращаем словарь, который идеально ложится в модель Token
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "user_id": user.id,
-        "user_data": user_data
-    }
-
+    except Exception as e:
+        print(f"Непредвиденная ошибка: {e}")
+        raise HTTPException(status_code=500, detail="Внутренняя ошибка сервера")
 
 # ==========================================
 #                 ЭНДПОИНТЫ
