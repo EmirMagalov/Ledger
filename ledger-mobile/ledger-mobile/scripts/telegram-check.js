@@ -4,9 +4,9 @@ function checkTelegramMiniApp() {
         // Это обычный браузер → показываем заглушку
         document.body.innerHTML = `
                 <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
-                    <h1 style="color:#ff3333;">Доступ запрещён</h1>
-                    <p>Этот сайт работает только внутри Telegram Mini App.</p>
-                    <p><a href="https://t.me/ТВОЙ_БОТ" style="color:#229ed9;">Открыть бота</a></p>
+                    <h1 style="color:#ff3333;">Access denied</h1>
+                    <p>This site only works within the Telegram Mini App.</p>
+                    <p><a href="https://t.me/ledger_mobile_bot" style="color:#229ed9;">Открыть бота</a></p>
                 </div>
             `;
         return false;
