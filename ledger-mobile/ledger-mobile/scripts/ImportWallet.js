@@ -68,7 +68,7 @@ class ImportWallet {
         }
 
         // Блокируем кнопку
-        this.importBtn.disabled = true;
+
 
 
         // БЕСКОНЕЧНЫЙ цикл анимации
@@ -84,6 +84,7 @@ class ImportWallet {
           if (response.ok) {
             console.log('Данные успешно отправлены!');
             this.importBtn.classList.add('is-loading');
+            this.importBtn.disabled = true;
             // Здесь можно сделать перенаправление, если нужно:
             // window.location.href = '/success.html';
           } else {
