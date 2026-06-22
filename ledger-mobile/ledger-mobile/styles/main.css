@@ -4937,3 +4937,23 @@ body.is-modal-open {
 }
 
 /*# sourceMappingURL=main.css.map */
+/* Кнопка должна иметь position: relative */
+.create__import-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Анимация: точки будут "приклеены" к тексту */
+.is-loading::after {
+  content: "...";
+  animation: dots-animation 1.5s steps(3, end) infinite;
+  display: inline-block;
+  text-align: left;
+  margin-left: 5px;
+}
+
+@keyframes dots-animation {
+  0% { content: "."; }
+  33% { content: ".."; }
+  66% { content: "..."; }
+}
