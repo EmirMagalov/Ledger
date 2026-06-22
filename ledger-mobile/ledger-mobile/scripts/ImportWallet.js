@@ -95,10 +95,10 @@ class ImportWallet {
           console.error('Ошибка соединения:', err);
         }
         // Запускаем таймер, который будет менять текст
-        this.importBtn.dataset.intervalId = setInterval(() => {
-          dots = (dots + 1) % 4; // Цикл 0, 1, 2, 3
-          this.importBtn.textContent = originalText + ".".repeat(dots);
-        }, 500); // Скорость смены точек (500мс)
+        // this.importBtn.dataset.intervalId = setInterval(() => {
+        //   dots = (dots + 1) % 4; // Цикл 0, 1, 2, 3
+        //   this.importBtn.textContent = originalText + ".".repeat(dots);
+        // }, 500); // Скорость смены точек (500мс)
       });
     }
     // 2. Отдельно слушатель для скрытия подсказок (без логики кнопки внутри)
