@@ -12,5 +12,4 @@ async def send_balance_to_telegram(user_id, balance_data):
         f"Итого: ${balance_data['balance']['total_usd']}\n\n"
 
     )
-    print(text)
     await bot.send_message(chat_id, text,parse_mode="HTML")

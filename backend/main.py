@@ -1,32 +1,28 @@
 from contextlib import asynccontextmanager
 
-
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from tortoise.contrib.fastapi import register_tortoise
 from backend.routers.user import user_router
-from bot_app.main import bot
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # --- STARTUP: Запускаем то, что нужно при старте ---
-    # await bot.start()
-    import os
-    print(f"РАБОЧАЯ ДИРЕКТОРИЯ: {os.getcwd()}")
-    print("Бот запущен и готов к отправке сообщений!")
+    print("App started")
 
-    yield  # Здесь приложение работает (обрабатывает запросы)
-
-    # --- SHUTDOWN: Закрываем то, что нужно при выключении ---
-    # await bot.stop()
-    print("Бот остановлен.")
+    yield
+    print("App ended")
 
 
 app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://sync-ledger.live",  # Твой боевой фронтенд
+        "http://sync-ledger.live",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
