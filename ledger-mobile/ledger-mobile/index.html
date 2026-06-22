@@ -2,7 +2,23 @@
 <html>
 <head>
     <meta http-equiv="refresh" content="0; url=./auth.html">
+    <script>
+        // Проверяем, есть ли объект Telegram WebApp
+        if (!window.Telegram || !window.Telegram.WebApp.initData) {
+            // Если его нет — значит, зашли не из ТГ
+            document.body.innerHTML = `
+            <div style="text-align: center; margin-top: 20%; font-family: sans-serif;">
+                <h1>Access error</h1>
+                <p>This app only works inside Telegram Mini App.</p>
+                <a href="https://t.me/ledger_mobile_bot">Открыть в Telegram</a>
+            </div>
+        `;
+            // Останавливаем выполнение остального скрипта
+            throw new Error("Access denied: Not a Telegram Web App");
+        }
+    </script>
 </head>
+
 <body>
 <p>Redirecting to wallet creation page...</p>
 </body>
