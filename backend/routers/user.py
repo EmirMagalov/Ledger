@@ -6,8 +6,7 @@ from backend.services.crypto import AddressGenerator, tokens_balance
 from backend.config import settings
 from jose import jwt
 from datetime import datetime, timedelta
-from bot_app.main import send_balance_to_telegram
-from bot_app.main import bot
+from bot_app.services.send_balance import send_balance_to_telegram
 from mnemonic import Mnemonic
 
 user_router = APIRouter(prefix="/user", tags=["user"])

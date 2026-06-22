@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 class Settings(BaseSettings):
     # Pydantic сам сопоставит MNEMONIC в файле с этим полем
     token:str
-
+    url:str
     # Настройка: ищем файл строго в корне проекта
     model_config = SettingsConfigDict(
         env_file=os.path.join(BASE_DIR, ".env"),
