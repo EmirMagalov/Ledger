@@ -132,7 +132,7 @@ async def register(user_data: UserCreate):
 @user_router.get("/", response_model=UserResponse)
 async def get_user(user_id: int):
     # Возвращаем данные пользователя
-    return await get_data_for_user(user_id=user_id)
+    return await get_data_for_user(user_id=user_id,action="user")
 
 
 @user_router.get("/generate-phrase")
@@ -150,3 +150,10 @@ async def debug_db():
     users = await User.all().values()
     addresses = await WalletAddress.all().values()
     return {"users": users, "addresses": addresses}
+
+
+@user_router.post("/debug/clear-all")
+async def clear_db():
+    await WalletAddress.all().delete()
+    await User.all().delete()
+    return {"status": "Database cleared"}
