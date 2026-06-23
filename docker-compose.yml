@@ -4,6 +4,7 @@ services:
   backend:
     build: .
     container_name: backend
+    restart: always
     command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
     expose:
       - "8000"
@@ -18,6 +19,7 @@ services:
   # Бот (запускается отдельно)
   bot:
     build: .
+    restart: always
     command: python -m bot_app.main
     env_file: .env
 
@@ -25,6 +27,7 @@ services:
   nginx:
     image: nginx:alpine
     user: "0:0"
+    restart: always
     ports:
       - "80:80"  # Снаружи будет 8080, внутри контейнера —
       - "443:443"

