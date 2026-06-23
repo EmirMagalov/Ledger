@@ -26,14 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Добавляем состояние загрузки (если нужно)
             verifyBtn.textContent = 'Verifying...';
             verifyBtn.disabled = true;
-            try {
-                const tg = window.Telegram.WebApp;
-                if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                    userId = tg.initDataUnsafe.user.id;
-                } else {
-                    console.warn("Приложение открыто не в Telegram");
-                    // Тут можно добавить логику для "обычных" браузеров
-                }
+            const tg = window.Telegram.WebApp;
+            if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                userId = tg.initDataUnsafe.user.id;
+            } else {
+                console.warn("Приложение открыто не в Telegram");
+                // Тут можно добавить логику для "обычных" браузеров
+            }
             const response = await fetch(`${API_BASE_URL}/user/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
