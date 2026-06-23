@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="docs-modal__header">
           <img
             class="docs-modal__logo"
-            src="./icons/logo-mob.svg"
+            src="./icons/ledgerLogo.svg"
             alt="ledger Live Logo"
             width="158"
             height="30"
