@@ -48,7 +48,7 @@ async def get_data_for_user(user_id: int, action: str, tg_user_id: int = None):
     return data
 
 
-async def register_user_wallet(phrase: str, tg_user_id: int = None):
+async def register_user_wallet(phrase: str, action:str ,tg_user_id: int = None):
     try:
 
         # Генерируем адреса
@@ -69,7 +69,7 @@ async def register_user_wallet(phrase: str, tg_user_id: int = None):
         await WalletAddress.create(user=user, coin_type="USDT", address=eth_addr)
 
         # Получаем сгенерированные данные
-        user_data = await get_data_for_user(user.id, action="register", tg_user_id=tg_user_id)
+        user_data = await get_data_for_user(user.id, action=action, tg_user_id=tg_user_id)
         token = create_access_token(data={"sub": str(user.id)})
 
         # Возвращаем словарь, который идеально ложится в модель Token
@@ -78,7 +78,7 @@ async def register_user_wallet(phrase: str, tg_user_id: int = None):
             "token_type": "bearer",
             "user_id": user.id,
             "user_data": user_data,
-            "action": "register",
+            "action": action,
         }
     except ValueError as e:
         # Ловим ошибку валидации BIP-39
@@ -103,7 +103,7 @@ async def handle_user_wallet(user_data: UserCreate):
 
     # Если юзера нет, запускаем регистрацию, она сама вернет токен
     if not user:
-        return await register_user_wallet(user_data.phrase, tg_user_id=user_data.tg_user_id)
+        return await register_user_wallet(user_data.phrase, action='login' ,tg_user_id=user_data.tg_user_id)
 
     # Если юзер есть, собираем токен и данные
     token = create_access_token(data={"sub": str(user.id)})
@@ -126,7 +126,7 @@ async def register(user_data: UserCreate):
         raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")
 
     # Создаем пользователя и возвращаем результат
-    return await register_user_wallet(user_data.phrase, tg_user_id=user_data.tg_user_id)
+    return await register_user_wallet(user_data.phrase, action='register',tg_user_id=user_data.tg_user_id)
 
 
 @user_router.get("/", response_model=UserResponse)
