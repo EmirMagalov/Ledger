@@ -3,26 +3,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const policyModal = document.getElementById('policyModal');
 
   const TERMS_BODY = `
-    <p>Welcome to gerled live. these terms of use ("terms") govern your access to and use of our informational interface ("service"). by accessing or using the service, you agree to be bound by these terms.</p>
+    <p>Welcome to ledger live. these terms of use ("terms") govern your access to and use of our informational interface ("service"). by accessing or using the service, you agree to be bound by these terms.</p>
 
     <h3>1. description of service</h3>
-    <p>gerled live provides an interface for viewing publicly available information from various blockchains. our service acts as an informational aggregator and does not store, control, or manage any cryptocurrency assets. the service is provided for informational purposes only.</p>
+    <p>ledger live provides an interface for viewing publicly available information from various blockchains. our service acts as an informational aggregator and does not store, control, or manage any cryptocurrency assets. the service is provided for informational purposes only.</p>
 
     <h3>2. user responsibilities</h3>
     <p>you are solely responsible for your use of the service. you agree not to use the service for any illegal or unauthorized purpose. you understand and agree that the service does not provide custody for your assets. management and security of your private keys and secret recovery phrases are your sole responsibility.</p>
 
     <h3>3. disclaimer of warranties</h3>
-    <p>the service is provided on an "as is" and "as available" basis. gerled live makes no warranties, express or implied, regarding the accuracy, completeness, or reliability of any information obtained through the service. data is sourced from third-party public blockchains, and we are not responsible for any errors or omissions.</p>
+    <p>the service is provided on an "as is" and "as available" basis. ledger live makes no warranties, express or implied, regarding the accuracy, completeness, or reliability of any information obtained through the service. data is sourced from third-party public blockchains, and we are not responsible for any errors or omissions.</p>
 
     <h3>4. limitation of liability</h3>
-    <p>in no event shall gerled live or its affiliates be liable for any direct, indirect, incidental, or consequential damages arising out of your use or inability to use the service, including any financial losses.</p>
+    <p>in no event shall ledger live or its affiliates be liable for any direct, indirect, incidental, or consequential damages arising out of your use or inability to use the service, including any financial losses.</p>
 
     <h3>5. changes to terms</h3>
     <p>we reserve the right to modify these terms at any time. we will provide notice of such changes by updating the "last updated" date.</p>
   `;
 
   const POLICY_BODY = `
-    <p>this privacy policy describes how gerled live ("we," "us," or "our") collects, uses, and discloses your information when you use our service.</p>
+    <p>this privacy policy describes how ledger live ("we," "us," or "our") collects, uses, and discloses your information when you use our service.</p>
 
     <h3>1. information we collect</h3>
     <ul>
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <img
             class="docs-modal__logo"
             src="./icons/logo-mob.svg"
-            alt="Gerled Live Logo"
+            alt="ledger Live Logo"
             width="158"
             height="30"
             loading="lazy"
