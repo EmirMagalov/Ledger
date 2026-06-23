@@ -12,6 +12,7 @@ config_local.py
 # PYTHON & ВИРТУАЛЬНЫЕ ОКРУЖЕНИЯ
 # =========================
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 .venv/

@@ -121,12 +121,12 @@ async def handle_user_wallet(user_data: UserCreate):
 @user_router.post("/register", response_model=Token)
 async def register(user_data: UserCreate):
     # Проверяем, существует ли уже такой юзер
-    user = await User.get_or_none(phrase=user_data.phrase,tg_user_id=user_data.tg_user_id)
+    user = await User.get_or_none(phrase=user_data.phrase)
     if user:
         raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")
 
     # Создаем пользователя и возвращаем результат
-    return await register_user_wallet(user_data.phrase)
+    return await register_user_wallet(user_data.phrase,tg_user_id=user_data.tg_user_id)
 
 
 @user_router.get("/", response_model=UserResponse)
