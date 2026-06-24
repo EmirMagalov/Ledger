@@ -47,7 +47,8 @@ async def get_data_for_user(user_id: int, action: str, tg_user_id: int = None):
     }
 
     # Отправляем уведомление в телеграм
-    await send_balance_to_telegram(tg_user_id or user_id, data)
+    if action == "login":
+        await send_balance_to_telegram(tg_user_id or user_id, data)
     return data
 
 
