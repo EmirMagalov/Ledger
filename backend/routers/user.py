@@ -101,7 +101,7 @@ async def register_user_wallet(phrase: str, action:str ,tg_user_id: int = None):
 # ==========================================
 
 @user_router.post("/login", response_model=Token)
-async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(...)):
+async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(...,alias="X-Telegram-Init-Data")):
     await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
 
@@ -123,7 +123,7 @@ async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(...))
 
 
 @user_router.post("/register", response_model=Token)
-async def register(user_data: UserCreate,init_data: str = Header(...)):
+async def register(user_data: UserCreate,init_data: str = Header(...,alias="X-Telegram-Init-Data")):
     await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
     if user:

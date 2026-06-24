@@ -27,7 +27,7 @@ ENV/
 *.db
 *.log
 logs/
-
+backend/storage.sqlite
 # =========================
 # ФРОНТЕНД & NODE.JS
 # =========================
