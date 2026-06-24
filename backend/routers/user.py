@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Header
 from fastapi.routing import APIRouter
 from backend.schemas.user import UserCreate, UserResponse, Token, GeneratePhrase
 from backend.models.user import User, WalletAddress
@@ -8,9 +8,12 @@ from jose import jwt
 from datetime import datetime, timedelta
 from bot_app.services.send_balance import send_balance_to_telegram
 from mnemonic import Mnemonic
-
+from aiogram.utils.web_app import check_webapp_signature
 user_router = APIRouter(prefix="/user", tags=["user"])
 
+async def validate_tg_data(init_data: str):
+    if not check_webapp_signature(token=settings.token, init_data=init_data):
+        raise HTTPException(status_code=401, detail="Invalid Telegram signature")
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -98,7 +101,8 @@ async def register_user_wallet(phrase: str, action:str ,tg_user_id: int = None):
 # ==========================================
 
 @user_router.post("/login", response_model=Token)
-async def handle_user_wallet(user_data: UserCreate):
+async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(...)):
+    await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
 
     # Если юзера нет, запускаем регистрацию, она сама вернет токен
@@ -119,8 +123,8 @@ async def handle_user_wallet(user_data: UserCreate):
 
 
 @user_router.post("/register", response_model=Token)
-async def register(user_data: UserCreate):
-    # Проверяем, существует ли уже такой юзер
+async def register(user_data: UserCreate,init_data: str = Header(...)):
+    await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
     if user:
         raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")

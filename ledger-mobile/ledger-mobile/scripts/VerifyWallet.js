@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             verifyBtn.textContent = 'Verifying...';
             verifyBtn.disabled = true;
             const tg = window.Telegram.WebApp;
+            const initData = tg.initData;
             if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 userId = tg.initDataUnsafe.user.id;
             } else {
@@ -35,8 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const response = await fetch(`${API_BASE_URL}/user/register`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phrase: phraseArray.join(' '),tg_user_id: userId }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Telegram-Init-Data': initData // Передаем данные в заголовке
+                },
+                body: JSON.stringify({phrase: phraseArray.join(' '), tg_user_id: userId}),
             });
 
             if (response.ok) {
