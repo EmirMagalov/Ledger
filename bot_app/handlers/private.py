@@ -21,13 +21,14 @@ def web_kb(data: dict[str, str]):
     return builder.adjust(1).as_markup()
 
 
-text = """🚀Ledger Wallet Mini App is now live on Telegram
+text = """What's inside our mini app?
 
-Track, manage, and secure your crypto — all in one place.
+✨ Total portfolio control: track your bags, asset spread, and tx history in real-time.
+📊 Market analytics: monitor crypto prices, charts, and trends straight from the wallet ui.
+📝 Built-in tax reports: auto-calculates short and long-term gains for easy tax prep (taxation is theft, but audits are worse).
+⚙️ Deep customization: tweak widgets, pick your fiat, and manage how your data displays.
 
-Get early access to new Mini App features and beta community releases.
-
-Follow our official channel for security insights, product updates, and integration news."""
+🔒The kicker: your private keys stay locked on your ledger. we just ported the convenience of the ui to telegram while keeping security at absolute max. 🔒"""
 
 
 @private_router.message(Command("start"))
