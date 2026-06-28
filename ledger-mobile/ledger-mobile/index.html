@@ -995,7 +995,7 @@
         console.log(`🚀 Запрос данных за период: ${timeframe}`);
         try {
             const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
-            const response = await apiFetch(`${API_BASE_URL}/user/coins?timeframe=${timeframe}?currency=${currentCurrency}`);
+            const response = await apiFetch(`${API_BASE_URL}/user/coins?timeframe=${timeframe}&currency=${currentCurrency}`);
 
             const data = await response.json();
             console.log('✅ Данные успешно получены:', data);
