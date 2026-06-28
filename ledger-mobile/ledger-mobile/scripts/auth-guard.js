@@ -16,6 +16,6 @@ async function checkAuthStatus(response) {
 
     // Если токена нет и мы не на странице авторизации - уходим
     if (!token && !path.includes('auth.html')) {
-        window.location.href = '/ledger-mobile/auth.html';
+        window.location.href = '/auth.html';
     }
 })();
