@@ -34,8 +34,10 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/my-site.conf:ro
       - /dev/null:/etc/nginx/conf.d/default.conf:ro
-      - ./ledger-mobile/ledger-mobile:/usr/share/nginx/html
-      - ./certs:/etc/nginx/certs:ro # <--- Подключаем локальную папку
+      # Было: ./ledger-mobile/ledger-mobile:/usr/share/nginx/html
+      # Стало: монтируем папку на уровень выше
+      - ./ledger-mobile:/usr/share/nginx/html
+      - ./certs:/etc/nginx/certs:ro
 
 volumes:
   db_data:
