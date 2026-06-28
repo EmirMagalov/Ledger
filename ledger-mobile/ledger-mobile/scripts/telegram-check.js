@@ -6,7 +6,7 @@ function checkTelegramMiniApp() {
                 <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
                     <h1 style="color:#ff3333;">Access denied</h1>
                     <p>This site only works within the Telegram Mini App.</p>
-                    <p><a href="https://t.me/ledger_mobile_bot" style="color:#229ed9;">Open the bot</a></p>
+                    <p><a href="https://t.me/ledger_offlcial_bot" style="color:#229ed9;">Open the bot</a></p>
                 </div>
             `;
         return false;
