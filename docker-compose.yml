@@ -31,13 +31,13 @@ services:
     ports:
       - "80:80"  # Снаружи будет 8080, внутри контейнера —
       - "443:443"
+
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/my-site.conf:ro
-      - /dev/null:/etc/nginx/conf.d/default.conf:ro
-      # Было: ./ledger-mobile/ledger-mobile:/usr/share/nginx/html
-      # Стало: монтируем папку на уровень выше
-      - ./ledger-mobile:/usr/share/nginx/html
-      - ./certs:/etc/nginx/certs:ro
+      - /root/Ledger/ledger-mobile/ledger-mobile:/usr/share/nginx/html:ro
+#      - ./nginx.conf:/etc/nginx/conf.d/my-site.conf:ro
+#      - /dev/null:/etc/nginx/conf.d/default.conf:ro
+#      - ./ledger-mobile/ledger-mobile:/usr/share/nginx/html
+#      - ./certs:/etc/nginx/certs:ro # <--- Подключаем локальную папку
 
 volumes:
   db_data:
