@@ -4,7 +4,7 @@ async function checkAuthStatus(response) {
     if (response.status === 401) {
         localStorage.removeItem('access_token');
         // Исправлено: убрали /ledger-mobile/
-        window.location.href = '/auth';
+        window.location.href = '/auth.html';
         return false;
     }
     return true;
@@ -19,6 +19,6 @@ async function checkAuthStatus(response) {
     // Проверка включает 'auth.html', это нормально, если файл называется именно так
     if (!token && !path.includes('auth.html')) {
         // Исправлено: убрали /ledger-mobile/
-        window.location.href = '/auth';
+        window.location.href = '/auth.html';
     }
 })();
