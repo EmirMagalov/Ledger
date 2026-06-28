@@ -1,11 +1,1456 @@
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; url=./auth.html">
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <script src="./scripts/auth-guard.js"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="./scripts/telegram-check.js"></script>
+    <title>Ledger | Home</title>
+    <link rel="stylesheet" href="./styles/main.css"/>
+    <style>
+        /* ── Page transition animation ── */
+        @keyframes pageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        .mobile-view.is-active {
+            animation: pageIn 0.22s ease-out both;
+        }
+
+        /* ── Bottom nav hover ── */
+        .mobile-bottom-nav button {
+            transition: opacity 0.15s ease;
+        }
+
+        .mobile-bottom-nav button:not(.is-active):hover {
+            opacity: 0.75;
+        }
+
+        /* ── Icon buttons in headers ── */
+        .mobile-icon-button {
+            transition: opacity 0.15s ease;
+        }
+
+        .mobile-icon-button:hover {
+            opacity: 0.7;
+        }
+
+        /* ── Home action buttons (Send / Receive) ── */
+        .mobile-home__action {
+            transition: filter 0.15s ease, transform 0.15s ease;
+        }
+
+        .mobile-home__action:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .mobile-home__action:active {
+            transform: translateY(0);
+        }
+
+        /* ── Market strip cards ── */
+        .mobile-market-card {
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .mobile-market-card:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        /* ── Asset rows (home) ── */
+        .mobile-asset-row {
+            transition: background-color 0.15s ease;
+        }
+
+        /* ── Market table rows ── */
+        .market__row {
+            transition: background-color 0.15s ease;
+            cursor: pointer;
+        }
+
+        /* ── "Explore the market" section title button ── */
+        .mobile-section-title {
+            transition: opacity 0.15s ease;
+        }
+
+        .mobile-section-title:hover {
+            opacity: 0.75;
+        }
+
+        /* ── Settings toggles ── */
+        .mobile-settings-block {
+            transition: background-color 0.15s ease;
+        }
+
+        .mobile-settings-block:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        /* ── Report export button ── */
+        .mobile-report-export {
+            transition: opacity 0.15s ease;
+        }
+
+        .mobile-report-export:hover {
+            opacity: 0.7;
+        }
+
+        /* ── Range / select triggers ── */
+        .market__range-button,
+        .market__range-trigger,
+        .settings-select__trigger {
+            transition: opacity 0.15s ease;
+        }
+
+        .market__range-button:hover,
+        .market__range-trigger:hover,
+        .settings-select__trigger:hover {
+            opacity: 0.75;
+        }
+
+        /* ══════════════════════════════════
+           MODALS
+        ══════════════════════════════════ */
+        .ledger-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(0, 0, 0, 0.72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .ledger-modal-overlay[hidden] {
+            display: none;
+        }
+
+        .ledger-modal-overlay.is-open {
+            animation: modalFadeIn 0.18s ease-out both;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .ledger-modal {
+            background: #1c1c1e;
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 390px;
+            animation: modalSlideUp 0.22s ease-out both;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .ledger-modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .ledger-modal__title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .ledger-modal__close {
+            bottom: 14px;
+            left: 14px;
+            position: relative;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .ledger-modal__close:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .ledger-modal__row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .ledger-modal__label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .ledger-modal__qr-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: #BAAEFE;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0;
+            transition: opacity 0.15s;
+        }
+
+        .ledger-modal__qr-link:hover {
+            opacity: 0.75;
+            text-decoration: underline;
+        }
+
+        .ledger-modal__address-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #1a1a1a;
+            padding: 14px 16px;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+        }
+
+        .ledger-modal__address-row--qr {
+            margin-top: 16px;
+        }
+
+        .ledger-modal__address {
+            font-size: 14px;
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ledger-modal__copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            transition: opacity 0.15s;
+        }
+
+        .ledger-modal__copy-btn:hover {
+            opacity: 0.7;
+        }
+
+        .ledger-modal__copy-icon,
+        .ledger-modal__copy-ok {
+            display: flex;
+            align-items: center;
+        }
+
+        .ledger-modal__copy-ok[hidden] {
+            display: none;
+        }
+
+        .ledger-modal__copy-icon[hidden] {
+            display: none;
+        }
+
+        .ledger-modal__notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 14px;
+            background: rgba(186, 174, 254, 0.1);
+            border: 1px solid #baaefe;
+            border-radius: 15px;
+            padding: 14px;
+        }
+
+        .ledger-modal__notice svg {
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .ledger-modal__notice p {
+            margin: 0;
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: -0.01em;
+            color: #fff;
+            max-width: 196px;
+        }
+
+        .ledger-modal__notice--send {
+            border-color: rgba(186, 174, 254, 0.35);
+        }
+
+        .ledger-modal__qr-wrap {
+            background: #fff;
+            border-radius: 10px;
+            width: 273px;
+            height: 273px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ledger-modal__qr-wrap canvas {
+            display: block;
+        }
+
+        .ledger-modal__send-desc {
+            margin: 0 0 16px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .mobile-asset-row {
+            cursor: pointer;
+        }
+
+        .mobile-asset-row:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+    </style>
+    <link rel="preload" href="./fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./images/bg-home.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="./images/bg-market.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="./icons/logo.svg" as="image" type="image/svg+xml">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+    <script src="./scripts/Currency.js" defer></script>
+    <script src="./scripts/MarketSearch.js" defer></script>
+    <script src="./scripts/Settings.js" defer></script>
 </head>
+<body class="body mobile-app-body" data-mobile-page="home">
+<main class="mobile-app" data-js-mobile-app>
+    <section class="mobile-view mobile-home-view is-active" data-mobile-view="home" aria-label="Home">
+        <header class="mobile-home__topbar">
+            <img class="mobile-home__logo" src="./icons/logo.svg" alt="Ledger Wallet" width="187" height="30"
+                 loading="eager">
+            <div class="mobile-home__top-actions">
+                <button class="mobile-icon-button" type="button" aria-label="Toggle balance"
+                        data-js-mobile-balance-toggle>
+                    <svg width="17" height="13" viewBox="0 0 17 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.08734 0C12.1991 0 15.2772 2.58217 16.1012 5.63193C16.2501 6.19051 16.2668 6.78076 16.1389 7.34815C15.3673 10.7887 11.8028 13 8.08734 13C4.46201 13 1.32104 10.915 0.216039 7.73395C-0.0607357 6.94053 -0.0712011 6.07498 0.182509 5.27527C1.17428 2.16052 4.11814 0 8.08734 0ZM8.08734 1.25806C4.6025 1.25806 2.18912 3.1221 1.38186 5.65689C1.20992 6.19807 1.21828 6.78495 1.40279 7.32068C2.31489 9.9406 4.93798 11.7419 8.08734 11.7419C11.3919 11.7419 14.3043 9.78208 14.9102 7.07284C14.9941 6.70758 14.9836 6.32408 14.8851 5.95945C14.2204 3.49092 11.6644 1.25806 8.08734 1.25806ZM8.08734 2.72581C10.096 2.72581 11.6519 4.45711 11.6519 6.5C11.6519 8.54289 10.096 10.2742 8.08734 10.2742C6.07863 10.2742 4.52282 8.54289 4.52282 6.5C4.52282 4.45711 6.07863 2.72581 8.08734 2.72581ZM8.08734 3.98387C6.85443 3.98387 5.78089 5.06874 5.78089 6.5C5.78089 7.93126 6.85443 9.01613 8.08734 9.01613C9.32234 9.01613 10.3938 7.93126 10.3938 6.5C10.3938 5.06874 9.32234 3.98387 8.08734 3.98387Z"
+                              fill="white"/>
+                    </svg>
+                </button>
+                <button class="mobile-icon-button" type="button" aria-label="Settings" data-js-mobile-tab="settings">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.56217 0C7.9694 0 8.26385 0.297124 8.33589 0.645931C8.33746 0.650943 8.33903 0.655947 8.33903 0.660959L8.47061 1.41919C8.50663 1.6275 8.65856 1.83284 8.9029 1.97741C9.13941 2.11696 9.38686 2.14594 9.58577 2.07217L10.2984 1.80731C10.3063 1.80496 10.3125 1.80261 10.3188 1.80042C10.6383 1.69783 11.0503 1.79118 11.257 2.15988L12.5115 4.35343C12.5147 4.35766 12.5178 4.36189 12.5194 4.36628C12.6055 4.5276 12.6322 4.71337 12.5977 4.89239L12.5899 4.92574C12.5507 5.09161 12.4583 5.24119 12.3267 5.35114L11.7504 5.83684C11.5875 5.97405 11.4857 6.21306 11.4857 6.5C11.4857 6.79947 11.5812 7.03206 11.7378 7.16363L12.3064 7.64243C12.6416 7.89617 12.6776 8.33222 12.5006 8.6439V8.645L11.2507 10.8389C11.0596 11.1828 10.6681 11.3123 10.3282 11.2041L10.2937 11.1928V11.1922L9.61709 10.9415C9.39311 10.8586 9.12061 10.891 8.86218 11.042C8.61941 11.1828 8.45652 11.3755 8.397 11.5777L8.16986 12.3701C8.09625 12.7212 7.79868 13 7.40554 13H5.2065C5.01855 13.0003 4.83529 12.9322 4.69276 12.8092C4.55963 12.6943 4.47037 12.5386 4.43591 12.3675L4.20881 11.5764C4.14929 11.3744 3.98794 11.1845 3.7483 11.0455C3.48673 10.8931 3.21109 10.8597 2.98868 10.9421L2.31361 11.1928L2.30891 11.1947C2.13349 11.2577 1.94084 11.2561 1.76542 11.1902C1.59157 11.1249 1.44745 11.0007 1.35661 10.8404L0.100461 8.64657L0.0926602 8.63372C0.00808185 8.4724 -0.0201109 8.28664 0.0143469 8.10761C0.050371 7.92937 0.144342 7.76805 0.28374 7.6509V7.65073L0.86325 7.16331C1.02614 7.02595 1.12637 6.78694 1.12637 6.5C1.12637 6.21619 1.02457 5.97577 0.856979 5.83277L0.294676 5.35318C-0.0170105 5.10712 -0.0749608 4.69034 0.100461 4.36424C0.103593 4.3608 0.105166 4.35735 0.106732 4.35406L1.36288 2.16035C1.56023 1.80591 1.97061 1.67966 2.31832 1.80731L2.31988 1.80778L3.03098 2.07123C3.22989 2.14516 3.47891 2.11587 3.71855 1.97506C3.96132 1.83221 4.11325 1.62766 4.14927 1.42232L4.27928 0.660959C4.3388 0.274248 4.66771 0 5.04987 0H7.56217ZM5.07492 1.58209C4.98094 2.12809 4.60819 2.54142 4.1947 2.78498C3.77024 3.03448 3.22518 3.14584 2.70361 2.95241L2.11626 2.73486L0.986991 4.70866L1.46628 5.1173C1.88917 5.47786 2.06613 6.00725 2.06613 6.5C2.06613 6.98617 1.897 7.52151 1.46785 7.88207L0.98072 8.29274L2.10999 10.2659L2.66132 10.0611C3.20638 9.85902 3.77493 9.97445 4.21975 10.2324C4.60818 10.4576 4.96841 10.821 5.11094 11.317L5.32554 12.0602H7.2818L7.49483 11.3181C7.63736 10.8207 8.00229 10.4555 8.38916 10.2299C8.83555 9.96991 9.40096 9.85948 9.94288 10.0603L10.4958 10.2653L11.6188 8.29228L11.1333 7.8827C10.6963 7.51588 10.5459 6.97489 10.5459 6.5C10.5459 6.01383 10.7166 5.47849 11.1442 5.11793L11.6313 4.70757L10.5021 2.73439L9.91313 2.95319C9.39313 3.14615 8.84807 3.03699 8.42361 2.78608C8.00855 2.54017 7.6389 2.12589 7.54336 1.5788L7.43372 0.939759H5.18616L5.07492 1.58209ZM6.19012 3.91566C7.5747 3.91566 8.69614 5.03758 8.69614 6.42169C8.69614 7.8058 7.5747 8.92771 6.19012 8.92771C4.80711 8.92771 3.6841 7.8058 3.6841 6.42169C3.6841 5.03758 4.80711 3.91566 6.19012 3.91566ZM6.19012 4.85542C5.32554 4.85542 4.62385 5.55664 4.62385 6.42169C4.62385 7.28674 5.32554 7.98795 6.19012 7.98795C7.05626 7.98795 7.75638 7.28674 7.75638 6.42169C7.75638 5.55664 7.05626 4.85542 6.19012 4.85542Z"
+                              fill="white"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-<body>
-<p>Redirecting to wallet creation page...</p>
+        <section class="mobile-home__hero">
+            <div class="mobile-home__balance" data-mobile-balance-value><span>$0</span><small>.00</small></div>
+            <div class="mobile-home__trend"><span>-0.0%</span><i></i>
+                <button type="button">Today <span>
+        <svg width="3" height="6" viewBox="0 0 3 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.355049 5.99993C0.286349 6.00157 0.218951 5.97563 0.162183 5.92571C0.105414 5.87579 0.062082 5.80434 0.0381816 5.72127C0.0142812 5.63819 0.0109948 5.54758 0.0287772 5.46199C0.0465596 5.3764 0.0845316 5.30005 0.137439 5.24351L2.16222 3.00814L0.136188 0.772768C0.0991741 0.737972 0.0681555 0.693659 0.0450894 0.642626C0.0220233 0.591593 0.0074106 0.534947 0.00217345 0.476265C-0.0030637 0.417583 0.0011885 0.358138 0.0146616 0.301682C0.0281347 0.245225 0.0505362 0.192983 0.0804523 0.148253C0.110368 0.103523 0.14715 0.0672746 0.188475 0.0417976C0.2298 0.0163202 0.274771 0.00216722 0.320551 0.000230312C0.366331 -0.0017066 0.411925 0.00861454 0.454456 0.0305438C0.496987 0.0524735 0.535531 0.0855346 0.567657 0.12764L2.88383 2.68074C2.92026 2.72086 2.94951 2.77069 2.96956 2.8268C2.98961 2.8829 3 2.94394 3 3.00572C3 3.0675 2.98961 3.12854 2.96956 3.18465C2.94951 3.24075 2.92026 3.29058 2.88383 3.33071L0.567657 5.89187C0.508963 5.95925 0.433611 5.99755 0.355049 5.99993Z"
+      fill="white"/>
+</svg>
+
+      </span></button>
+            </div>
+            <div class="mobile-home__actions">
+                <button class="mobile-home__action" type="button" data-js-open-modal="receive"><span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_2236_6450)">
+            <path d="M9.21318 8.4675C9.07253 8.3269 8.8818 8.24791 8.68293 8.24791C8.48405 8.24791 8.29332 8.3269 8.15268 8.4675L6.76218 9.857L6.74968 0.75C6.74968 0.551088 6.67066 0.360322 6.53001 0.21967C6.38935 0.0790176 6.19859 0 5.99968 0C5.80076 0 5.61 0.0790176 5.46935 0.21967C5.32869 0.360322 5.24968 0.551088 5.24968 0.75L5.26118 9.85L3.87968 8.4675C3.73823 8.33088 3.54877 8.25529 3.35213 8.25699C3.15548 8.2587 2.96737 8.33758 2.82831 8.47664C2.68926 8.61569 2.61038 8.8038 2.60867 9.00045C2.60696 9.1971 2.68256 9.38655 2.81918 9.528L4.77868 11.4875C5.10685 11.8156 5.55189 11.9999 6.01593 11.9999C6.47996 11.9999 6.925 11.8156 7.25318 11.4875L9.21318 9.528C9.35378 9.38735 9.43277 9.19662 9.43277 8.99775C9.43277 8.79888 9.35378 8.60815 9.21318 8.4675Z"
+                  fill="black"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_2236_6450">
+            <rect width="12" height="12" fill="white"/>
+            </clipPath>
+            </defs>
+            </svg>
+
+        </span>Receive
+                </button>
+                <button class="mobile-home__action" type="button" data-js-open-modal="send"><span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_2236_6455)">
+            <path d="M2.78682 3.5325C2.92747 3.6731 3.1182 3.75209 3.31707 3.75209C3.51595 3.75209 3.70668 3.6731 3.84732 3.5325L5.23782 2.143L5.25032 11.25C5.25032 11.4489 5.32934 11.6397 5.46999 11.7803C5.61065 11.921 5.80141 12 6.00032 12C6.19924 12 6.39 11.921 6.53065 11.7803C6.67131 11.6397 6.75032 11.4489 6.75032 11.25L6.73882 2.15L8.12032 3.5325C8.26178 3.66912 8.45123 3.74472 8.64788 3.74301C8.84452 3.7413 9.03263 3.66242 9.17169 3.52337C9.31074 3.38431 9.38962 3.1962 9.39133 2.99955C9.39304 2.8029 9.31744 2.61345 9.18082 2.472L7.22132 0.512501C6.89315 0.184426 6.44811 0.000124769 5.98407 0.000124729C5.52004 0.000124688 5.075 0.184426 4.74682 0.5125L2.78682 2.472C2.64622 2.61265 2.56723 2.80338 2.56723 3.00225C2.56723 3.20112 2.64622 3.39185 2.78682 3.5325Z"
+                  fill="black"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_2236_6455">
+            <rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
+            </clipPath>
+            </defs>
+            </svg>
+
+        </span>Send
+                </button>
+            </div>
+        </section>
+
+        <section class="mobile-home__market-preview">
+            <button class="mobile-section-title" type="button" data-js-mobile-tab="market">Explore the market <span>
+        <svg width="5" height="9" viewBox="0 0 5 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.532573 8.99989C0.429523 9.00235 0.328427 8.96345 0.243274 8.88857C0.158122 8.81368 0.0931229 8.70652 0.0572724 8.5819C0.0214219 8.45728 0.0164921 8.32138 0.0431658 8.19299C0.0698394 8.0646 0.126797 7.95008 0.206158 7.86527L3.24332 4.51221L0.204282 1.15915C0.148761 1.10696 0.102233 1.04049 0.0676341 0.963939C0.033035 0.887389 0.0111159 0.802421 0.00326018 0.714397C-0.00459555 0.626374 0.00178276 0.537207 0.0219924 0.452522C0.042202 0.367838 0.0758043 0.289475 0.120678 0.22238C0.165553 0.155284 0.220724 0.100912 0.282712 0.0626965C0.344699 0.0244808 0.412157 0.00325012 0.480827 0.00034523C0.549496 -0.00255966 0.617887 0.0129223 0.681684 0.0458155C0.74548 0.0787096 0.803297 0.128302 0.851485 0.19146L4.32575 4.02111C4.38039 4.08129 4.42426 4.15604 4.45434 4.24019C4.48442 4.32435 4.5 4.41592 4.5 4.50858C4.5 4.60125 4.48442 4.69282 4.45434 4.77697C4.42426 4.86113 4.38039 4.93587 4.32575 4.99606L0.851485 8.8378C0.763444 8.93888 0.650416 8.99633 0.532573 8.99989Z"
+                fill="white"/>
+          </svg>
+
+      </span></button>
+            <div class="mobile-market-strip" aria-label="Market preview">
+                <article class="mobile-market-card mobile-market-card--mood">
+                    <div class="mobile-mood-gauge"><span>52</span></div>
+                    <strong>Mood</strong>
+                    <small>Neutral</small>
+                </article>
+                <!--                <article class="mobile-market-card">-->
+                <!--                    <span class="mobile-market-card__icon"><img src="./icons/home/cardano.png" alt="Cardano" width="34"-->
+                <!--                                                                height="34"></span>-->
+                <!--                    <strong>Cardano</strong>-->
+                <!--                    <small class="income">+3.27%</small>-->
+                <!--                </article>-->
+                <!--                <article class="mobile-market-card">-->
+                <!--                    <span class="mobile-market-card__icon"><img src="./icons/home/chainlink.png" alt="Chainlink"-->
+                <!--                                                                width="34" height="34"></span>-->
+                <!--                    <strong>Chainlink</strong>-->
+                <!--                    <small class="income">+4.50%</small>-->
+                <!--                </article>-->
+                <!--                <article class="mobile-market-card">-->
+                <!--                    <span class="mobile-market-card__icon"><img src="./icons/home/aval.png" alt="Avalanche" width="34"-->
+                <!--                                                                height="34"></span>-->
+                <!--                    <strong>Avalanche</strong>-->
+                <!--                    <small class="income">+2.18%</small>-->
+                <!--                </article>-->
+                <!--                <article class="mobile-market-card">-->
+                <!--                    <span class="mobile-market-card__icon"><img src="./icons/home/bitcoin.png" alt="Bitcoin" width="34"-->
+                <!--                                                                height="34"></span>-->
+                <!--                    <strong>Bitcoin</strong>-->
+                <!--                    <small class="income">+12.27%</small>-->
+                <!--                </article>-->
+                <!--                <article class="mobile-market-card">-->
+                <!--                    <span class="mobile-market-card__icon"><img src="./icons/home/tron.png" alt="TRON" width="34"-->
+                <!--                                                                height="34"></span>-->
+                <!--                    <strong>TRON</strong>-->
+                <!--                    <small class="income">+1.33%</small>-->
+                <!--                </article>-->
+            </div>
+        </section>
+
+        <section class="mobile-assets">
+            <h2 class="mobile-section-heading">Asset Allocation (4)</h2>
+            <ul class="mobile-asset-list" id="js-asset-list">
+                <!--                <li class="mobile-asset-row" data-js-open-modal="receive" data-coin="Bitcoin" data-ticker="BTC"><img-->
+                <!--                        src="./icons/home/bitcoin.png"-->
+                <!--                        alt="Bitcoin"><span><strong>Bitcoin</strong><small>0.00 BTC</small></span><em>$68 263.26<small>+1.84%</small></em>-->
+                <!--                </li>-->
+                <!--                <li class="mobile-asset-row" data-js-open-modal="receive" data-coin="Ethereum" data-ticker="ETH"><img-->
+                <!--                        src="./icons/home/ethereum.png"-->
+                <!--                        alt="Ethereum"><span><strong>Ethereum</strong><small>0.00 ETH</small></span><em>$33-->
+                <!--                    167.98<small>+1.43%</small></em></li>-->
+                <!--                <li class="mobile-asset-row" data-js-open-modal="receive" data-coin="Solana" data-ticker="SOL"><img-->
+                <!--                        src="./icons/home/solana.png" alt="Solana"><span><strong>Solana</strong><small>0.00 SOL</small></span><em>$21-->
+                <!--                    621.72<small>+3.93%</small></em></li>-->
+                <!--                <li class="mobile-asset-row" data-js-open-modal="receive" data-coin="Cardano" data-ticker="ADA"><img-->
+                <!--                        src="./icons/home/cardano.png"-->
+                <!--                        alt="Cardano"><span><strong>Cardano</strong><small>0.00 ADA</small></span><em>$887.46<small>+0.04%</small></em>-->
+                <!--                </li>-->
+            </ul>
+        </section>
+
+        <section class="mobile-empty-card">
+      <span>
+        <svg width="21" height="13" viewBox="0 0 21 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.7205 3.98194L16.9023 0.261119C16.7222 0.0916751 16.4811 -0.00208423 16.2308 3.51642e-05C15.9805 0.00215456 15.7411 0.0999829 15.5641 0.27245C15.3872 0.444918 15.2868 0.678225 15.2846 0.922121C15.2824 1.16602 15.3786 1.40099 15.5525 1.57643L17.7412 3.70939H4.77262C4.51945 3.70939 4.27665 3.80739 4.09764 3.98184C3.91862 4.15628 3.81805 4.39288 3.81805 4.63959C3.81805 4.8863 3.91862 5.1229 4.09764 5.29734C4.27665 5.47179 4.51945 5.56979 4.77262 5.56979H20.0456C20.2344 5.56976 20.4189 5.51518 20.5759 5.41296C20.7328 5.31075 20.8551 5.16549 20.9273 4.99554C20.9996 4.82559 21.0185 4.63859 20.9817 4.45817C20.9449 4.27776 20.854 4.11203 20.7205 3.98194Z"
+      fill="white"/>
+<path d="M16.2274 7.4302H0.954361C0.765595 7.43024 0.58108 7.48482 0.42414 7.58703C0.2672 7.68925 0.144883 7.83451 0.0726511 8.00446C0.00041917 8.17441 -0.0184843 8.36141 0.0183309 8.54183C0.0551461 8.72224 0.146027 8.88797 0.279484 9.01806L4.09774 12.7389C4.27777 12.9083 4.5189 13.0021 4.76918 13C5.01946 12.9978 5.25888 12.9 5.43586 12.7275C5.61285 12.5551 5.71324 12.3218 5.71541 12.0779C5.71759 11.834 5.62137 11.599 5.44749 11.4236L3.25877 9.29061H16.2274C16.4805 9.29061 16.7233 9.19261 16.9024 9.01816C17.0814 8.84372 17.1819 8.60711 17.1819 8.36041C17.1819 8.1137 17.0814 7.8771 16.9024 7.70265C16.7233 7.52821 16.4805 7.4302 16.2274 7.4302Z"
+      fill="white"/>
+</svg>
+
+      </span>
+            <h2>No transactions yet</h2>
+            <p>When you send, receive or swap assets,<br> your operations will appear here.</p>
+        </section>
+    </section>
+
+    <section class="mobile-view mobile-market-view" data-mobile-view="market" aria-label="Market" hidden>
+        <header class="mobile-market-header">
+            <img class="mobile-home__logo mobile-market-header__logo" src="./icons/logo.svg" alt="Ledger Wallet"
+                 width="187" height="30" loading="eager">
+            <button class="mobile-icon-button mobile-market-header__settings" type="button" aria-label="Settings"
+                    data-js-mobile-tab="settings">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.56217 0C7.9694 0 8.26385 0.297124 8.33589 0.645931C8.33746 0.650943 8.33903 0.655947 8.33903 0.660959L8.47061 1.41919C8.50663 1.6275 8.65856 1.83284 8.9029 1.97741C9.13941 2.11696 9.38686 2.14594 9.58577 2.07217L10.2984 1.80731C10.3063 1.80496 10.3125 1.80261 10.3188 1.80042C10.6383 1.69783 11.0503 1.79118 11.257 2.15988L12.5115 4.35343C12.5147 4.35766 12.5178 4.36189 12.5194 4.36628C12.6055 4.5276 12.6322 4.71337 12.5977 4.89239L12.5899 4.92574C12.5507 5.09161 12.4583 5.24119 12.3267 5.35114L11.7504 5.83684C11.5875 5.97405 11.4857 6.21306 11.4857 6.5C11.4857 6.79947 11.5812 7.03206 11.7378 7.16363L12.3064 7.64243C12.6416 7.89617 12.6776 8.33222 12.5006 8.6439V8.645L11.2507 10.8389C11.0596 11.1828 10.6681 11.3123 10.3282 11.2041L10.2937 11.1928V11.1922L9.61709 10.9415C9.39311 10.8586 9.12061 10.891 8.86218 11.042C8.61941 11.1828 8.45652 11.3755 8.397 11.5777L8.16986 12.3701C8.09625 12.7212 7.79868 13 7.40554 13H5.2065C5.01855 13.0003 4.83529 12.9322 4.69276 12.8092C4.55963 12.6943 4.47037 12.5386 4.43591 12.3675L4.20881 11.5764C4.14929 11.3744 3.98794 11.1845 3.7483 11.0455C3.48673 10.8931 3.21109 10.8597 2.98868 10.9421L2.31361 11.1928L2.30891 11.1947C2.13349 11.2577 1.94084 11.2561 1.76542 11.1902C1.59157 11.1249 1.44745 11.0007 1.35661 10.8404L0.100461 8.64657L0.0926602 8.63372C0.00808185 8.4724 -0.0201109 8.28664 0.0143469 8.10761C0.050371 7.92937 0.144342 7.76805 0.28374 7.6509V7.65073L0.86325 7.16331C1.02614 7.02595 1.12637 6.78694 1.12637 6.5C1.12637 6.21619 1.02457 5.97577 0.856979 5.83277L0.294676 5.35318C-0.0170105 5.10712 -0.0749608 4.69034 0.100461 4.36424C0.103593 4.3608 0.105166 4.35735 0.106732 4.35406L1.36288 2.16035C1.56023 1.80591 1.97061 1.67966 2.31832 1.80731L2.31988 1.80778L3.03098 2.07123C3.22989 2.14516 3.47891 2.11587 3.71855 1.97506C3.96132 1.83221 4.11325 1.62766 4.14927 1.42232L4.27928 0.660959C4.3388 0.274248 4.66771 0 5.04987 0H7.56217ZM5.07492 1.58209C4.98094 2.12809 4.60819 2.54142 4.1947 2.78498C3.77024 3.03448 3.22518 3.14584 2.70361 2.95241L2.11626 2.73486L0.986991 4.70866L1.46628 5.1173C1.88917 5.47786 2.06613 6.00725 2.06613 6.5C2.06613 6.98617 1.897 7.52151 1.46785 7.88207L0.98072 8.29274L2.10999 10.2659L2.66132 10.0611C3.20638 9.85902 3.77493 9.97445 4.21975 10.2324C4.60818 10.4576 4.96841 10.821 5.11094 11.317L5.32554 12.0602H7.2818L7.49483 11.3181C7.63736 10.8207 8.00229 10.4555 8.38916 10.2299C8.83555 9.96991 9.40096 9.85948 9.94288 10.0603L10.4958 10.2653L11.6188 8.29228L11.1333 7.8827C10.6963 7.51588 10.5459 6.97489 10.5459 6.5C10.5459 6.01383 10.7166 5.47849 11.1442 5.11793L11.6313 4.70757L10.5021 2.73439L9.91313 2.95319C9.39313 3.14615 8.84807 3.03699 8.42361 2.78608C8.00855 2.54017 7.6389 2.12589 7.54336 1.5788L7.43372 0.939759H5.18616L5.07492 1.58209ZM6.19012 3.91566C7.5747 3.91566 8.69614 5.03758 8.69614 6.42169C8.69614 7.8058 7.5747 8.92771 6.19012 8.92771C4.80711 8.92771 3.6841 7.8058 3.6841 6.42169C3.6841 5.03758 4.80711 3.91566 6.19012 3.91566ZM6.19012 4.85542C5.32554 4.85542 4.62385 5.55664 4.62385 6.42169C4.62385 7.28674 5.32554 7.98795 6.19012 7.98795C7.05626 7.98795 7.75638 7.28674 7.75638 6.42169C7.75638 5.55664 7.05626 4.85542 6.19012 4.85542Z"
+                          fill="white"/>
+                </svg>
+            </button>
+        </header>
+
+        <h1 class="mobile-market-title">Market</h1>
+
+        <div class="market__toolbar mobile-market-toolbar">
+            <label class="market__search">
+                <svg class="market__search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="5.75" stroke="#949494" stroke-width="2"/>
+                    <path d="M12.5 12.5L15.5 15.5" stroke="#949494" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input class="market__search-input" type="text" placeholder="Search..." data-js-market-search>
+            </label>
+            <div class="market__range" aria-label="Range selector" data-js-market-select>
+                <span>Range</span>
+                <button
+                        class="market__range-button"
+                        type="button"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        data-js-market-select-trigger
+                ><span data-js-market-select-value>1D</span>
+                    <svg width="9" height="5" viewBox="0 0 9 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L4.5 4L8 1" stroke="#8B80DB" stroke-width="1.4" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <ul class="market__range-list" role="listbox" data-js-market-select-list hidden>
+                    <li class="market-select__option is-selected" role="option" aria-selected="false" data-label="1D">
+                        1D
+                    </li>
+                    <li class="market-select__option " role="option" aria-selected="true" data-label="1W">
+                        1W
+                    </li>
+
+                    <li class="market-select__option" role="option" aria-selected="false" data-label="1M">1M</li>
+                    <li class="market-select__option" role="option" aria-selected="false" data-label="1Y">1Y</li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="market mobile-market-table">
+            <div class="market__head">
+                <div class="market__head-cell market__head-cell--crypto">Crypto</div>
+                <div class="market__head-cell market__head-cell--price">Price</div>
+                <div class="market__head-cell market__head-cell--change">Change</div>
+            </div>
+
+            <ul class="market__list" data-js-market-list>
+            </ul>
+        </section>
+    </section>
+
+    <section class="mobile-view mobile-reports-view" data-mobile-view="reports" aria-label="Tax Reports" hidden>
+        <header class="mobile-market-header mobile-shared-header">
+            <img class="mobile-home__logo mobile-market-header__logo" src="./icons/logo.svg" alt="Ledger Wallet"
+                 width="187" height="30" loading="eager">
+            <button class="mobile-icon-button mobile-market-header__settings" type="button" aria-label="Settings"
+                    data-js-mobile-tab="settings">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.56217 0C7.9694 0 8.26385 0.297124 8.33589 0.645931C8.33746 0.650943 8.33903 0.655947 8.33903 0.660959L8.47061 1.41919C8.50663 1.6275 8.65856 1.83284 8.9029 1.97741C9.13941 2.11696 9.38686 2.14594 9.58577 2.07217L10.2984 1.80731C10.3063 1.80496 10.3125 1.80261 10.3188 1.80042C10.6383 1.69783 11.0503 1.79118 11.257 2.15988L12.5115 4.35343C12.5147 4.35766 12.5178 4.36189 12.5194 4.36628C12.6055 4.5276 12.6322 4.71337 12.5977 4.89239L12.5899 4.92574C12.5507 5.09161 12.4583 5.24119 12.3267 5.35114L11.7504 5.83684C11.5875 5.97405 11.4857 6.21306 11.4857 6.5C11.4857 6.79947 11.5812 7.03206 11.7378 7.16363L12.3064 7.64243C12.6416 7.89617 12.6776 8.33222 12.5006 8.6439V8.645L11.2507 10.8389C11.0596 11.1828 10.6681 11.3123 10.3282 11.2041L10.2937 11.1928V11.1922L9.61709 10.9415C9.39311 10.8586 9.12061 10.891 8.86218 11.042C8.61941 11.1828 8.45652 11.3755 8.397 11.5777L8.16986 12.3701C8.09625 12.7212 7.79868 13 7.40554 13H5.2065C5.01855 13.0003 4.83529 12.9322 4.69276 12.8092C4.55963 12.6943 4.47037 12.5386 4.43591 12.3675L4.20881 11.5764C4.14929 11.3744 3.98794 11.1845 3.7483 11.0455C3.48673 10.8931 3.21109 10.8597 2.98868 10.9421L2.31361 11.1928L2.30891 11.1947C2.13349 11.2577 1.94084 11.2561 1.76542 11.1902C1.59157 11.1249 1.44745 11.0007 1.35661 10.8404L0.100461 8.64657L0.0926602 8.63372C0.00808185 8.4724 -0.0201109 8.28664 0.0143469 8.10761C0.050371 7.92937 0.144342 7.76805 0.28374 7.6509V7.65073L0.86325 7.16331C1.02614 7.02595 1.12637 6.78694 1.12637 6.5C1.12637 6.21619 1.02457 5.97577 0.856979 5.83277L0.294676 5.35318C-0.0170105 5.10712 -0.0749608 4.69034 0.100461 4.36424C0.103593 4.3608 0.105166 4.35735 0.106732 4.35406L1.36288 2.16035C1.56023 1.80591 1.97061 1.67966 2.31832 1.80731L2.31988 1.80778L3.03098 2.07123C3.22989 2.14516 3.47891 2.11587 3.71855 1.97506C3.96132 1.83221 4.11325 1.62766 4.14927 1.42232L4.27928 0.660959C4.3388 0.274248 4.66771 0 5.04987 0H7.56217ZM5.07492 1.58209C4.98094 2.12809 4.60819 2.54142 4.1947 2.78498C3.77024 3.03448 3.22518 3.14584 2.70361 2.95241L2.11626 2.73486L0.986991 4.70866L1.46628 5.1173C1.88917 5.47786 2.06613 6.00725 2.06613 6.5C2.06613 6.98617 1.897 7.52151 1.46785 7.88207L0.98072 8.29274L2.10999 10.2659L2.66132 10.0611C3.20638 9.85902 3.77493 9.97445 4.21975 10.2324C4.60818 10.4576 4.96841 10.821 5.11094 11.317L5.32554 12.0602H7.2818L7.49483 11.3181C7.63736 10.8207 8.00229 10.4555 8.38916 10.2299C8.83555 9.96991 9.40096 9.85948 9.94288 10.0603L10.4958 10.2653L11.6188 8.29228L11.1333 7.8827C10.6963 7.51588 10.5459 6.97489 10.5459 6.5C10.5459 6.01383 10.7166 5.47849 11.1442 5.11793L11.6313 4.70757L10.5021 2.73439L9.91313 2.95319C9.39313 3.14615 8.84807 3.03699 8.42361 2.78608C8.00855 2.54017 7.6389 2.12589 7.54336 1.5788L7.43372 0.939759H5.18616L5.07492 1.58209ZM6.19012 3.91566C7.5747 3.91566 8.69614 5.03758 8.69614 6.42169C8.69614 7.8058 7.5747 8.92771 6.19012 8.92771C4.80711 8.92771 3.6841 7.8058 3.6841 6.42169C3.6841 5.03758 4.80711 3.91566 6.19012 3.91566ZM6.19012 4.85542C5.32554 4.85542 4.62385 5.55664 4.62385 6.42169C4.62385 7.28674 5.32554 7.98795 6.19012 7.98795C7.05626 7.98795 7.75638 7.28674 7.75638 6.42169C7.75638 5.55664 7.05626 4.85542 6.19012 4.85542Z"
+                          fill="white"/>
+                </svg>
+            </button>
+        </header>
+
+        <header class="mobile-reports-hero">
+            <h1>Tax Reports</h1>
+            <p>Comprehensive tax analysis for your portfolio.</p>
+        </header>
+
+        <section class="mobile-report-card mobile-report-card--with-select">
+            <div class="mobile-report-card__top">
+                <span>Short-term gains</span>
+                <div class="market__range mobile-report-select" aria-label="Tax Year selector" data-js-market-select>
+                    <span class="market-select__label">Tax Year</span>
+                    <button class="market__range-trigger" type="button" aria-expanded="false"
+                            data-js-market-select-trigger><span data-js-market-select-value>2025</span>
+                        <svg class="market__range-chevron" width="9" height="5" viewBox="0 0 9 5" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L4.5 4L8 1" stroke="#A99BFF" stroke-width="1.3" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <ul class="market__range-list" role="listbox" data-js-market-select-list hidden>
+                        <li class="market-select__option is-selected" role="option" aria-selected="true"
+                            data-label="2025">2025
+                        </li>
+                        <li class="market-select__option" role="option" aria-selected="false" data-label="2024">2024
+                        </li>
+                        <li class="market-select__option" role="option" aria-selected="false" data-label="2023">2023
+                        </li>
+                        <li class="market-select__option" role="option" aria-selected="false" data-label="2022">2022
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <strong data-currency-amount>$0<span>.00</span></strong>
+            <small>Est. Tax: <b data-currency-amount>$0.00</b> (~0%)</small>
+        </section>
+
+        <section class="mobile-report-card mobile-report-card--with-select">
+            <div class="mobile-report-card__top">
+                <span>Long-term gains</span>
+                <div class="market__range mobile-report-select" aria-label="Method selector" data-js-market-select>
+                    <span class="market-select__label">Method</span>
+                    <button class="market__range-trigger" type="button" aria-expanded="false"
+                            data-js-market-select-trigger><span data-js-market-select-value>FIFO</span>
+                        <svg class="market__range-chevron" width="9" height="5" viewBox="0 0 9 5" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L4.5 4L8 1" stroke="#A99BFF" stroke-width="1.3" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <ul class="market__range-list" role="listbox" data-js-market-select-list hidden>
+                        <li class="market-select__option is-selected" role="option" aria-selected="true"
+                            data-label="FIFO">FIFO
+                        </li>
+                        <li class="market-select__option" role="option" aria-selected="false" data-label="LIFO">LIFO
+                        </li>
+                        <li class="market-select__option" role="option" aria-selected="false" data-label="HIFO">HIFO
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <strong data-currency-amount>$0<span>.00</span></strong>
+            <small>Est. Tax: <b data-currency-amount>$0.00</b> (~0%)</small>
+        </section>
+
+        <section class="mobile-report-card"><span>Other Income</span><strong
+                data-currency-amount>$0<span>.00</span></strong><small>Other transaction</small></section>
+
+        <section class="mobile-report-panel mobile-report-panel--liability">
+            <header><h2>Monthly Tax Liability</h2>
+                <div class="mobile-report-legend"><span><i></i>Gain</span><span><i></i>Loss</span></div>
+            </header>
+            <div class="mobile-liability-empty"><strong>No data to display</strong><span>Transactions are needed to project liability</span>
+            </div>
+            <div class="mobile-liability-months" aria-hidden="true">
+                <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+        </section>
+
+        <section class="mobile-report-panel mobile-report-panel--income">
+            <h2>Income Sources</h2>
+            <div class="mobile-income-chart">
+                <canvas data-js-mobile-income-chart aria-label="Income sources chart"></canvas>
+                <div class="mobile-income-chart__center"><strong>Total</strong><span data-currency-amount>$0.00</span>
+                </div>
+            </div>
+            <ul class="mobile-income-list">
+                <li><span>Capital Gains</span><strong>0%</strong></li>
+                <li><span>Mining &amp; Rewards</span><strong>0%</strong></li>
+                <li><span>Other</span><strong>0%</strong></li>
+            </ul>
+        </section>
+
+        <section class="mobile-report-panel mobile-report-panel--empty"><h2>Generated Reports</h2><span
+                class="mobile-report-empty-icon">
+      <svg width="17" height="19" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M15.6499 8.12759V13.8105C15.6499 14.6365 14.9783 15.3061 14.1499 15.3061H5.1499C4.32149 15.3061 3.6499 14.6365 3.6499 13.8105V2.14554C3.6499 1.3196 4.32149 0.650024 5.1499 0.650024H11.1499M11.1499 0.650024V3.64105C11.1499 4.46695 11.8215 5.13656 12.6499 5.13656H15.6499L11.1499 0.650024ZM3.6499 3.64105H2.1499C1.32149 3.64105 0.649902 4.31063 0.649902 5.13656V16.8016C0.649902 17.6275 1.32149 18.2971 2.1499 18.2971H11.1499C11.9783 18.2971 12.6499 17.6275 12.6499 16.8016V15.3061M12.6499 8.12759H6.6499M12.6499 11.1186H6.6499"
+        stroke="white" stroke-width="1.3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+    </span><strong>No reports generated yet</strong>
+            <p>Your generated tax reports will appear here securely.</p></section>
+        <section class="mobile-report-panel mobile-report-panel--empty"><h2>Recent Taxable Events</h2><span
+                class="mobile-report-empty-icon">
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M16.8239 3.81894L13.1811 0.176081C13.1243 0.119811 13.0571 0.0752918 12.9831 0.0450776C12.9091 0.0148634 12.8299 -0.000451823 12.75 1.0148e-05H5.46428C4.98121 1.0148e-05 4.51792 0.19191 4.17634 0.533494C3.83476 0.875078 3.64286 1.33836 3.64286 1.82144V5.46429C3.64286 5.62532 3.70682 5.77975 3.82068 5.89361C3.93455 6.00747 4.08897 6.07143 4.25 6.07143C4.41102 6.07143 4.56545 6.00747 4.67931 5.89361C4.79317 5.77975 4.85714 5.62532 4.85714 5.46429V1.82144C4.85714 1.66041 4.92111 1.50598 5.03497 1.39212C5.14883 1.27826 5.30326 1.21429 5.46428 1.21429H12.1428V3.03572C12.1428 3.51879 12.3347 3.98208 12.6763 4.32367C13.0179 4.66525 13.4812 4.85715 13.9643 4.85715H15.7857V15.1786C15.7857 15.3396 15.7217 15.494 15.6079 15.6079C15.494 15.7217 15.3396 15.7857 15.1786 15.7857H10.3214C10.1604 15.7857 10.006 15.8497 9.89211 15.9635C9.77825 16.0774 9.71428 16.2318 9.71428 16.3929C9.71428 16.5539 9.77825 16.7083 9.89211 16.8222C10.006 16.936 10.1604 17 10.3214 17H15.1786C15.6616 17 16.1249 16.8081 16.4665 16.4665C16.8081 16.1249 17 15.6616 17 15.1786V4.25001C17.0005 4.1701 16.9851 4.09089 16.9549 4.01692C16.9247 3.94295 16.8802 3.87567 16.8239 3.81894ZM13.3571 3.03572V2.07037L14.9296 3.64286H13.9643C13.8033 3.64286 13.6488 3.5789 13.535 3.46504C13.4211 3.35118 13.3571 3.19675 13.3571 3.03572Z"
+        fill="white"/>
+  <path d="M4.85714 7.28572C3.89649 7.28572 2.95741 7.57059 2.15866 8.10429C1.35991 8.638 0.737355 9.39658 0.36973 10.2841C0.00210451 11.1716 -0.094083 12.1482 0.0933308 13.0904C0.280745 14.0326 0.743342 14.8981 1.42263 15.5774C2.10191 16.2567 2.96737 16.7193 3.90956 16.9067C4.85175 17.0941 5.82836 16.9979 6.71589 16.6303C7.60341 16.2626 8.362 15.6401 8.8957 14.8413C9.42941 14.0426 9.71428 13.1035 9.71428 12.1429C9.71428 10.8547 9.20255 9.61923 8.29166 8.70834C7.38077 7.79745 6.14533 7.28572 4.85714 7.28572ZM4.85714 15.7857C4.13665 15.7857 3.43234 15.5721 2.83328 15.1718C2.23422 14.7715 1.7673 14.2026 1.49158 13.5369C1.21586 12.8713 1.14372 12.1388 1.28428 11.4322C1.42484 10.7255 1.77179 10.0764 2.28125 9.56697C2.79072 9.05751 3.43981 8.71056 4.14646 8.57C4.8531 8.42944 5.58556 8.50158 6.2512 8.7773C6.91685 9.05302 7.48578 9.51993 7.88606 10.119C8.28635 10.7181 8.5 11.4224 8.5 12.1429C8.5 13.109 8.1162 14.0356 7.43303 14.7187C6.74986 15.4019 5.82329 15.7857 4.85714 15.7857Z"
+        fill="white"/>
+  <path d="M5.64036 10.4975L3.21179 12.9261C3.15488 12.9825 3.10971 13.0497 3.07889 13.1237C3.04806 13.1976 3.03219 13.277 3.03219 13.3571C3.03219 13.4373 3.04806 13.5167 3.07889 13.5906C3.10971 13.6646 3.15488 13.7318 3.21179 13.7882C3.26823 13.8451 3.33538 13.8903 3.40936 13.9211C3.48335 13.9519 3.56271 13.9678 3.64286 13.9678C3.72301 13.9678 3.80236 13.9519 3.87635 13.9211C3.95034 13.8903 4.01749 13.8451 4.07393 13.7882L6.5025 11.3596C6.55911 11.303 6.60401 11.2358 6.63465 11.1619C6.66528 11.0879 6.68105 11.0086 6.68105 10.9286C6.68105 10.8485 6.66528 10.7692 6.63465 10.6953C6.60401 10.6213 6.55911 10.5541 6.5025 10.4975C6.44589 10.4409 6.37868 10.396 6.30472 10.3654C6.23076 10.3347 6.15148 10.3189 6.07143 10.3189C5.99137 10.3189 5.9121 10.3347 5.83813 10.3654C5.76417 10.396 5.69696 10.4409 5.64036 10.4975Z"
+        fill="white"/>
+  <path d="M3.64286 11.5357C3.97817 11.5357 4.25 11.2639 4.25 10.9286C4.25 10.5933 3.97817 10.3214 3.64286 10.3214C3.30754 10.3214 3.03571 10.5933 3.03571 10.9286C3.03571 11.2639 3.30754 11.5357 3.64286 11.5357Z"
+        fill="white"/>
+  <path d="M6.07143 13.9643C6.40674 13.9643 6.67857 13.6925 6.67857 13.3571C6.67857 13.0218 6.40674 12.75 6.07143 12.75C5.73611 12.75 5.46428 13.0218 5.46428 13.3571C5.46428 13.6925 5.73611 13.9643 6.07143 13.9643Z"
+        fill="white"/>
+  <path d="M10.3214 3.64286H6.67857C6.51754 3.64286 6.36312 3.70683 6.24925 3.82069C6.13539 3.93455 6.07143 4.08898 6.07143 4.25001C6.07143 4.41103 6.13539 4.56546 6.24925 4.67932C6.36312 4.79318 6.51754 4.85715 6.67857 4.85715H10.3214C10.4824 4.85715 10.6369 4.79318 10.7507 4.67932C10.8646 4.56546 10.9286 4.41103 10.9286 4.25001C10.9286 4.08898 10.8646 3.93455 10.7507 3.82069C10.6369 3.70683 10.4824 3.64286 10.3214 3.64286Z"
+        fill="white"/>
+  <path d="M13.9643 6.67858H10.3214C10.1604 6.67858 10.006 6.74254 9.89211 6.8564C9.77825 6.97027 9.71428 7.12469 9.71428 7.28572C9.71428 7.44674 9.77825 7.60117 9.89211 7.71503C10.006 7.82889 10.1604 7.89286 10.3214 7.89286H13.9643C14.1253 7.89286 14.2797 7.82889 14.3936 7.71503C14.5075 7.60117 14.5714 7.44674 14.5714 7.28572C14.5714 7.12469 14.5075 6.97027 14.3936 6.8564C14.2797 6.74254 14.1253 6.67858 13.9643 6.67858Z"
+        fill="white"/>
+  <path d="M13.9643 9.71429H11.5357C11.3747 9.71429 11.2203 9.77825 11.1064 9.89212C10.9925 10.006 10.9286 10.1604 10.9286 10.3214C10.9286 10.4825 10.9925 10.6369 11.1064 10.7507C11.2203 10.8646 11.3747 10.9286 11.5357 10.9286H13.9643C14.1253 10.9286 14.2797 10.8646 14.3936 10.7507C14.5075 10.6369 14.5714 10.4825 14.5714 10.3214C14.5714 10.1604 14.5075 10.006 14.3936 9.89212C14.2797 9.77825 14.1253 9.71429 13.9643 9.71429Z"
+        fill="white"/>
+  <path d="M13.9643 12.75H11.5357C11.3747 12.75 11.2203 12.814 11.1064 12.9278C10.9925 13.0417 10.9286 13.1961 10.9286 13.3571C10.9286 13.5182 10.9925 13.6726 11.1064 13.7865C11.2203 13.9003 11.3747 13.9643 11.5357 13.9643H13.9643C14.1253 13.9643 14.2797 13.9003 14.3936 13.7865C14.5075 13.6726 14.5714 13.5182 14.5714 13.3571C14.5714 13.1961 14.5075 13.0417 14.3936 12.9278C14.2797 12.814 14.1253 12.75 13.9643 12.75Z"
+        fill="white"/>
+</svg>
+    </span><strong>No taxable events</strong>
+            <p>There are currently no operations that count as a taxable event.</p>
+            <button class="mobile-report-export" type="button">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.3">
+                        <path d="M16.5 12.2V13.2C16.5 14.8568 15.1576 16.2 13.5008 16.2C9.99126 16.2 6.10032 16.2 3.49798 16.2C1.84112 16.2 0.5 14.8568 0.5 13.2V12.2"
+                              stroke="#BAAEFE"/>
+                        <path d="M3.40039 7.19897C3.39954 7.11585 3.41858 7.03392 3.45703 6.95874C3.49539 6.88375 3.55155 6.81739 3.62012 6.76245C3.68884 6.70747 3.77009 6.66506 3.85742 6.63647C3.94467 6.60792 4.03748 6.59289 4.13086 6.59351C4.22433 6.59416 4.31752 6.60959 4.4043 6.6394C4.49107 6.66922 4.57104 6.71327 4.63867 6.76929L4.6377 6.77026L7.78223 9.28394L7.78223 0.699951C7.78223 0.532788 7.86566 0.378214 8.00293 0.268311C8.13974 0.158859 8.32186 0.100342 8.50781 0.100342C8.69361 0.10037 8.87496 0.159003 9.01172 0.268311C9.14911 0.378224 9.23242 0.532704 9.23242 0.699951L9.23242 9.28491L12.3779 6.76831L12.3799 6.76733C12.5172 6.66133 12.6972 6.60498 12.8809 6.6062C13.0647 6.60748 13.2446 6.66595 13.3799 6.77417C13.5156 6.88282 13.5978 7.03569 13.5996 7.20093C13.6013 7.36615 13.5223 7.5199 13.3887 7.63062L13.3867 7.63159L9.01172 11.1316C8.87496 11.2409 8.69361 11.2995 8.50781 11.2996C8.3219 11.2996 8.13973 11.241 8.00293 11.1316L3.62793 7.63159C3.55884 7.57788 3.50257 7.51213 3.46289 7.43823C3.42288 7.36367 3.40129 7.28216 3.40039 7.19897Z"
+                              fill="#BAAEFE" stroke="#BAAEFE" stroke-width="0.2"/>
+                    </g>
+                </svg>
+                Export CSV
+            </button>
+        </section>
+    </section>
+
+    <section class="mobile-view mobile-settings-view" data-mobile-view="settings" aria-label="Settings" hidden>
+        <header class="mobile-market-header mobile-shared-header">
+            <img class="mobile-home__logo mobile-market-header__logo" src="./icons/logo.svg" alt="Ledger Wallet"
+                 width="187" height="30" loading="eager">
+            <button class="mobile-icon-button mobile-market-header__settings" type="button" aria-label="Settings">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.56217 0C7.9694 0 8.26385 0.297124 8.33589 0.645931C8.33746 0.650943 8.33903 0.655947 8.33903 0.660959L8.47061 1.41919C8.50663 1.6275 8.65856 1.83284 8.9029 1.97741C9.13941 2.11696 9.38686 2.14594 9.58577 2.07217L10.2984 1.80731C10.3063 1.80496 10.3125 1.80261 10.3188 1.80042C10.6383 1.69783 11.0503 1.79118 11.257 2.15988L12.5115 4.35343C12.5147 4.35766 12.5178 4.36189 12.5194 4.36628C12.6055 4.5276 12.6322 4.71337 12.5977 4.89239L12.5899 4.92574C12.5507 5.09161 12.4583 5.24119 12.3267 5.35114L11.7504 5.83684C11.5875 5.97405 11.4857 6.21306 11.4857 6.5C11.4857 6.79947 11.5812 7.03206 11.7378 7.16363L12.3064 7.64243C12.6416 7.89617 12.6776 8.33222 12.5006 8.6439V8.645L11.2507 10.8389C11.0596 11.1828 10.6681 11.3123 10.3282 11.2041L10.2937 11.1928V11.1922L9.61709 10.9415C9.39311 10.8586 9.12061 10.891 8.86218 11.042C8.61941 11.1828 8.45652 11.3755 8.397 11.5777L8.16986 12.3701C8.09625 12.7212 7.79868 13 7.40554 13H5.2065C5.01855 13.0003 4.83529 12.9322 4.69276 12.8092C4.55963 12.6943 4.47037 12.5386 4.43591 12.3675L4.20881 11.5764C4.14929 11.3744 3.98794 11.1845 3.7483 11.0455C3.48673 10.8931 3.21109 10.8597 2.98868 10.9421L2.31361 11.1928L2.30891 11.1947C2.13349 11.2577 1.94084 11.2561 1.76542 11.1902C1.59157 11.1249 1.44745 11.0007 1.35661 10.8404L0.100461 8.64657L0.0926602 8.63372C0.00808185 8.4724 -0.0201109 8.28664 0.0143469 8.10761C0.050371 7.92937 0.144342 7.76805 0.28374 7.6509V7.65073L0.86325 7.16331C1.02614 7.02595 1.12637 6.78694 1.12637 6.5C1.12637 6.21619 1.02457 5.97577 0.856979 5.83277L0.294676 5.35318C-0.0170105 5.10712 -0.0749608 4.69034 0.100461 4.36424C0.103593 4.3608 0.105166 4.35735 0.106732 4.35406L1.36288 2.16035C1.56023 1.80591 1.97061 1.67966 2.31832 1.80731L2.31988 1.80778L3.03098 2.07123C3.22989 2.14516 3.47891 2.11587 3.71855 1.97506C3.96132 1.83221 4.11325 1.62766 4.14927 1.42232L4.27928 0.660959C4.3388 0.274248 4.66771 0 5.04987 0H7.56217ZM5.07492 1.58209C4.98094 2.12809 4.60819 2.54142 4.1947 2.78498C3.77024 3.03448 3.22518 3.14584 2.70361 2.95241L2.11626 2.73486L0.986991 4.70866L1.46628 5.1173C1.88917 5.47786 2.06613 6.00725 2.06613 6.5C2.06613 6.98617 1.897 7.52151 1.46785 7.88207L0.98072 8.29274L2.10999 10.2659L2.66132 10.0611C3.20638 9.85902 3.77493 9.97445 4.21975 10.2324C4.60818 10.4576 4.96841 10.821 5.11094 11.317L5.32554 12.0602H7.2818L7.49483 11.3181C7.63736 10.8207 8.00229 10.4555 8.38916 10.2299C8.83555 9.96991 9.40096 9.85948 9.94288 10.0603L10.4958 10.2653L11.6188 8.29228L11.1333 7.8827C10.6963 7.51588 10.5459 6.97489 10.5459 6.5C10.5459 6.01383 10.7166 5.47849 11.1442 5.11793L11.6313 4.70757L10.5021 2.73439L9.91313 2.95319C9.39313 3.14615 8.84807 3.03699 8.42361 2.78608C8.00855 2.54017 7.6389 2.12589 7.54336 1.5788L7.43372 0.939759H5.18616L5.07492 1.58209ZM6.19012 3.91566C7.5747 3.91566 8.69614 5.03758 8.69614 6.42169C8.69614 7.8058 7.5747 8.92771 6.19012 8.92771C4.80711 8.92771 3.6841 7.8058 3.6841 6.42169C3.6841 5.03758 4.80711 3.91566 6.19012 3.91566ZM6.19012 4.85542C5.32554 4.85542 4.62385 5.55664 4.62385 6.42169C4.62385 7.28674 5.32554 7.98795 6.19012 7.98795C7.05626 7.98795 7.75638 7.28674 7.75638 6.42169C7.75638 5.55664 7.05626 4.85542 6.19012 4.85542Z"
+                          fill="white"/>
+                </svg>
+            </button>
+        </header>
+
+        <h1 class="mobile-settings-title">Settings</h1>
+        <section class="mobile-settings-panel">
+            <div class="mobile-settings-block mobile-settings-block--currency">
+                <h2>Preferred currency</h2>
+                <p>Choose the currency shown next to your balance and operations.</p>
+                <div class="settings-select mobile-settings-select" data-js-settings-select>
+                    <button class="settings-select__trigger" type="button" aria-haspopup="listbox" aria-expanded="false"
+                            data-js-settings-select-trigger><span
+                            class="settings-select__value settings-select__value--accent" data-js-settings-select-value>US Dollar - USD</span>
+                        <svg class="settings-select__chevron" width="9" height="5" viewBox="0 0 9 5" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L4.5 4L8 1" stroke="white" stroke-width="1.3" stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <ul class="settings-select__list" role="listbox" data-js-settings-select-list>
+                        <li class="settings-select__option is-selected" role="option" aria-selected="true"
+                            data-value="usd" data-label="US Dollar - USD">US Dollar - USD
+                        </li>
+                        <li class="settings-select__option" role="option" aria-selected="false" data-value="eur"
+                            data-label="Euro - EUR">Euro - EUR
+                        </li>
+                        <li class="settings-select__option" role="option" aria-selected="false" data-value="gbp"
+                            data-label="British Pound - GBP">British Pound - GBP
+                        </li>
+                        <li class="settings-select__option" role="option" aria-selected="false" data-value="jpy"
+                            data-label="Japanese Yen - JPY">Japanese Yen - JPY
+                        </li>
+                        <!--                        <li class="settings-select__option" role="option" aria-selected="false" data-value="rub"-->
+                        <!--                            data-label="Russian Ruble - RUB">Russian Ruble - RUB-->
+                        <!--                        </li>-->
+                        <!--                        <li class="settings-select__option" role="option" aria-selected="false" data-value="cny"-->
+                        <!--                            data-label="Chinese Yuan - CNY">Chinese Yuan - CNY-->
+                        <!--                        </li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="mobile-settings-block"><label
+                    class="mobile-settings-toggle"><span><strong>Market Performance <br> Widget</strong><small>Enable this feature to view the top gainers and losers over selected timeframes on the portfolio page.</small></span><input
+                    type="checkbox" checked><i></i></label></div>
+            <div class="mobile-settings-block"><label
+                    class="mobile-settings-toggle"><span><strong>Bug Reports</strong><small>Automatically send reports to help Ledger improve its products.</small></span><input
+                    type="checkbox"><i></i></label></div>
+            <div class="mobile-settings-block"><label
+                    class="mobile-settings-toggle"><span><strong>Analytics</strong><small>Enable Ledger to collect app usage data to help measure Ledger Wallet's performance and enhance both the app and your experience.</small></span><input
+                    type="checkbox" checked><i></i></label></div>
+            <a class="mobile-settings-logout" href="auth.html">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.23196 12.775C8.23196 13.1293 7.94174 13.4166 7.58377 13.4166H4.34279C2.91316 13.4166 1.75 12.2652 1.75 10.85V3.14998C1.75 1.73475 2.91316 0.583313 4.34279 0.583313H7.58377C7.94172 0.583313 8.23196 0.870609 8.23196 1.22498C8.23196 1.57935 7.94174 1.86665 7.58377 1.86665H4.34279C3.62782 1.86665 3.04639 2.44219 3.04639 3.14998V10.85C3.04639 11.5577 3.62782 12.1333 4.34279 12.1333H7.58377C7.94174 12.1333 8.23196 12.4206 8.23196 12.775ZM13.3675 7.24519C13.4331 7.08831 13.4331 6.91167 13.3675 6.75477C13.3346 6.67624 13.2873 6.60523 13.2275 6.5461L10.6348 3.97963C10.3816 3.72898 9.97146 3.72898 9.71826 3.97963C9.46506 4.23029 9.46506 4.63634 9.71826 4.88699L11.2046 6.35831H6.28737C5.92942 6.35831 5.63918 6.64563 5.63918 6.99998C5.63918 7.35435 5.92942 7.64165 6.28737 7.64165H11.2046L9.71826 9.11297C9.46506 9.36362 9.46506 9.76967 9.71826 10.0203C9.84486 10.1456 10.0107 10.2083 10.1766 10.2083C10.3424 10.2083 10.5082 10.1456 10.6348 10.0203L13.2275 7.45386C13.2873 7.3947 13.3346 7.32372 13.3675 7.24519Z"
+                          fill="black"/>
+                </svg>
+                Log out
+            </a>
+        </section>
+    </section>
+</main>
+
+<nav class="mobile-bottom-nav" aria-label="Primary navigation">
+    <button class="is-active" type="button" data-js-mobile-tab="home" aria-label="Home">
+        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.7966 7.23056V6.08461C15.1554 6.08461 14.6357 6.59762 14.6357 7.23056H15.7966ZM10.9405 16L10.9404 17.1459H10.9405V16ZM6.6713 16V17.1459H6.67149L6.6713 16ZM1.8154 7.23056H2.97631C2.97631 6.59762 2.45642 6.08461 1.8154 6.08461V7.23056ZM8.56881 0.0800298L9.27986 0.9859C9.00086 1.19924 8.61079 1.19924 8.33179 0.9859L9.04285 0.0800298L9.7539 -0.825846C9.19589 -1.25271 8.41576 -1.25271 7.85775 -0.825846L8.56881 0.0800298ZM9.04285 0.0800298L8.33179 0.9859L16.7863 7.45231L17.4974 6.54644L18.2084 5.64075L9.7539 -0.825846L9.04285 0.0800298ZM17.4974 6.54644L16.7861 7.45231C16.2028 7.00596 16.5232 6.08461 17.2602 6.08461V7.23056V8.37651C18.7347 8.37651 19.375 6.53307 18.2084 5.64075L17.4974 6.54644ZM17.2602 7.23056V6.08461H15.7966V7.23056V8.37651H17.2602V7.23056ZM15.7966 7.23056H14.6357V15.618H15.7966H16.9576V7.23056H15.7966ZM15.7966 15.618H14.6357C14.6357 15.1959 14.9823 14.854 15.4095 14.854L15.4097 16V17.1459C16.2643 17.1457 16.9576 16.4618 16.9576 15.618H15.7966ZM15.4097 16L15.4095 14.854H10.9405V16V17.1459H15.4097V16ZM10.9405 16V14.854C11.368 14.854 11.7145 15.1959 11.7145 15.618H10.5536H9.39266C9.39266 16.4618 10.0857 17.1457 10.9404 17.1459L10.9405 16ZM10.5536 15.618H11.7145V9.96194H10.5536H9.39266V15.618H10.5536ZM10.5536 9.96194H11.7145C11.7145 9.01157 10.934 8.2411 9.97099 8.2411V9.38705V10.533C9.65155 10.533 9.39266 10.2773 9.39266 9.96194H10.5536ZM9.97099 9.38705V8.2411H7.64085V9.38705V10.533H9.97099V9.38705ZM7.64085 9.38705V8.2411C6.67807 8.2411 5.89735 9.01157 5.89735 9.96194H7.05827H8.21918C8.21918 10.2773 7.9603 10.533 7.64085 10.533V9.38705ZM7.05827 9.96194H5.89735V15.618H7.05827H8.21918V9.96194H7.05827ZM7.05827 15.618H5.89735C5.89735 15.1957 6.24408 14.854 6.6711 14.854L6.6713 16L6.67149 17.1459C7.52611 17.1457 8.21918 16.462 8.21918 15.618H7.05827ZM6.6713 16V14.854H2.20237V16V17.1459H6.6713V16ZM2.20237 16V14.854C2.62978 14.854 2.97631 15.1959 2.97631 15.618H1.8154H0.654488C0.654488 16.4618 1.34736 17.1459 2.20237 17.1459V16ZM1.8154 15.618H2.97631V7.23056H1.8154H0.654488V15.618H1.8154ZM1.8154 7.23056V6.08461H0.351489V7.23056V8.37651H1.8154V7.23056ZM0.351489 7.23056V6.08461C1.08847 6.08461 1.40908 7.00596 0.82553 7.45231L0.114468 6.54644L-0.596588 5.64075C-1.7633 6.53307 -1.12287 8.37651 0.351489 8.37651V7.23056ZM0.114468 6.54644L0.82553 7.45231L9.27986 0.9859L8.56881 0.0800298L7.85775 -0.825846L-0.596588 5.64075L0.114468 6.54644Z"
+                  fill="white"/>
+        </svg>
+        <span>Home</span>
+    </button>
+    <button type="button" data-js-mobile-tab="market" aria-label="Market">
+        <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.3594 6.10352e-05C17.7133 6.10352e-05 18.0001 0.286247 18.0001 0.640775V14.1449C18.0001 14.4973 17.7133 14.7856 17.3594 14.7856H0.640836C0.286948 14.7856 0.00012207 14.4973 0.00012207 14.1449V0.640775C0.00012207 0.286247 0.286948 6.10352e-05 0.640836 6.10352e-05H17.3594ZM1.28155 13.5042H16.7187V1.28149H1.28155V13.5042ZM14.2808 3.49408C14.7538 3.49195 15.1383 3.87424 15.1383 4.34837V6.17014C15.1383 6.64213 14.7558 7.02442 14.284 7.02442H12.6245L10.5751 9.04907C10.253 9.36516 9.73897 9.37797 9.40281 9.0747L7.7487 7.58398L4.9097 10.3647C4.89753 10.3775 4.88471 10.3882 4.87168 10.3988L4.87083 10.401C4.60664 10.6209 4.21602 10.5932 3.98536 10.3391C3.75492 10.0828 3.76667 9.69192 4.01227 9.45059L7.28247 6.24702L7.71239 5.82629L8.15961 6.22781L9.96151 7.85308L11.7211 6.11674V4.35478C11.7211 3.88492 12.1017 3.50263 12.5722 3.5005L14.2808 3.49408Z"
+                  fill="white"/>
+        </svg>
+        <span>Market</span>
+    </button>
+    <button type="button" data-js-mobile-tab="reports" aria-label="Tax Reports">
+        <svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.5 14.625C6.15861 14.6255 5.82048 14.567 5.50502 14.453C5.18957 14.339 4.90301 14.1717 4.6618 13.9606L3.79925 13.2071L1.96885 14.1668C1.77158 14.2702 1.54644 14.326 1.3164 14.3285C1.08637 14.331 0.859681 14.2802 0.659489 14.1812C0.459297 14.0822 0.292769 13.9385 0.176907 13.7649C0.0610442 13.5913 -2.2133e-06 13.3939 0 13.1929V1.70349C0 1.25169 0.205446 0.818405 0.571142 0.49894C0.936838 0.179474 1.43283 0 1.95 0H7.8C7.97239 0 8.13772 0.0598246 8.25962 0.166313C8.38152 0.272802 8.45 0.417231 8.45 0.567829V3.40697C8.45 3.55757 8.51848 3.702 8.64038 3.80849C8.76228 3.91498 8.92761 3.9748 9.1 3.9748H12.35C12.5224 3.9748 12.6877 4.03463 12.8096 4.14111C12.9315 4.2476 13 4.39203 13 4.54263V13.1929C13 13.3939 12.939 13.5913 12.8231 13.7649C12.7072 13.9385 12.5407 14.0822 12.3405 14.1812C12.1403 14.2802 11.9136 14.331 11.6836 14.3285C11.4536 14.326 11.2284 14.2702 11.0311 14.1668L9.20075 13.2071L8.3382 13.9606C8.09695 14.1716 7.81038 14.3389 7.49494 14.4529C7.17949 14.567 6.84138 14.6254 6.5 14.625ZM3.79925 12.0698C3.97 12.0699 4.13905 12.0994 4.29675 12.1566C4.45446 12.2137 4.59771 12.2975 4.71835 12.4031L5.5809 13.1566C5.82469 13.3695 6.15529 13.4891 6.5 13.4891C6.84471 13.4891 7.17531 13.3695 7.4191 13.1566L8.28165 12.4031C8.48675 12.224 8.75453 12.1099 9.04238 12.079C9.33024 12.0482 9.62165 12.1023 9.87025 12.2327L11.7 13.1929V5.11046H9.1C8.58283 5.11046 8.08684 4.93098 7.72114 4.61152C7.35545 4.29205 7.15 3.85876 7.15 3.40697V1.13566H1.95C1.77761 1.13566 1.61228 1.19548 1.49038 1.30197C1.36848 1.40846 1.3 1.55289 1.3 1.70349V13.1929L3.1304 12.2333C3.33238 12.1272 3.56357 12.0711 3.79925 12.0709V12.0698Z"
+                  fill="white"/>
+            <path d="M12.35 5.11046H9.1C8.58283 5.11046 8.08684 4.93098 7.72114 4.61152C7.35545 4.29205 7.15 3.85876 7.15 3.40697V0.567829C7.15003 0.45554 7.18816 0.34578 7.25959 0.252423C7.33101 0.159067 7.43252 0.0863055 7.55127 0.0433379C7.67003 0.00037028 7.8007 -0.0108744 7.92677 0.0110253C8.05284 0.0329251 8.16865 0.086986 8.25955 0.166374L12.8096 4.14117C12.9004 4.22059 12.9623 4.32175 12.9874 4.43189C13.0124 4.54202 12.9996 4.65617 12.9504 4.75991C12.9012 4.86365 12.8179 4.95233 12.711 5.01472C12.6042 5.07712 12.4785 5.11043 12.35 5.11046ZM8.45 1.93857V3.40697C8.45 3.55757 8.51848 3.702 8.64038 3.80849C8.76228 3.91498 8.92761 3.9748 9.1 3.9748H10.7809L8.45 1.93857Z"
+                  fill="white"/>
+            <path d="M9.1 7.9496H3.9C3.72761 7.9496 3.56228 7.88978 3.44038 7.78329C3.31848 7.6768 3.25 7.53237 3.25 7.38177C3.25 7.23118 3.31848 7.08675 3.44038 6.98026C3.56228 6.87377 3.72761 6.81394 3.9 6.81394H9.1C9.27239 6.81394 9.43772 6.87377 9.55962 6.98026C9.68152 7.08675 9.75 7.23118 9.75 7.38177C9.75 7.53237 9.68152 7.6768 9.55962 7.78329C9.43772 7.88978 9.27239 7.9496 9.1 7.9496Z"
+                  fill="white"/>
+            <path d="M9.1 10.2209H3.9C3.72761 10.2209 3.56228 10.1611 3.44038 10.0546C3.31848 9.94812 3.25 9.80369 3.25 9.65309C3.25 9.50249 3.31848 9.35806 3.44038 9.25157C3.56228 9.14508 3.72761 9.08526 3.9 9.08526H9.1C9.27239 9.08526 9.43772 9.14508 9.55962 9.25157C9.68152 9.35806 9.75 9.50249 9.75 9.65309C9.75 9.80369 9.68152 9.94812 9.55962 10.0546C9.43772 10.1611 9.27239 10.2209 9.1 10.2209Z"
+                  fill="white"/>
+        </svg>
+        <span>Tax Reports</span>
+    </button>
+    <button type="button" data-js-mobile-tab="settings" aria-label="Settings">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.59338 0C10.11 0 10.4835 0.365691 10.5749 0.794992C10.5769 0.801161 10.5789 0.80732 10.5789 0.813488L10.7458 1.74669C10.7915 2.00308 10.9843 2.25581 11.2942 2.43373C11.5943 2.60549 11.9082 2.64115 12.1605 2.55036L13.0646 2.22439C13.0745 2.22149 13.0825 2.2186 13.0904 2.2159C13.4958 2.08964 14.0184 2.20453 14.2807 2.65831L15.8722 5.35807C15.8761 5.36327 15.8801 5.36848 15.8821 5.37388C15.9914 5.57244 16.0252 5.80106 15.9815 6.0214L15.9715 6.06245C15.9218 6.2666 15.8046 6.45069 15.6377 6.58602L14.9065 7.18381C14.6999 7.35267 14.5707 7.64684 14.5707 8C14.5707 8.36858 14.6919 8.65484 14.8906 8.81677L15.6119 9.40607C16.0371 9.71836 16.0828 10.255 15.8583 10.6386V10.64L14.2727 13.3401C14.0303 13.7635 13.5335 13.9229 13.1023 13.7897L13.0586 13.7758V13.775L12.2003 13.4664C11.9161 13.3644 11.5704 13.4043 11.2426 13.5902C10.9346 13.7635 10.728 14.0006 10.6525 14.2494L10.3643 15.2247C10.2709 15.6569 9.89341 16 9.39469 16H6.60498C6.36654 16.0004 6.13406 15.9165 5.95325 15.7652C5.78435 15.6237 5.67112 15.4321 5.6274 15.2216L5.3393 14.2479C5.2638 13.9992 5.0591 13.7656 4.7551 13.5944C4.42327 13.4068 4.0736 13.3658 3.79145 13.4672L2.93505 13.7758L2.92909 13.7781C2.70655 13.8556 2.46216 13.8537 2.23962 13.7725C2.01906 13.6921 1.83624 13.5393 1.721 13.3421L0.127445 10.6419L0.117549 10.6261C0.0102526 10.4276 -0.0255127 10.1989 0.0182005 9.9786C0.0639008 9.75922 0.183113 9.56068 0.359953 9.41649V9.41629L1.09512 8.81638C1.30177 8.64732 1.42892 8.35316 1.42892 8C1.42892 7.6507 1.29977 7.35479 1.08717 7.17879L0.373827 6.58853C-0.0215796 6.28568 -0.0950954 5.77273 0.127445 5.37138C0.131419 5.36714 0.133414 5.36289 0.135401 5.35885L1.72895 2.6589C1.97931 2.22266 2.49991 2.06728 2.94102 2.22439L2.94301 2.22496L3.8451 2.5492C4.09745 2.64019 4.41335 2.60414 4.71736 2.43084C5.02534 2.25503 5.21807 2.00328 5.26377 1.75055L5.42871 0.813488C5.50421 0.337536 5.92146 0 6.40628 0H9.59338ZM6.43805 1.94718C6.31884 2.61918 5.84596 3.1279 5.3214 3.42766C4.78294 3.73475 4.09147 3.8718 3.42981 3.63373L2.68469 3.36598L1.2521 5.79527L1.86012 6.29822C2.3966 6.74198 2.6211 7.39354 2.6211 8C2.6211 8.59836 2.40654 9.25725 1.86211 9.70101L1.24414 10.2065L2.67674 12.635L3.37616 12.3828C4.06762 12.1342 4.78888 12.2762 5.35318 12.5937C5.84595 12.8709 6.30294 13.3182 6.48375 13.9287L6.75599 14.8434H9.23771L9.50796 13.93C9.68877 13.3178 10.1517 12.8682 10.6425 12.5907C11.2088 12.2707 11.9261 12.1348 12.6136 12.3819L13.315 12.6342L14.7396 10.2059L14.1237 9.70178C13.5693 9.25031 13.3786 8.58448 13.3786 8C13.3786 7.40164 13.5951 6.74275 14.1376 6.29899L14.7555 5.79393L13.3229 3.3654L12.5758 3.63469C11.9161 3.87219 11.2247 3.73784 10.6862 3.42902C10.1597 3.12637 9.69072 2.61649 9.56952 1.94314L9.43044 1.15663H6.57917L6.43805 1.94718ZM7.8528 4.81928C9.60928 4.81928 11.0319 6.2001 11.0319 7.90361C11.0319 9.60713 9.60928 10.988 7.8528 10.988C6.09831 10.988 4.67365 9.60713 4.67365 7.90361C4.67365 6.2001 6.09831 4.81928 7.8528 4.81928ZM7.8528 5.9759C6.75599 5.9759 5.86583 6.83894 5.86583 7.90361C5.86583 8.96829 6.75599 9.83132 7.8528 9.83132C8.95159 9.83132 9.83976 8.96829 9.83976 7.90361C9.83976 6.83894 8.95159 5.9759 7.8528 5.9759Z"
+                  fill="white"/>
+        </svg>
+        <span>Settings</span>
+    </button>
+</nav>
+
+<div class="mobile-toast" data-js-mobile-toast-node hidden></div>
+
+<div class="ledger-modal-overlay" id="modal-receive" hidden aria-modal="true" role="dialog" aria-label="Receive">
+    <div class="ledger-modal" id="modal-receive-box">
+        <div class="ledger-modal__header">
+            <h2 class="ledger-modal__title">Receive</h2>
+            <button class="ledger-modal__close" type="button" data-js-close-modal="receive" aria-label="Close">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.99396 7.47172L14.4905 2.97466C14.7825 2.64315 14.9371 2.21302 14.923 1.77169C14.9089 1.33036 14.7271 0.91096 14.4146 0.598734C14.1021 0.286509 13.6823 0.104893 13.2406 0.0908022C12.7988 0.0767118 12.3683 0.231205 12.0365 0.522877L7.53526 5.0153L3.02592 0.50898C2.8644 0.347613 2.67266 0.219611 2.46163 0.13228C2.2506 0.0449487 2.02441 1.70027e-09 1.79599 0C1.56758 -1.70027e-09 1.34139 0.0449487 1.13036 0.13228C0.919333 0.219611 0.727585 0.347613 0.566069 0.50898C0.404552 0.670346 0.276431 0.861916 0.189019 1.07275C0.101607 1.28359 0.0566168 1.50956 0.0566168 1.73777C0.0566168 1.96597 0.101607 2.19195 0.189019 2.40278C0.276431 2.61362 0.404552 2.80519 0.566069 2.96655L5.07657 7.47172L0.579979 11.9676C0.403631 12.1251 0.261299 12.3169 0.161692 12.5312C0.0620854 12.7456 0.00729771 12.978 0.000680594 13.2142C-0.00593653 13.4504 0.0357562 13.6855 0.123208 13.9051C0.210661 14.1246 0.342033 14.3241 0.509289 14.4912C0.676544 14.6583 0.876166 14.7895 1.09594 14.8769C1.31572 14.9643 1.55102 15.0059 1.78746 14.9993C2.02391 14.9927 2.25651 14.938 2.47105 14.8385C2.68559 14.7389 2.87756 14.5967 3.03519 14.4206L7.53526 9.92813L12.0307 14.4206C12.3569 14.7465 12.7993 14.9295 13.2606 14.9295C13.7219 14.9295 14.1644 14.7465 14.4905 14.4206C14.8167 14.0947 15 13.6527 15 13.1918C15 12.7309 14.8167 12.2889 14.4905 11.963L9.99396 7.47172Z"
+                          fill="white"/>
+                </svg>
+
+            </button>
+        </div>
+        <div class="ledger-modal__row">
+            <span class="ledger-modal__label">Address for <span id="modal-receive-ticker">BTC</span></span>
+            <button class="ledger-modal__qr-link" type="button" id="btn-show-qr">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2236_7008)">
+                        <path d="M12 5.75C12 5.94891 11.921 6.13968 11.7803 6.28033C11.6397 6.42098 11.4489 6.5 11.25 6.5H0.75C0.551088 6.5 0.360322 6.42098 0.21967 6.28033C0.0790176 6.13968 0 5.94891 0 5.75C0 5.55109 0.0790176 5.36032 0.21967 5.21967C0.360322 5.07902 0.551088 5 0.75 5H11.25C11.4489 5 11.6397 5.07902 11.7803 5.21967C11.921 5.36032 12 5.55109 12 5.75ZM0.75 4C0.948912 4 1.13968 3.92098 1.28033 3.78033C1.42098 3.63968 1.5 3.44891 1.5 3.25V2.75C1.5 2.061 2.061 1.5 2.75 1.5H3.25C3.44891 1.5 3.63968 1.42098 3.78033 1.28033C3.92098 1.13968 4 0.948912 4 0.75C4 0.551088 3.92098 0.360322 3.78033 0.21967C3.63968 0.0790176 3.44891 0 3.25 0L2.75 0C2.0209 0.000794085 1.32189 0.29078 0.806333 0.806333C0.29078 1.32189 0.000794085 2.0209 0 2.75L0 3.25C0 3.44891 0.0790176 3.63968 0.21967 3.78033C0.360322 3.92098 0.551088 4 0.75 4ZM3.25 10.5H2.75C2.4186 10.4996 2.10089 10.3678 1.86655 10.1334C1.63222 9.89911 1.5004 9.5814 1.5 9.25V8.75C1.5 8.55109 1.42098 8.36032 1.28033 8.21967C1.13968 8.07902 0.948912 8 0.75 8C0.551088 8 0.360322 8.07902 0.21967 8.21967C0.0790176 8.36032 0 8.55109 0 8.75L0 9.25C0 10.7665 1.2335 12 2.75 12H3.25C3.44891 12 3.63968 11.921 3.78033 11.7803C3.92098 11.6397 4 11.4489 4 11.25C4 11.0511 3.92098 10.8603 3.78033 10.7197C3.63968 10.579 3.44891 10.5 3.25 10.5ZM11.25 8C11.0511 8 10.8603 8.07902 10.7197 8.21967C10.579 8.36032 10.5 8.55109 10.5 8.75V9.25C10.5 9.939 9.939 10.5 9.25 10.5H8.75C8.55109 10.5 8.36032 10.579 8.21967 10.7197C8.07902 10.8603 8 11.0511 8 11.25C8 11.4489 8.07902 11.6397 8.21967 11.7803C8.36032 11.921 8.55109 12 8.75 12H9.25C10.7665 12 12 10.7665 12 9.25V8.75C12 8.55109 11.921 8.36032 11.7803 8.21967C11.6397 8.07902 11.4489 8 11.25 8ZM9.25 0H8.75C8.55109 0 8.36032 0.0790176 8.21967 0.21967C8.07902 0.360322 8 0.551088 8 0.75C8 0.948912 8.07902 1.13968 8.21967 1.28033C8.36032 1.42098 8.55109 1.5 8.75 1.5H9.25C9.939 1.5 10.5 2.061 10.5 2.75V3.25C10.5 3.44891 10.579 3.63968 10.7197 3.78033C10.8603 3.92098 11.0511 4 11.25 4C11.4489 4 11.6397 3.92098 11.7803 3.78033C11.921 3.63968 12 3.44891 12 3.25V2.75C12 1.2335 10.7665 0 9.25 0Z"
+                              fill="#BAAEFE"/>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_2236_7008">
+                            <rect width="12" height="12" fill="white"/>
+                        </clipPath>
+                    </defs>
+                </svg>
+                Show QR Code
+            </button>
+        </div>
+        <div class="ledger-modal__address-row">
+            <span class="ledger-modal__address" id="modal-receive-address">bc1p5d7rjqrt7tm9zmsvjd34...</span>
+            <button class="ledger-modal__copy-btn" type="button" id="btn-copy-address" aria-label="Copy address">
+        <span class="ledger-modal__copy-icon" id="copy-icon-1">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g
+                  clip-path="url(#clip0_2236_7000)"><path
+                  d="M7.875 11.0833H3.20833C2.35771 11.0824 1.5422 10.7441 0.940722 10.1426C0.339244 9.54113 0.000926432 8.72562 0 7.875L0 3.20833C0.000926432 2.35771 0.339244 1.5422 0.940722 0.940722C1.5422 0.339244 2.35771 0.000926432 3.20833 0L7.875 0C8.72562 0.000926432 9.54113 0.339244 10.1426 0.940722C10.7441 1.5422 11.0824 2.35771 11.0833 3.20833V7.875C11.0824 8.72562 10.7441 9.54113 10.1426 10.1426C9.54113 10.7441 8.72562 11.0824 7.875 11.0833ZM3.20833 1.75C2.82156 1.75 2.45063 1.90365 2.17714 2.17714C1.90365 2.45063 1.75 2.82156 1.75 3.20833V7.875C1.75 8.26177 1.90365 8.63271 2.17714 8.9062C2.45063 9.17969 2.82156 9.33333 3.20833 9.33333H7.875C8.26177 9.33333 8.63271 9.17969 8.9062 8.9062C9.17969 8.63271 9.33333 8.26177 9.33333 7.875V3.20833C9.33333 2.82156 9.17969 2.45063 8.9062 2.17714C8.63271 1.90365 8.26177 1.75 7.875 1.75H3.20833ZM14 10.7917V4.08333C14 3.85127 13.9078 3.62871 13.7437 3.46461C13.5796 3.30052 13.3571 3.20833 13.125 3.20833C12.8929 3.20833 12.6704 3.30052 12.5063 3.46461C12.3422 3.62871 12.25 3.85127 12.25 4.08333V10.7917C12.25 11.1784 12.0964 11.5494 11.8229 11.8229C11.5494 12.0964 11.1784 12.25 10.7917 12.25H4.08333C3.85127 12.25 3.62871 12.3422 3.46461 12.5063C3.30052 12.6704 3.20833 12.8929 3.20833 13.125C3.20833 13.3571 3.30052 13.5796 3.46461 13.7437C3.62871 13.9078 3.85127 14 4.08333 14H10.7917C11.6423 13.9991 12.4578 13.6608 13.0593 13.0593C13.6608 12.4578 13.9991 11.6423 14 10.7917Z"
+                  fill="#BAAEFE"/></g><defs><clipPath id="clip0_2236_7000"><rect width="14" height="14"
+                                                                                 fill="white"/></clipPath></defs></svg>
+        </span>
+                <span class="ledger-modal__copy-ok" id="copy-ok-1" hidden>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path
+                  d="M2 7L5.5 10.5L12 3.5" stroke="#66BE54" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/></svg>
+        </span>
+            </button>
+        </div>
+        <div class="ledger-modal__notice">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 0C3.134 0 0 3.134 0 7C0 10.866 3.134 14 7 14C10.866 14 14 10.866 14 7C14 3.134 10.866 0 7 0ZM6.13791 3.07854C6.13791 2.85073 6.22841 2.63224 6.3895 2.47115C6.55059 2.31006 6.76907 2.21956 6.99689 2.21956C7.2247 2.21956 7.44319 2.31006 7.60428 2.47115C7.76537 2.63224 7.85587 2.85073 7.85587 3.07854V8.05195C7.85587 8.27976 7.76537 8.49825 7.60428 8.65934C7.44319 8.82043 7.22471 8.91093 6.99689 8.91093C6.76907 8.91093 6.55059 8.82043 6.3895 8.65934C6.22841 8.49825 6.13791 8.27976 6.13791 8.05195V3.07854ZM7.75317 11.4661C7.57945 11.6375 7.35174 11.7433 7.10877 11.7658C6.86579 11.7882 6.62255 11.7257 6.42041 11.5891C6.21828 11.4524 6.06973 11.2499 6.00002 11.0161C5.93032 10.7822 5.94377 10.5315 6.03808 10.3064C6.13239 10.0814 6.30175 9.89595 6.51735 9.78168C6.73294 9.66741 6.98146 9.63134 7.22065 9.67962C7.45983 9.72789 7.67491 9.85753 7.8293 10.0465C7.98369 10.2354 8.06787 10.472 8.06751 10.716C8.06868 10.8558 8.04142 10.9944 7.98738 11.1234C7.93334 11.2523 7.85366 11.3689 7.75317 11.4661Z"
+                      fill="#BBB0FF"/>
+            </svg>
+            <p>For privacy reasons, a new address is generated for every transaction. The previous ones do remain
+                valid.</p>
+        </div>
+    </div>
+</div>
+
+<div class="ledger-modal-overlay" id="modal-receive-qr" hidden aria-modal="true" role="dialog" aria-label="Receive QR">
+    <div class="ledger-modal" id="modal-receive-qr-box">
+        <div class="ledger-modal__header">
+            <h2 class="ledger-modal__title">Receive</h2>
+            <button class="ledger-modal__close" type="button" data-js-close-modal="receive-qr" aria-label="Close">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.99396 7.47172L14.4905 2.97466C14.7825 2.64315 14.9371 2.21302 14.923 1.77169C14.9089 1.33036 14.7271 0.91096 14.4146 0.598734C14.1021 0.286509 13.6823 0.104893 13.2406 0.0908022C12.7988 0.0767118 12.3683 0.231205 12.0365 0.522877L7.53526 5.0153L3.02592 0.50898C2.8644 0.347613 2.67266 0.219611 2.46163 0.13228C2.2506 0.0449487 2.02441 1.70027e-09 1.79599 0C1.56758 -1.70027e-09 1.34139 0.0449487 1.13036 0.13228C0.919333 0.219611 0.727585 0.347613 0.566069 0.50898C0.404552 0.670346 0.276431 0.861916 0.189019 1.07275C0.101607 1.28359 0.0566168 1.50956 0.0566168 1.73777C0.0566168 1.96597 0.101607 2.19195 0.189019 2.40278C0.276431 2.61362 0.404552 2.80519 0.566069 2.96655L5.07657 7.47172L0.579979 11.9676C0.403631 12.1251 0.261299 12.3169 0.161692 12.5312C0.0620854 12.7456 0.00729771 12.978 0.000680594 13.2142C-0.00593653 13.4504 0.0357562 13.6855 0.123208 13.9051C0.210661 14.1246 0.342033 14.3241 0.509289 14.4912C0.676544 14.6583 0.876166 14.7895 1.09594 14.8769C1.31572 14.9643 1.55102 15.0059 1.78746 14.9993C2.02391 14.9927 2.25651 14.938 2.47105 14.8385C2.68559 14.7389 2.87756 14.5967 3.03519 14.4206L7.53526 9.92813L12.0307 14.4206C12.3569 14.7465 12.7993 14.9295 13.2606 14.9295C13.7219 14.9295 14.1644 14.7465 14.4905 14.4206C14.8167 14.0947 15 13.6527 15 13.1918C15 12.7309 14.8167 12.2889 14.4905 11.963L9.99396 7.47172Z"
+                          fill="white"/>
+                </svg>
+            </button>
+        </div>
+        <div class="ledger-modal__qr-wrap">
+            <div id="qr-canvas"></div>
+        </div>
+        <div class="ledger-modal__address-row ledger-modal__address-row--qr">
+            <span class="ledger-modal__address" id="modal-qr-address">bc1p5d7rjqrt7tm9zmsvjd34...</span>
+            <button class="ledger-modal__copy-btn" type="button" id="btn-copy-address-qr" aria-label="Copy address">
+        <span class="ledger-modal__copy-icon" id="copy-icon-2">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g
+                  clip-path="url(#clip0_2236_7001)"><path
+                  d="M7.875 11.0833H3.20833C2.35771 11.0824 1.5422 10.7441 0.940722 10.1426C0.339244 9.54113 0.000926432 8.72562 0 7.875L0 3.20833C0.000926432 2.35771 0.339244 1.5422 0.940722 0.940722C1.5422 0.339244 2.35771 0.000926432 3.20833 0L7.875 0C8.72562 0.000926432 9.54113 0.339244 10.1426 0.940722C10.7441 1.5422 11.0824 2.35771 11.0833 3.20833V7.875C11.0824 8.72562 10.7441 9.54113 10.1426 10.1426C9.54113 10.7441 8.72562 11.0824 7.875 11.0833ZM3.20833 1.75C2.82156 1.75 2.45063 1.90365 2.17714 2.17714C1.90365 2.45063 1.75 2.82156 1.75 3.20833V7.875C1.75 8.26177 1.90365 8.63271 2.17714 8.9062C2.45063 9.17969 2.82156 9.33333 3.20833 9.33333H7.875C8.26177 9.33333 8.63271 9.17969 8.9062 8.9062C9.17969 8.63271 9.33333 8.26177 9.33333 7.875V3.20833C9.33333 2.82156 9.17969 2.45063 8.9062 2.17714C8.63271 1.90365 8.26177 1.75 7.875 1.75H3.20833ZM14 10.7917V4.08333C14 3.85127 13.9078 3.62871 13.7437 3.46461C13.5796 3.30052 13.3571 3.20833 13.125 3.20833C12.8929 3.20833 12.6704 3.30052 12.5063 3.46461C12.3422 3.62871 12.25 3.85127 12.25 4.08333V10.7917C12.25 11.1784 12.0964 11.5494 11.8229 11.8229C11.5494 12.0964 11.1784 12.25 10.7917 12.25H4.08333C3.85127 12.25 3.62871 12.3422 3.46461 12.5063C3.30052 12.6704 3.20833 12.8929 3.20833 13.125C3.20833 13.3571 3.30052 13.5796 3.46461 13.7437C3.62871 13.9078 3.85127 14 4.08333 14H10.7917C11.6423 13.9991 12.4578 13.6608 13.0593 13.0593C13.6608 12.4578 13.9991 11.6423 14 10.7917Z"
+                  fill="#BAAEFE"/></g><defs><clipPath id="clip0_2236_7001"><rect width="14" height="14"
+                                                                                 fill="white"/></clipPath></defs></svg>
+        </span>
+                <span class="ledger-modal__copy-ok" id="copy-ok-2" hidden>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path
+                  d="M2 7L5.5 10.5L12 3.5" stroke="#66BE54" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round"/></svg>
+        </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="ledger-modal-overlay" id="modal-send" hidden aria-modal="true" role="dialog" aria-label="Send">
+    <div class="ledger-modal" id="modal-send-box">
+        <div class="ledger-modal__header">
+            <h2 class="ledger-modal__title">Send</h2>
+            <button class="ledger-modal__close" type="button" data-js-close-modal="send" aria-label="Close">
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.99396 7.47172L14.4905 2.97466C14.7825 2.64315 14.9371 2.21302 14.923 1.77169C14.9089 1.33036 14.7271 0.91096 14.4146 0.598734C14.1021 0.286509 13.6823 0.104893 13.2406 0.0908022C12.7988 0.0767118 12.3683 0.231205 12.0365 0.522877L7.53526 5.0153L3.02592 0.50898C2.8644 0.347613 2.67266 0.219611 2.46163 0.13228C2.2506 0.0449487 2.02441 1.70027e-09 1.79599 0C1.56758 -1.70027e-09 1.34139 0.0449487 1.13036 0.13228C0.919333 0.219611 0.727585 0.347613 0.566069 0.50898C0.404552 0.670346 0.276431 0.861916 0.189019 1.07275C0.101607 1.28359 0.0566168 1.50956 0.0566168 1.73777C0.0566168 1.96597 0.101607 2.19195 0.189019 2.40278C0.276431 2.61362 0.404552 2.80519 0.566069 2.96655L5.07657 7.47172L0.579979 11.9676C0.403631 12.1251 0.261299 12.3169 0.161692 12.5312C0.0620854 12.7456 0.00729771 12.978 0.000680594 13.2142C-0.00593653 13.4504 0.0357562 13.6855 0.123208 13.9051C0.210661 14.1246 0.342033 14.3241 0.509289 14.4912C0.676544 14.6583 0.876166 14.7895 1.09594 14.8769C1.31572 14.9643 1.55102 15.0059 1.78746 14.9993C2.02391 14.9927 2.25651 14.938 2.47105 14.8385C2.68559 14.7389 2.87756 14.5967 3.03519 14.4206L7.53526 9.92813L12.0307 14.4206C12.3569 14.7465 12.7993 14.9295 13.2606 14.9295C13.7219 14.9295 14.1644 14.7465 14.4905 14.4206C14.8167 14.0947 15 13.6527 15 13.1918C15 12.7309 14.8167 12.2889 14.4905 11.963L9.99396 7.47172Z"
+                          fill="white"/>
+                </svg>
+            </button>
+        </div>
+        <p class="ledger-modal__send-desc">Insufficient funds to send tokens.</p>
+        <div class="ledger-modal__notice ledger-modal__notice--send">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="7.25" stroke="#BAAEFE" stroke-width="1.5"/>
+                <path d="M8 7V11" stroke="#BAAEFE" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="8" cy="5" r="0.75" fill="#BAAEFE"/>
+            </svg>
+            <p>Please top up your balance to use this feature.</p>
+        </div>
+    </div>
+</div>
+<script src="./scripts/config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        initMarketTimeframeSelect();
+    });
+
+    function initMarketTimeframeSelect() {
+        // Находим наш список
+        const selectList = document.querySelector('[data-js-market-select-list]');
+        if (!selectList) return;
+
+        // Вешаем один обработчик клика на весь список (делегирование событий)
+        selectList.addEventListener('click', (event) => {
+            // Проверяем, что кликнули именно по элементу списка
+            const option = event.target.closest('.market-select__option');
+            if (!option) return;
+            isCoinsLoaded = false
+
+            // Если этот таймфрейм уже выбран — ничего не делаем
+            // if (option.classList.contains('is-selected')) return;
+
+            // 1. Сбрасываем активное состояние у старого элемента
+            const currentSelected = selectList.querySelector('.market-select__option.is-selected');
+            if (currentSelected) {
+                currentSelected.classList.remove('is-selected');
+                currentSelected.setAttribute('aria-selected', 'false');
+            }
+
+            // 2. Делаем активным элемент, по которому кликнули
+            option.classList.add('is-selected');
+            option.setAttribute('aria-selected', 'true');
+            console.log("tut")
+            // 3. Вытаскиваем значение (1D, 1W, 1M, 1Y)
+            const timeframe = option.dataset.label; // или option.getAttribute('data-label')
+
+            // 4. Отправляем запрос на сервер с новым таймфреймом
+            loadCoinsData(timeframe);
+        });
+    }
+
+
+    // Твоя функция запроса теперь принимает timeframe
+    async function loadCoinsData(timeframe = '1D') {
+        console.log(`🚀 Запрос данных за период: ${timeframe}`);
+        try {
+            const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
+            const response = await apiFetch(`${API_BASE_URL}/user/coins?timeframe=${timeframe}?currency=${currentCurrency}`);
+
+            const data = await response.json();
+            console.log('✅ Данные успешно получены:', data);
+
+            const coinsArray = Array.isArray(data) ? data : (data.coins || data.items || []);
+
+            const totalBalance = data.total_balance !== undefined ? data.total_balance : null;
+            if (totalBalance !== null) {
+                const balanceEl = document.querySelector('[data-mobile-balance-value]');
+                if (balanceEl) {
+                    balanceEl.innerHTML = `<span>$${totalBalance.toLocaleString()}</span><small>.00</small>`;
+                }
+            }
+
+            renderMarketTable(coinsArray);
+            isCoinsLoaded = true;
+            console.log('Данные обновлены:', response);
+        } catch (error) {
+            console.error('Ошибка при загрузке маркета:', error);
+        }
+    }
+
+    function renderAssetList(coins) {
+        const list = document.getElementById('js-asset-list');
+        if (!list) return;
+
+        list.innerHTML = '';
+        const allowedAssets = ["Bitcoin", "Ethereum", "Solana", "Cardano"];
+        const filteredCoins = coins.filter(coin => allowedAssets.includes(coin.name));
+        const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
+        const currency_icon = {
+            'eur': '€',
+            'gbp': '£',
+            'jpy': '¥',
+            'usd': '$',
+        }
+        filteredCoins.forEach(coin => {
+            const li = document.createElement('li');
+            li.className = 'mobile-asset-row';
+
+            // Используем поле price_change_percentage_24h (дневное изменение)
+            const change = coin.price_change_percentage_24h || 0;
+
+            // Определяем цвет: если change >= 0 — класс 'text-green', иначе 'text-red'
+            const color = change >= 0 ? '#32D74B' : '#FF453A';
+
+            li.innerHTML = `
+    <img src="${coin.image}" alt="${coin.name}" width="37" height="37">
+    <span>
+        <strong>${coin.name}</strong>
+        <small>${coin.symbol.toUpperCase()}</small>
+    </span>
+    <em>
+        ${currency_icon[currentCurrency]} ${coin.current_price.toLocaleString()}
+        <small style="color: ${color}; font-weight: bold;">
+            ${change >= 0 ? '+' : ''}${change.toFixed(2)}%
+        </small>
+    </em>
+`;
+            list.appendChild(li);
+        });
+    }
+
+    // ── NAVIGATION SYSTEM ─────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('[data-js-mobile-tab]');
+        const views = document.querySelectorAll('[data-mobile-view]');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                const targetViewName = tab.getAttribute('data-js-mobile-tab');
+
+                // 1. Обновляем визуальное состояние кнопок
+                tabs.forEach(t => t.classList.remove('is-active'));
+                document.querySelectorAll(`[data-js-mobile-tab="${targetViewName}"]`).forEach(t => {
+                    t.classList.add('is-active');
+                });
+
+                // 2. Переключаем видимость самих экранов
+                views.forEach(view => {
+                    if (view.getAttribute('data-mobile-view') === targetViewName) {
+                        view.hidden = false;
+                        view.classList.add('is-active');
+                    } else {
+                        view.hidden = true;
+                        view.classList.remove('is-active');
+                    }
+                });
+
+                // 3. Запускаем обновление данных
+                if (typeof setView === 'function') {
+                    setView(targetViewName);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    // Исправлено: Добавлен надежный Fallback на случай, если config.js не существует или ломается.
+
+    async function apiFetch(url, options = {}) {
+        const token = localStorage.getItem('access_token');
+        options.headers = {
+            ...options.headers,
+            'Content-Type': 'application/json'
+        };
+
+        if (token) {
+            options.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        try {
+            const response = await fetch(url, options);
+
+            if (response.status === 401 || response.status === 403) {
+                console.warn('⚠️ Ошибка авторизации (401/403). Скорее всего токен просрочен.');
+                return null;
+            }
+
+            return response;
+        } catch (err) {
+            console.error('⚠️ Ошибка сети (возможно CORS или сервер не запущен):', err);
+            return null;
+        }
+    }
+
+    function renderMarketStrip(coins) {
+        const strip = document.querySelector('.mobile-market-strip');
+        if (!strip) return;
+
+        // Очищаем, сохраняя mood-карточку, если она есть
+        const moodCard = strip.querySelector('.mobile-market-card--mood');
+        strip.innerHTML = '';
+        if (moodCard) strip.appendChild(moodCard);
+
+        coins.forEach(coin => {
+            const change = coin.price_change_percentage_24h || 0;
+            // Определяем цвет HEX
+            const color = change >= 0 ? '#32D74B' : '#FF453A';
+
+            const article = document.createElement('article');
+            article.className = 'mobile-market-card';
+
+            // Вставляем стиль прямо в атрибут small
+            article.innerHTML = `
+            <span class="mobile-market-card__icon">
+                <img src="${coin.image}" alt="${coin.name}" width="34" height="34">
+            </span>
+            <strong>${coin.name}</strong>
+            <small style="color: ${color}; font-weight: bold;">
+                ${change >= 0 ? '+' : ''}${change.toFixed(2)}%
+            </small>
+        `;
+            strip.appendChild(article);
+        });
+    }
+
+    function renderMarketTable(coins) {
+        const list = document.querySelector('[data-js-market-list]');
+        if (!list) return;
+
+        list.innerHTML = '';
+
+        coins.forEach(coin => {
+            const priceChange = coin.change_percent || 0;
+            const currentPrice = coin.current_price || 0;
+            const coinName = coin.name || 'Unknown';
+            const coinSymbol = (coin.symbol || '').toUpperCase();
+            const coinImage = coin.image || './icons/home/bitcoin.png';
+
+            const isUp = priceChange >= 0;
+            const changeClass = isUp ? 'market__change--up' : 'market__change--down';
+
+            // Стрелочка: выбираем символ в зависимости от направления
+            const arrow = isUp ? '🡵' : '🡶';
+            const currency_icon = {
+                'eur': '€',
+                'gbp': '£',
+                'jpy': '¥',
+                'usd': '$',
+            }
+            const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
+            const formattedPrice = `${currency_icon[currentCurrency]} ${currentPrice.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+            const li = document.createElement('li');
+            li.className = 'market__row';
+            li.dataset.name = coinName;
+            li.dataset.ticker = coinSymbol;
+
+            li.innerHTML = `
+        <div class="market__coin">
+            <img class="market__coin-icon" src="${coinImage}" alt="${coinName}" width="37" height="37">
+            <div class="market__coin-info">
+                <p class="market__coin-name">${coinName}</p>
+                <p class="market__coin-ticker">${coinSymbol}</p>
+            </div>
+        </div>
+        <div class="market__price">${formattedPrice}</div>
+        <div class="market__change ${changeClass}">
+            <span>${arrow} ${Math.abs(priceChange).toFixed(2)}%</span>
+        </div>
+    `;
+            list.appendChild(li);
+        });
+    }
+
+    function copySetup(btnId, iconId, okId, addressElementId) {
+        const btn = document.getElementById(btnId);
+        const icon = document.getElementById(iconId);
+        const ok = document.getElementById(okId);
+
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+            // Ищем элемент каждый раз при клике
+            const addressEl = document.getElementById(addressElementId);
+            const address = addressEl ? addressEl.textContent : '';
+
+            if (address) {
+                navigator.clipboard.writeText(address).then(() => {
+                    icon.hidden = true;
+                    ok.hidden = false;
+                    clearTimeout(btn._timer);
+                    btn._timer = setTimeout(() => {
+                        icon.hidden = false;
+                        ok.hidden = true;
+                    }, 2000);
+                }).catch(err => console.error('Ошибка копирования:', err));
+            }
+        });
+    }
+
+    let isCoinsLoaded = false;
+    let currentUserData = null;
+
+    async function loadHomeData() {
+        if (isCoinsLoaded) return;
+        const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
+        console.log("🚀 Попытка загрузить данные с:", `${API_BASE_URL}/user/coins?currency=${currentCurrency}`);
+
+        const response = await apiFetch(`${API_BASE_URL}/user/coins?currency=${currentCurrency}`, {method: 'GET'});
+
+        if (response && response.ok) {
+            try {
+                const data = await response.json();
+                console.log('✅ Данные успешно получены:', data);
+
+                const coinsArray = Array.isArray(data) ? data : (data.coins || data.items || []);
+                currentUserData = data.user
+                const balanceEl = document.querySelector('[data-mobile-balance-value]');
+                console.log(balanceEl)
+
+                const currency_icon = {
+                    'eur':'€',
+                    'gbp':'£',
+                    'jpy':'¥',
+                    'usd':'$',
+                }
+                if (balanceEl) {
+                    balanceEl.innerHTML = `<span>${currency_icon[currentCurrency]}</span>0<small>.00</small>`;
+                }
+
+
+                renderMarketStrip(coinsArray)
+                renderAssetList(coinsArray);
+                renderMarketTable(coinsArray);
+                copySetup('btn-copy-address', 'copy-icon-1', 'copy-ok-1');
+                copySetup('btn-copy-address-qr', 'copy-icon-2', 'copy-ok-2');
+                isCoinsLoaded = true;
+
+            } catch (err) {
+                console.error('⚠️ Ошибка при парсинге JSON ответа:', err);
+            }
+        } else {
+            console.error('⚠️ Не удалось загрузить данные. Ответ:', response);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadHomeData();
+        copySetup('btn-copy-address', 'copy-icon-1', 'copy-ok-1', 'modal-receive-address');
+        copySetup('btn-copy-address-qr', 'copy-icon-2', 'copy-ok-2', 'modal-qr-address');
+    });
+
+    function setView(name) {
+        if (name === 'home' || name === 'market') {
+            loadHomeData();
+        }
+    }
+</script>
+
+<script>
+    // ── MODAL SYSTEM ──────────────────────────────────────────
+    (() => {
+        function openModal(id) {
+            const overlay = document.getElementById('modal-' + id);
+            if (!overlay) return;
+            overlay.hidden = false;
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            const overlay = document.getElementById('modal-' + id);
+            if (!overlay) return;
+            overlay.hidden = true;
+            overlay.classList.remove('is-open');
+            const anyOpen = [...document.querySelectorAll('.ledger-modal-overlay')].some(el => !el.hidden);
+            if (!anyOpen) document.body.style.overflow = '';
+        }
+
+        document.querySelector('[data-js-open-modal="receive"]')?.addEventListener('click', () => openModal('receive'));
+        document.querySelector('[data-js-open-modal="send"]')?.addEventListener('click', () => openModal('send'));
+
+        document.querySelectorAll('[data-js-open-modal="receive"]').forEach(el => {
+            el.addEventListener('click', () => {
+                const ticker = el.dataset.ticker || 'BTC';
+                const address = currentUserData?.addresses[ticker] || 'Адрес не найден';
+
+                // Обновляем оба поля, чтобы везде был правильный адрес
+                const tickerEl = document.getElementById('modal-receive-ticker');
+                const addrEl = document.getElementById('modal-receive-address');
+                const qrAddrEl = document.getElementById('modal-qr-address'); // Добавили это
+
+                if (tickerEl) tickerEl.textContent = ticker;
+                if (addrEl) addrEl.textContent = address;
+                if (qrAddrEl) qrAddrEl.textContent = address; // Обновляем адрес для QR-модалки
+
+                openModal('receive');
+            });
+        });
+
+        document.querySelectorAll('[data-js-close-modal]').forEach(btn => {
+            btn.addEventListener('click', () => closeModal(btn.dataset.jsCloseModal));
+        });
+
+        document.querySelectorAll('.ledger-modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    const id = overlay.id.replace('modal-', '');
+                    closeModal(id);
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.ledger-modal-overlay:not([hidden])').forEach(overlay => {
+                    closeModal(overlay.id.replace('modal-', ''));
+                });
+            }
+        });
+
+        document.getElementById('btn-show-qr')?.addEventListener('click', () => {
+            const ticker = document.getElementById('modal-receive-ticker').textContent;
+            const address = currentUserData?.addresses[ticker];
+            closeModal('receive');
+            openModal('receive-qr');
+            renderQR(address);
+        });
+
+        // ── COPY address (modal 1) ─────────────────────────────
+
+
+        // ── QR CODE renderer (pure canvas, no lib) ────────────
+        function renderQR(address) {
+            const qrWrap = document.getElementById('qr-canvas');
+            qrWrap.innerHTML = ''; // Очистить старый
+
+            // Создаем QR через библиотеку
+            new QRCode(qrWrap, {
+                text: address,
+                width: 220,
+                height: 220,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+            });
+        }
+    })();
+</script>
+<script>
+    (() => {
+        function initIncomeChart() {
+            const canvas = document.querySelector('[data-js-mobile-income-chart]');
+            if (!canvas || typeof Chart === 'undefined') return;
+            new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [1],
+                        backgroundColor: ['#8a8a8f'],
+                        borderColor: '#1a1a1a',
+                        borderWidth: 2,
+                        circumference: 355,
+                        rotation: -88
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '96%',
+                    plugins: {legend: {display: false}, tooltip: {enabled: false}},
+                    animation: false
+                },
+            });
+        }
+
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initIncomeChart);
+        else initIncomeChart();
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const settingsList = document.querySelector('[data-js-settings-select-list]');
+        if (!settingsList) return;
+
+        // Восстанавливаем валюту при загрузке
+        const savedCurrency = localStorage.getItem('preferred_currency') || 'usd';
+        updateSelectedCurrencyUI(savedCurrency);
+
+        settingsList.addEventListener('click', (event) => {
+            const option = event.target.closest('.settings-select__option');
+            if (!option) return;
+
+            const currency = option.dataset.value;
+
+            // 1. Сохраняем в localStorage
+            localStorage.setItem('preferred_currency', currency);
+
+            // 2. Обновляем визуальное состояние меню
+            updateSelectedCurrencyUI(currency);
+            isCoinsLoaded = false;
+            loadHomeData();
+            console.log("💰 Валюта изменена на:", currency);
+
+            // 3. Вызываем пересчет цен на странице (если нужно)
+            // refreshPrices();
+        });
+    });
+
+    function updateSelectedCurrencyUI(currency) {
+        const triggerValue = document.querySelector('[data-js-settings-select-value]');
+        const options = document.querySelectorAll('.settings-select__option');
+
+        options.forEach(opt => {
+            const isActive = opt.dataset.value === currency;
+            opt.classList.toggle('is-selected', isActive);
+            opt.setAttribute('aria-selected', isActive);
+            if (isActive) {
+                triggerValue.textContent = opt.dataset.label;
+            }
+        });
+    }
+</script>
 </body>
 </html>

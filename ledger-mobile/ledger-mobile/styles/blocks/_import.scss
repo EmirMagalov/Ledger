@@ -32,10 +32,9 @@
   }
 
   &__card.create__card {
-    min-height: 580px;
+    min-height: 348px;
     padding: 18px;
     overflow: visible;
-    transition: min-height 0.3s ease, height 0.3s ease;
   }
 
   &__grid.create__grid {
@@ -129,9 +128,4 @@
       font-size: 12px;
     }
   }
-}
-.create__import-btn.is-disabled {
-  pointer-events: none; /* Запрещает любые клики */
-  opacity: 0.5;         /* Делает кнопку прозрачной */
-  cursor: not-allowed;
 }

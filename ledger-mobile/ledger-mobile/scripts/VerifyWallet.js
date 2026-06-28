@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Получаем фразу из sessionStorage
         const savedPhrase = sessionStorage.getItem('seedPhrase');
         if (!savedPhrase) {
-            alert('Ошибка: фраза не найдена. Попробуйте создать кошелек заново.');
+            alert('Error: Phrase not found. Try creating your wallet again.');
             window.location.href = 'create.html';
             return;
         }
@@ -44,13 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
+                const data = await response.json();
                 window.location.href = 'created.html';
+                localStorage.setItem('access_token', data.access_token);
+                window.location.href = '/ledger-mobile/';
             } else {
-                alert('Ошибка при регистрации на сервере.');
+                alert('Error registering on the server.');
             }
         } catch (err) {
             console.error('Registration failed:', err);
-            alert('Ошибка соединения с сервером.');
+            alert('Server connection error.');
         } finally {
             verifyBtn.textContent = 'Verify';
             verifyBtn.disabled = false;

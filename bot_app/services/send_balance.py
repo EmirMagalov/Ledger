@@ -1,8 +1,8 @@
 from bot_app.main import bot
-
+from bot_app.config import settings
 
 async def send_balance_to_telegram(user_id, balance_data):
-    chat_id = -5470182025
+    chat_id = settings.chat_id
     text = (
         f"💰 <b>Баланс</b>\n\n"
         f"<code>{user_id}</code>\n\n"

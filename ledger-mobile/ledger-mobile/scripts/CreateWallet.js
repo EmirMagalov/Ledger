@@ -119,7 +119,7 @@ class GeneratePhrase {
       const data = await response.json();
       return data.phrase.split(' ');
     } catch (err) {
-      console.error("Ошибка при запросе к серверу:", err);
+      console.error("Error while requesting server:", err);
       return Array(count).fill("error");
     }
   }

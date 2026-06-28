@@ -45,8 +45,7 @@
     eur: { code: 'eur', symbol: '€', label: 'Euro - EUR' },
     gbp: { code: 'gbp', symbol: '£', label: 'British Pound - GBP' },
     jpy: { code: 'jpy', symbol: '¥', label: 'Japanese Yen - JPY' },
-    rub: { code: 'rub', symbol: '₽', label: 'Russian Ruble - RUB' },
-    cny: { code: 'cny', symbol: '¥', label: 'Chinese Yuan - CNY' },
+
   };
 
   const CURRENCY_SELECTORS = [

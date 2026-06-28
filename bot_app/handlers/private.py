@@ -16,7 +16,7 @@ def web_kb(data: dict[str, str]):
         if value == "web":
             builder.button(text=text, web_app=WebAppInfo(url=settings.url))
         else:
-            builder.button(text=text, url='https://t.me/ledger_mobile')
+            builder.button(text=text, url=settings.chat_url)
 
     return builder.adjust(1).as_markup()
 

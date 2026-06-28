@@ -53,10 +53,10 @@
 
 html {
   min-height: 100%;
-  background-color: #000;
+  background-color: #131214;
   background-image: url("../images/bg-auth-mob.jpg");
-  background-position: top center;
-  background-size: cover;
+  background-position: top left;
+  background-size: 588px 305px;
   background-repeat: no-repeat;
   background-attachment: fixed;
   &.is-lock {
@@ -78,16 +78,16 @@ html {
   overflow-x: hidden !important;
   overflow-y: auto;
   z-index: 1000;
-  background-color: #000;
-  background-image: url("../images/bg-auth-mob.jpg");
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: url("../images/bg-auth-mob.jpg") center/cover no-repeat;
+}
 
-  &--alt {
-    background: #000 url("../images/bg-auth-mob.jpg") top center / cover no-repeat fixed;
-  }
+.back__button {
+  background-color: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 44px;
+  left: 30px;
 }
 
 .main {
@@ -95,6 +95,10 @@ html {
     position: fixed;
     top: 0;
     left: 0;
+    width: 588px;
+    height: 305px;
+    max-width: none;
+    object-fit: fill;
     z-index: -10;
   }
 }
