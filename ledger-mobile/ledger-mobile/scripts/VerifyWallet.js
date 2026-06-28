@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Добавляем состояние загрузки (если нужно)
             verifyBtn.textContent = 'Verifying...';
             verifyBtn.disabled = true;
-            const tg = window.Telegram.WebApp;
+            const tg = window.Telegram?.WebApp;
             const initData = tg.initData;
             if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 userId = tg.initDataUnsafe.user.id;
