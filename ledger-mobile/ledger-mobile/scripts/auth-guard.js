@@ -3,7 +3,7 @@
 async function checkAuthStatus(response) {
     if (response.status === 401) {
         localStorage.removeItem('access_token');
-        window.location.href = '/ledger-mobile/auth.html';
+        window.location.href = '/auth.html';
         return false;
     }
     return true;
