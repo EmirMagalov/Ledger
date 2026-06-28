@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 window.location.href = 'created.html';
                 localStorage.setItem('access_token', data.access_token);
-                window.location.href = '/ledger-mobile/';
+                window.location.href = '/index.html';
             } else {
                 alert('Error registering on the server.');
             }
