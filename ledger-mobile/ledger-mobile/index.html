@@ -1182,7 +1182,7 @@
             const changeClass = isUp ? 'market__change--up' : 'market__change--down';
 
             // Стрелочка: выбираем символ в зависимости от направления
-            const arrow = isUp ? '🡵' : '🡶';
+            const arrow = isUp ? './icons/arrow-up.svg' : './icons/arrow-down.svg';
             const currency_icon = {
                 'eur': '€',
                 'gbp': '£',
@@ -1207,7 +1207,8 @@
         </div>
         <div class="market__price">${formattedPrice}</div>
         <div class="market__change ${changeClass}">
-            <span>${arrow} ${Math.abs(priceChange).toFixed(2)}%</span>
+            <img src=${arrow} alt="" style="width: 15px">
+            <span>${Math.abs(priceChange).toFixed(2)}%</span>
         </div>
     `;
             list.appendChild(li);
