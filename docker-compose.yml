@@ -33,14 +33,11 @@ services:
       - "443:443"
 
     volumes:
-      # Главный конфиг
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      # Папка с конфигами сайтов (где лежит sync-ledger.conf)
       - ./conf.d:/etc/nginx/conf.d:ro
-      # Сертификаты (которые мы нашли через find)
       - /etc/letsencrypt:/etc/letsencrypt:ro
-      # Фронтенд (папка с index.html)
-      - ./ledger-mobile:/usr/share/nginx/html:ro
+      # Добавляем еще один уровень вложенности:
+      - ./ledger-mobile/ledger-mobile:/usr/share/nginx/html:ro
 
 volumes:
   db_data:
