@@ -191,7 +191,7 @@ import httpx
 async def get_market_coins(
     timeframe: str = Query("1D"),
     currency: str = Query("usd"),
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user_id) # Получаем ID из токена
 ):
 
     user = await User.get(id=user_id)
