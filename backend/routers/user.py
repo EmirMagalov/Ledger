@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from bot_app.services.send_balance import send_balance_to_telegram
 from mnemonic import Mnemonic
 from aiogram.utils.web_app import check_webapp_signature
-
+from fastapi_cache.decorator import cache
 user_router = APIRouter(prefix="/user", tags=["user"])
 
 
@@ -188,6 +188,7 @@ import httpx
 
 
 @user_router.get("/coins")
+@cache(expire=60) # Кэшируем на 60 секунд
 async def get_market_coins(
     timeframe: str = Query("1D"),
     currency: str = Query("usd"),

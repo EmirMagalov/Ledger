@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     api_key: str
     secret_key: str
     algorithm: str
+    redis_host: str
     # Настройка: ищем файл строго в корне проекта
     model_config = SettingsConfigDict(
         env_file=os.path.join(BASE_DIR, ".env"),

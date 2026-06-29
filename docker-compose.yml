@@ -1,5 +1,13 @@
 version: '3.8'
 services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
   # Бэкенд API
   backend:
     build: .
@@ -15,7 +23,8 @@ services:
     volumes:
       - .:/app             # Прокидываем весь проект в контейнер
       - db_data:/app/backend/data # ВАЖНО: отдельный том для базы
-
+    depends_on:
+      - redis
   # Бот (запускается отдельно)
   bot:
     build: .
@@ -41,6 +50,7 @@ services:
 
 volumes:
   db_data:
+  redis_data:
 
 
 
