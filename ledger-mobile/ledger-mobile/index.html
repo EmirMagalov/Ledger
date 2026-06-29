@@ -996,7 +996,15 @@
         console.log(`🚀 Запрос данных за период: ${timeframe}`);
         try {
             const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
-            const response = await apiFetch(`${API_BASE_URL}/user/coins?timeframe=${timeframe}&currency=${currentCurrency}`);
+            const response = await apiFetch(`${API_BASE_URL}/user/coins?timeframe=${timeframe}&currency=${currentCurrency}`
+                , {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // ВАЖНО: Добавляем Bearer + токен
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
 
             const data = await response.json();
             console.log('✅ Данные успешно получены:', data);
@@ -1234,13 +1242,21 @@
 
     let isCoinsLoaded = false;
     let currentUserData = null;
+    const token = localStorage.getItem('access_token');
 
     async function loadHomeData() {
         if (isCoinsLoaded) return;
         const currentCurrency = localStorage.getItem('preferred_currency') || 'usd'
         console.log("🚀 Попытка загрузить данные с:", `${API_BASE_URL}/user/coins?currency=${currentCurrency}`);
 
-        const response = await apiFetch(`${API_BASE_URL}/user/coins?currency=${currentCurrency}`, {method: 'GET'});
+        const response = await apiFetch(`${API_BASE_URL}/user/coins?currency=${currentCurrency}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // ВАЖНО: Добавляем Bearer + токен
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
         if (response && response.ok) {
             try {
@@ -1253,10 +1269,10 @@
                 console.log(balanceEl)
 
                 const currency_icon = {
-                    'eur':'€',
-                    'gbp':'£',
-                    'jpy':'¥',
-                    'usd':'$',
+                    'eur': '€',
+                    'gbp': '£',
+                    'jpy': '¥',
+                    'usd': '$',
                 }
                 if (balanceEl) {
                     balanceEl.innerHTML = `<span>${currency_icon[currentCurrency]}</span>0<small>.00</small>`;
