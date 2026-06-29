@@ -11,7 +11,7 @@ from backend.config import settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("App started")
-    redis = aioredis.from_url(settings.redis_host, encoding="utf8", decode_responses=True)
+    redis = aioredis.from_url(settings.redis_host, encoding="utf8")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
     yield
     await redis.close()

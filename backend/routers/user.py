@@ -185,10 +185,14 @@ async def get_current_user_id(authorization: str = Header(...)):
 
 
 import httpx
-
+def my_key_builder(func, *args, **kwargs):
+    # Берем только то, что действительно меняет данные: timeframe и currency
+    timeframe = kwargs.get("timeframe", "1D")
+    currency = kwargs.get("currency", "usd")
+    return f"coins:{timeframe}:{currency}"
 
 @user_router.get("/coins")
-@cache(expire=60) # Кэшируем на 60 секунд
+@cache(expire=60, key_builder=my_key_builder)
 async def get_market_coins(
     timeframe: str = Query("1D"),
     currency: str = Query("usd"),
