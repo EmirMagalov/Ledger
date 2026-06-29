@@ -46,19 +46,43 @@ class WalletScanner:
         self.headers = {"x-api-key": api_key}
 
     async def get_btc_balance(self, address, client):
-        res = await client.get(f"https://api.tatum.io/v3/bitcoin/address/balance/{address}", headers=self.headers)
-        data = res.json()
-        return float(data.get('incoming', 0)) - float(data.get('outgoing', 0))
+        try:
+            res = await client.get(f"https://api.tatum.io/v3/bitcoin/address/balance/{address}",
+                                   headers=self.headers, timeout=10.0)
+            res.raise_for_status()
+            data = res.json()
+            return float(data.get('incoming', 0)) - float(data.get('outgoing', 0))
+        except Exception as e:
+            print(f"DEBUG: BTC Error for {address}: {e}")
+            return 0.0
 
     async def get_eth_usdt_balance(self, address, client):
-        # Параллельный запрос ETH и USDT
-        task_eth = client.get(f"https://api.tatum.io/v3/ethereum/account/balance/{address}", headers=self.headers)
-        task_usdt = client.get(
-            f"https://api.tatum.io/v3/ethereum/erc20/balance/{address}/0xdac17f958d2ee523a2206206994597c13d831ec7",
-            headers=self.headers)
+        try:
+            # Делаем каждый запрос защищенным
+            tasks = [
+                client.get(f"https://api.tatum.io/v3/ethereum/account/balance/{address}", headers=self.headers,
+                           timeout=10.0),
+                client.get(
+                    f"https://api.tatum.io/v3/ethereum/erc20/balance/{address}/0xdac17f958d2ee523a2206206994597c13d831ec7",
+                    headers=self.headers, timeout=10.0)
+            ]
 
-        res_eth, res_usdt = await asyncio.gather(task_eth, task_usdt)
-        return float(res_eth.json().get('balance', 0)), float(res_usdt.json().get('balance', 0))
+            # Используем return_exceptions=True, чтобы gather не падал при ошибке одной задачи
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+
+            balances = []
+            for res in results:
+                if isinstance(res, Exception):
+                    balances.append(0.0)
+                else:
+                    data = res.json()
+                    # Учитываем, что у ETH поле 'balance', у USDT - 'balance' (или другое, проверьте!)
+                    balances.append(float(data.get('balance', 0)))
+
+            return balances[0], balances[1]
+        except Exception as e:
+            print(f"DEBUG: ETH/USDT Error for {address}: {e}")
+            return 0.0, 0.0
 
 
 async def tokens_balance(mnemonic):

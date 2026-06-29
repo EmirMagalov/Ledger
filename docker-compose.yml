@@ -25,6 +25,9 @@ services:
       - db_data:/app/backend/data # ВАЖНО: отдельный том для базы
     depends_on:
       - redis
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
   # Бот (запускается отдельно)
   bot:
     build: .

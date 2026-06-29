@@ -1058,7 +1058,10 @@
         <small>${coin.symbol.toUpperCase()}</small>
     </span>
     <em>
-        ${currency_icon[currentCurrency]} ${coin.current_price.toLocaleString()}
+        ${currency_icon[currentCurrency]} ${coin.current_price.toLocaleString('ru-RU', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}
         <small style="color: ${color}; font-weight: bold;">
             ${change >= 0 ? '+' : ''}${change.toFixed(2)}%
         </small>
@@ -1106,6 +1109,24 @@
 </script>
 
 <script>
+    document.querySelector('[data-js-mobile-balance-toggle]').addEventListener('click', function() {
+        const balanceContainer = document.querySelector('[data-mobile-balance-value]');
+        const isHidden = balanceContainer.classList.contains('is-hidden');
+
+        if (isHidden) {
+            // Показываем баланс
+            balanceContainer.classList.remove('is-hidden');
+            // Здесь мы вернем реальное значение, которое можно хранить в data-атрибуте
+            const realAmount = balanceContainer.getAttribute('data-real-amount');
+            balanceContainer.innerHTML = realAmount;
+        } else {
+            // Скрываем баланс (блюрим)
+            balanceContainer.classList.add('is-hidden');
+            // Сохраняем текущее HTML содержимое, чтобы вернуть потом
+            balanceContainer.setAttribute('data-real-amount', balanceContainer.innerHTML);
+            balanceContainer.innerHTML = '<span>****</span>';
+        }
+    });
     // Исправлено: Добавлен надежный Fallback на случай, если config.js не существует или ломается.
 
     async function apiFetch(url, options = {}) {
@@ -1268,7 +1289,7 @@
                 currentUserData = data.user
                 const balanceEl = document.querySelector('[data-mobile-balance-value]');
                 console.log(balanceEl)
-
+                
                 const currency_icon = {
                     'eur': '€',
                     'gbp': '£',
@@ -1286,6 +1307,7 @@
                 copySetup('btn-copy-address', 'copy-icon-1', 'copy-ok-1');
                 copySetup('btn-copy-address-qr', 'copy-icon-2', 'copy-ok-2');
                 isCoinsLoaded = true;
+
 
             } catch (err) {
                 console.error('⚠️ Ошибка при парсинге JSON ответа:', err);

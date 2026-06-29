@@ -6206,3 +6206,18 @@ body.is-modal-open {
   33% { content: ".."; }
   66% { content: "..."; }
 }
+
+
+/* Эффект скрытия */
+.mobile-home__balance.is-hidden {
+  filter: blur(6px);
+  transition: filter 0.3s ease;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Либо, если хотите просто заменить на звездочки, используйте код выше,
+   а если именно блюр, добавьте это: */
+[data-mobile-balance-value] {
+  transition: filter 0.3s ease;
+}
