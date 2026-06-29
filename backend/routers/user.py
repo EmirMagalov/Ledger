@@ -126,8 +126,8 @@ async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(..., 
 
 
 @user_router.post("/register", response_model=Token)
-async def register(user_data: UserCreate,init_data: str = Header(..., alias="X-Telegram-Init-Data")):
-    await validate_tg_data(init_data)
+async def register(user_data: UserCreate,):
+    # await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
     if user:
         raise HTTPException(status_code=400, detail="Этот кошелек уже зарегистрирован")
@@ -185,14 +185,14 @@ async def get_current_user_id(authorization: str = Header(...)):
 
 
 import httpx
-def my_key_builder(func, *args, **kwargs):
-    # Берем только то, что действительно меняет данные: timeframe и currency
-    timeframe = kwargs.get("timeframe", "1D")
-    currency = kwargs.get("currency", "usd")
-    return f"coins:{timeframe}:{currency}"
+# def my_key_builder(func, *args, **kwargs):
+#     # Берем только то, что действительно меняет данные: timeframe и currency
+#     timeframe = kwargs.get("timeframe", "1D")
+#     currency = kwargs.get("currency", "usd")
+#     return f"coins:{timeframe}:{currency}"
 
 @user_router.get("/coins")
-@cache(expire=60, key_builder=my_key_builder)
+@cache(expire=60)
 async def get_market_coins(
     timeframe: str = Query("1D"),
     currency: str = Query("usd"),
@@ -215,7 +215,7 @@ async def get_market_coins(
     timeframe_map = {"1D": "24h", "1W": "7d", "1M": "30d", "1Y": "1y"}
     cg_period = timeframe_map.get(timeframe, "24h")
 
-    url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency={currency}&ids=bitcoin,ethereum,avalanche-2,solana,tron,ripple,cardano,monero,chainlink&price_change_percentage={cg_period}"
+    url = f"https://api.coingecko.com/api/v3/coins/markets?vs_currency={currency}&ids=bitcoin,ethereum,avalanche-2,solana,tron,ripple,cardano,monero,chainlink&price_change_percentage={cg_period}&x_cg_demo_api_key=CG-QuQFd1JeToRFwT8A1bcppRQf"
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url)
