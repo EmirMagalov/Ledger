@@ -33,9 +33,14 @@ services:
       - "443:443"
 
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro        # Пробрасываем главный конфиг
-      - ./conf.d:/etc/nginx/conf.d:ro                # Пробрасываем папку с сайтами
-      - /etc/letsencrypt:/etc/letsencrypt:ro          # Пробрасываем сертификаты с хоста
+      # Главный конфиг
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      # Папка с конфигами сайтов (где лежит sync-ledger.conf)
+      - ./conf.d:/etc/nginx/conf.d:ro
+      # Сертификаты (которые мы нашли через find)
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      # Фронтенд (папка с index.html)
+      - ./ledger-mobile:/usr/share/nginx/html:ro
 
 volumes:
   db_data:
