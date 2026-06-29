@@ -1284,20 +1284,35 @@
             try {
                 const data = await response.json();
                 console.log('✅ Данные успешно получены:', data);
-
+                const totalBalance = data.user.balance
+                console.log(totalBalance)
                 const coinsArray = Array.isArray(data) ? data : (data.coins || data.items || []);
                 currentUserData = data.user
                 const balanceEl = document.querySelector('[data-mobile-balance-value]');
                 console.log(balanceEl)
-                
+
                 const currency_icon = {
                     'eur': '€',
                     'gbp': '£',
                     'jpy': '¥',
                     'usd': '$',
                 }
-                if (balanceEl) {
-                    balanceEl.innerHTML = `<span>${currency_icon[currentCurrency]}</span>0<small>.00</small>`;
+                if (balanceEl && totalBalance) {
+                    // Разбиваем строку "15.32" на целую и дробную части
+                    const [main, cents] = totalBalance.split('.');
+
+                    // Формируем HTML
+                    // Используем символ валюты из текущих настроек (как у вас уже сделано)
+                    const currency_icon = { 'eur': '€', 'gbp': '£', 'jpy': '¥', 'usd': '$' };
+                    const currentCurrency = localStorage.getItem('preferred_currency') || 'usd';
+
+                    const htmlContent = `<span>${currency_icon[currentCurrency]}</span>${main}<small>.${cents || '00'}</small>`;
+
+                    // Вставляем в DOM
+                    balanceEl.innerHTML = htmlContent;
+
+                    // Обязательно сохраняем для кнопки-глаза (блюра)
+                    balanceEl.setAttribute('data-real-amount', htmlContent);
                 }
 
 

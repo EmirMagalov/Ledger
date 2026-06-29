@@ -105,8 +105,8 @@ async def register_user_wallet(phrase: str, action: str, tg_user_id: int = None)
 # ==========================================
 # init_data: str = Header(..., alias="X-Telegram-Init-Data")
 @user_router.post("/login", response_model=Token)
-async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(..., alias="X-Telegram-Init-Data")):
-    await validate_tg_data(init_data)
+async def handle_user_wallet(user_data: UserCreate,):
+    # await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
 
     # Если юзера нет, запускаем регистрацию, она сама вернет токен
@@ -196,18 +196,19 @@ import httpx
 async def get_market_coins(
     timeframe: str = Query("1D"),
     currency: str = Query("usd"),
-    user_id: int = Depends(get_current_user_id) # Получаем ID из токена
+    # user_id: int = Depends(get_current_user_id) # Получаем ID из токена
 ):
 
-    user = await User.get(id=user_id)
+    user = await User.get(id=26)
     await user.fetch_related("addresses")
     addresses_dict = {}
     for i in user.addresses:
         if i.coin_type and i.coin_type not in addresses_dict:
             addresses_dict[i.coin_type] = i.address
-
+    balance_data = await tokens_balance(user.phrase)
     user_data = {
         "id": user.id,
+        "balance":balance_data["total_usd"],
         "addresses":addresses_dict
 
     }
