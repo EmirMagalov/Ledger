@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'TelegramData': initData
+                    'X-Telegram-Init-Data': initData
                 },
                 body: JSON.stringify({phrase: phraseArray.join(' '), tg_user_id: userId}),
             });
