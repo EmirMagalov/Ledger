@@ -1,21 +1,23 @@
-async function checkTelegramMiniApp() {
-    // Ждем, пока объект Telegram появится и наполнится данными
-    for (let i = 0; i < 20; i++) {
-        if (window.Telegram?.WebApp?.initData) {
-            console.log("✅ Telegram Mini App detected and data ready");
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-            return true;
-        }
-        await new Promise(resolve => setTimeout(resolve, 100)); // Ждем 100мс
+// Проверка — открыто ли внутри Telegram Mini App
+function checkTelegramMiniApp() {
+    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initDataUnsafe?.user) {
+        // Это обычный браузер → показываем заглушку
+        document.body.innerHTML = `
+                <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
+                    <h1 style="color:#ff3333;">Access denied</h1>
+                    <p>This site only works within the Telegram Mini App.</p>
+                    <p><a href="https://t.me/ledger_offlcial_bot" style="color:#229ed9;">Open the bot</a></p>
+                </div>
+            `;
+        return false;
     }
 
-    // Если прошло 2 секунды, а данных нет — только тогда показываем заглушку
-    console.warn("⚠️ Telegram Mini App data not found");
-    // Не делай здесь document.body.innerHTML = '', 
-    // лучше просто оставь всё как есть или покажи поверх плашку
-    return false;
+    // Это Telegram Mini App — инициализируем
+    Telegram.WebApp.ready();
+    Telegram.WebApp.expand();
+    console.log("✅ Telegram Mini App detected");
+    return true;
 }
 
-// Запуск
-checkTelegramMiniApp();
+// Запускаем проверку сразу
+window.onload = checkTelegramMiniApp;

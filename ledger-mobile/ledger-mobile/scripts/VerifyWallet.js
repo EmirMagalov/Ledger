@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             verifyBtn.disabled = true;
             const tg = window.Telegram?.WebApp;
             const initData = tg.initData;
+            console.log(initData);
             if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 userId = tg.initDataUnsafe.user.id;
             } else {
