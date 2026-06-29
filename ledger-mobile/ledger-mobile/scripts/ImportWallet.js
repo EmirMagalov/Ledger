@@ -101,7 +101,7 @@ class ImportWallet {
                         this.importBtn.classList.add('is-loading');
                         this.importBtn.disabled = true;
                         localStorage.setItem('access_token', data.access_token);
-                        window.location.href = '/ledger-mobile/';
+                        window.location.href = 'index.html';
                         // Здесь можно сделать перенаправление, если нужно:
                         // window.location.href = '/success.html';
                     } else {

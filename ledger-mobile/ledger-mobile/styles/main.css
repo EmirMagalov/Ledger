@@ -122,7 +122,12 @@ html,
 :has(:target) {
   scroll-behavior: smooth;
 }
-
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Чтобы скроллился только внутренний контейнер */
+}
 body {
   /**
     Пригодится в большинстве ситуаций
@@ -1578,7 +1583,7 @@ a[class] {
 .mobile-app {
   width: 100%;
   max-width: 430px;
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
   padding: 30px;
   color: #fff;
