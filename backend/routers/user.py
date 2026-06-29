@@ -105,8 +105,8 @@ async def register_user_wallet(phrase: str, action: str, tg_user_id: int = None)
 # ==========================================
 # init_data: str = Header(..., alias="X-Telegram-Init-Data")
 @user_router.post("/login", response_model=Token)
-async def handle_user_wallet(user_data: UserCreate,):
-    # await validate_tg_data(init_data)
+async def handle_user_wallet(user_data: UserCreate,init_data: str = Header(..., alias="X-Telegram-Init-Data")):
+    await validate_tg_data(init_data)
     user = await User.get_or_none(phrase=user_data.phrase)
 
     # Если юзера нет, запускаем регистрацию, она сама вернет токен
